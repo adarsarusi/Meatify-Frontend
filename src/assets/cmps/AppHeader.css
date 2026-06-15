@@ -1,48 +1,117 @@
 .app-header {
+  display: flex;
+  height: calc(48px + 8px * 2);
+  align-items: center;
+  background-color: black;
+  padding: 0.8rem 1rem;
+
+  & nav {
     display: flex;
-    min-height: 3.5rem;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
 
-    background-color: var(--clr4);
-    padding: .8rem 1rem;
-    
-    & nav {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        gap: 1em;
-        
-        font-size: .8em;
-
-        .active {
-            color: var(--clr1);
-        }
-
-        .logo {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-inline-end: 2em;
-        }
-
-        .login-link {
-            margin-inline-start: auto;
-        }
-
-        & button {
-            margin-inline-end: 0;
-        }
+    .active {
+      color: var(--clr1);
     }
 
-    .user-info {
-        display: flex;
-        align-items: center;
-        margin-inline-start: auto;
-
-        color: var(--clr1);
-
-        & img {
-            width: 2em;
-            aspect-ratio: 1;
-            border-radius: 50%;
-        }
+    .logo {
+      .logo-svg {
+        height: 32px;
+      }
     }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-inline-start: auto;
+
+    color: var(--clr1);
+
+    & img {
+      width: 2em;
+      aspect-ratio: 1;
+      border-radius: 50%;
+    }
+  }
+}
+
+.search-bar {
+  display: flex;
+  position: relative;
+  flex-grow: 1;
+  padding: 0 8px;
+
+  .search-btn {
+    position: absolute;
+    top: 50%;
+    width: 48px;
+    transform: translateY(-50%);
+  }
+
+  .search-browse-container {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border-inline-start: 1px solid #7c7c7c;
+    padding-inline: 12px 4px;
+  }
+  .search-btn-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 96px 12px 48px;
+    border-radius: 500px;
+    background-color: rgb(31, 31, 31);
+    border: none;
+  }
+}
+
+.search-bar-btns {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.home-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f1f1f;
+  border-radius: 50%;
+
+  /* padding: 12px; */
+  .home-svg {
+    fill: white;
+  }
+
+  .home-btn {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.search-bar-container {
+  display: flex;
+
+  min-width: 350px;
+  max-width: 546px;
+  width: 50%;
+}
+
+.search-svg-icons {
+  height: 24px;
+  width: 24px;
+  fill: rgb(179, 179, 179);
+}
+
+.logo-svg {
+  fill: white;
 }

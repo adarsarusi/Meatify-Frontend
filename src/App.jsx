@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="main-container">
-        {/* <AppHeader /> */}
+        <AppHeader />
         {/* <UserMsg /> */}
 
         <main>

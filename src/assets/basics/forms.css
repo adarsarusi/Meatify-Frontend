@@ -1,5 +1,5 @@
 
-button {
+/* button {
 	padding: .5em .8em;
 	border: 0;
 	margin: .5em;
@@ -11,4 +11,4 @@ button {
 button:hover {
 	transition: 0.3s;
 	background-color: var(--clr1-light)
-}
+} */
