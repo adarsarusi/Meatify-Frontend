@@ -30,7 +30,8 @@ const isLocal = import.meta.env.VITE_LOCAL === 'true'
 const service = isLocal ? local : remote
 
 if (isLocal) {
-    service.generateSpotifyData()
+    service.generateSpotifyData(20)
+    console.log()
 }
 export const stationService = { getEmptyStation, getDefaultFilter, ...service }
 
