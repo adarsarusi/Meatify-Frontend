@@ -1,6 +1,8 @@
 import { storageService } from '../async-storage.service'
+import { saveToStorage, loadFromStorage, makeId } from '../util.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
+const USER_STORAGE_KEY = 'userDB'
 
 export const userService = {
     login,
@@ -12,6 +14,7 @@ export const userService = {
     update,
     getLoggedinUser,
     saveLoggedinUser,
+    generateDemoUsers,
 }
 
 async function getUsers() {
@@ -34,7 +37,7 @@ async function update({ _id }) {
     const user = await storageService.get('user', _id)
     await storageService.put('user', user)
 
-	// When admin updates other user's details, do not update loggedinUser
+    // When admin updates other user's details, do not update loggedinUser
     const loggedinUser = getLoggedinUser()
     if (loggedinUser._id === user._id) saveLoggedinUser(user)
 
@@ -64,14 +67,14 @@ function getLoggedinUser() {
 }
 
 function saveLoggedinUser(user) {
-	user = { 
-        _id: user._id, 
-        fullname: user.fullname, 
+    user = {
+        _id: user._id,
+        fullname: user.fullname,
         imgUrl: user.imgUrl,
-        isAdmin: user.isAdmin 
+        isAdmin: user.isAdmin
     }
-	sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-	return user
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
+    return user
 }
 
 // To quickly create an admin user, uncomment the next line
@@ -86,4 +89,26 @@ async function _createAdmin() {
 
     const newUser = await storageService.post('user', userCred)
     console.log('newUser: ', newUser)
+}
+
+
+export async function generateDemoUsers(userIdx) {
+    var data = await loadFromStorage('user')
+    if (data && data.length > 0) return
+
+    data = await Promise.all(Array.from({ length: userIdx }, (_, i) => _generateUser(i)))
+    await saveToStorage(USER_STORAGE_KEY, data)
+}
+
+function _generateUser(idx) {
+    return {
+        _id: makeId(),
+        fullname: `User ${749 + idx}`,
+        username: `user${idx}`,
+        password: '123',
+        imgUrl: `https://robohash.org/${idx}?set=set4`,
+        likedStationIds: [],
+        likedSongIds: [],
+        isAdmin: false
+    }
 }
