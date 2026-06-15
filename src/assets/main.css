@@ -1,17 +1,17 @@
-@import "setup/var";
-@import "setup/typography";
+@import "setup/var.css";
+@import "setup/typography.css";
 
-@import "basics/helpers";
-@import "basics/layout";
-@import "basics/base";
-@import "basics/forms";
+@import "basics/helpers.css";
+@import "basics/layout.css";
+@import "basics/base.css";
+@import "basics/forms.css";
 
-@import "App";
+/* @import "App"; */
 
-@import "cmps/HomePage";
-@import "cmps/UserDetails";
+@import "cmps/HomePage.css";
+@import "cmps/UserDetails.css";
 @import "cmps/LoginSignup";
 
 @import "cmps/AppHeader.css";
-@import "cmps/AppFooter";
-@import "cmps/UserMsg";
+@import "cmps/AppFooter.css";
+@import "cmps/UserMsg.css";
