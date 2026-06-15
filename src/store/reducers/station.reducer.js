@@ -5,67 +5,42 @@ export const ADD_STATION = 'ADD_STATION'
 export const UPDATE_STATION = 'UPDATE_STATION'
 export const ADD_STATION_MSG = 'ADD_STATION_MSG'
 
-const initialState = {
+const initialStationState = {
     stations: [],
-    station: null
+    lastWatchedStation: null,
+    filterBy: { txt: '', tags: [], genres: [], artists: [] },
+    isLoading: false
 }
 
-export function stationReducer(state = initialState, action) {
-    var newState = state
-    var stations
+export function stationReducer(state = initialStationState, action = {}) {
     switch (action.type) {
         case SET_STATIONS:
-            newState = { ...state, stations: action.stations }
-            break
+            return { ...state, stations: action.stations }
+
         case SET_STATION:
-            newState = { ...state, station: action.station }
-            break
+            return { ...state, lastWatchedStation: action.station }
+
         case REMOVE_STATION:
-            const lastRemovedStation = state.stations.find(station => station._id === action.stationId)
-            stations = state.stations.filter(station => station._id !== action.stationId)
-            newState = { ...state, stations, lastRemovedStation }
-            break
-        case ADD_STATION:
-            newState = { ...state, stations: [...state.stations, action.station] }
-            break
-        case UPDATE_STATION:
-            stations = state.stations.map(station => (station._id === action.station._id) ? action.station : station)
-            newState = { ...state, stations }
-            break
-        case ADD_STATION_MSG:
-            if (action.msg && state.station) {
-                newState = { ...state, station: { ...state.station, msgs: [...state.station.msgs || [], action.msg] } }
-                break
+            return {
+                ...state,
+                stations: state.stations.filter(station => station._id !== action.stationId)
             }
+
+        case ADD_STATION:
+            return {
+                ...state,
+                stations: [...state.stations, action.station]
+            }
+
+        case UPDATE_STATION:
+            return {
+                ...state,
+                stations: state.stations.map(station =>
+                    station._id === action.station._id ? action.station : station
+                )
+            }
+
         default:
+            return state
     }
-    return newState
 }
-
-// unitTestReducer()
-
-function unitTestReducer() {
-    var state = initialState
-    const station1 = { _id: 'b101', vendor: 'Station ' + parseInt('' + Math.random() * 10), speed: 12, owner: null, msgs: [] }
-    const station2 = { _id: 'b102', vendor: 'Station ' + parseInt('' + Math.random() * 10), speed: 13, owner: null, msgs: [] }
-
-    state = stationReducer(state, { type: SET_STATIONS, stations: [station1] })
-    console.log('After SET_STATIONS:', state)
-
-    state = stationReducer(state, { type: ADD_STATION, station: station2 })
-    console.log('After ADD_STATION:', state)
-
-    state = stationReducer(state, { type: UPDATE_STATION, station: { ...station2, vendor: 'Good' } })
-    console.log('After UPDATE_STATION:', state)
-
-    state = stationReducer(state, { type: REMOVE_STATION, stationId: station2._id })
-    console.log('After REMOVE_STATION:', state)
-
-    state = stationReducer(state, { type: SET_STATION, station: station1 })
-    console.log('After SET_STATION:', state)
-
-    const msg = { id: 'm' + parseInt('' + Math.random() * 100), txt: 'Some msg', by: { _id: 'u123', fullname: 'test' } }
-    state = stationReducer(state, { type: ADD_STATION_MSG, stationId: station1._id, msg })
-    console.log('After ADD_STATION_MSG:', state)
-}
-

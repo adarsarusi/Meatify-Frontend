@@ -1,7 +1,6 @@
 import { userService } from '../../services/user'
 // import { socketService } from '../../services/socket.service.js'
 import { store } from '../store'
-
 import { showErrorMsg } from '../../services/event-bus.service'
 import { LOADING_DONE, LOADING_START } from '../reducers/system.reducer'
 import { REMOVE_USER, SET_USER, SET_USERS, SET_WATCHED_USER } from '../reducers/user.reducer'
@@ -30,10 +29,7 @@ export async function removeUser(userId) {
 export async function login(credentials) {
     try {
         const user = await userService.login(credentials)
-        store.dispatch({
-            type: SET_USER,
-            user
-        })
+        store.dispatch({ type: SET_USER, user })
         socketService.login(user._id)
         return user
     } catch (err) {
@@ -45,10 +41,7 @@ export async function login(credentials) {
 export async function signup(credentials) {
     try {
         const user = await userService.signup(credentials)
-        store.dispatch({
-            type: SET_USER,
-            user
-        })
+        store.dispatch({ type: SET_USER, user })
         socketService.login(user._id)
         return user
     } catch (err) {
@@ -60,10 +53,7 @@ export async function signup(credentials) {
 export async function logout() {
     try {
         await userService.logout()
-        store.dispatch({
-            type: SET_USER,
-            user: null
-        })
+        store.dispatch({ type: SET_USER, user: null })
         socketService.logout()
     } catch (err) {
         console.log('Cannot logout', err)

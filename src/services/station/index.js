@@ -6,24 +6,32 @@ import { stationService as local } from './station.service.local'
 import { stationService as remote } from './station.service.remote'
 
 function getEmptyStation() {
-	return {
+    return {
         _id: '',
-		vendor: makeId(),
-		speed: getRandomIntInclusive(80, 240),
-		msgs: [],
-	}
+        name: '',
+        tags: [],
+        songs: [],
+        createdBy: null,
+        savedCount: 0
+    }
 }
 
 function getDefaultFilter() {
     return {
         txt: '',
-        minSpeed: '',
-        sortField: '',
-        sortDir: '',
+        tags: [],
+        genres: [],
+        albums: [],
+        artists: []
     }
 }
 
-const service = (VITE_LOCAL === 'true') ? local : remote
+const isLocal = import.meta.env.VITE_LOCAL === 'true'
+const service = isLocal ? local : remote
+
+if (isLocal) {
+    service.generateSpotifyData()
+}
 export const stationService = { getEmptyStation, getDefaultFilter, ...service }
 
 // Easy access to this service from the dev tools console

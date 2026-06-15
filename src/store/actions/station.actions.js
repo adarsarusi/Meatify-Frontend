@@ -22,7 +22,6 @@ export async function loadStation(stationId) {
     }
 }
 
-
 export async function removeStation(stationId) {
     try {
         await stationService.remove(stationId)
@@ -66,52 +65,37 @@ export async function addStationMsg(stationId, txt) {
     }
 }
 
-// Command Creators:
 function getCmdSetStations(stations) {
     return {
         type: SET_STATIONS,
         stations
     }
 }
+
 function getCmdSetStation(station) {
     return {
         type: SET_STATION,
         station
     }
 }
+
 function getCmdRemoveStation(stationId) {
     return {
         type: REMOVE_STATION,
         stationId
     }
 }
+
 function getCmdAddStation(station) {
     return {
         type: ADD_STATION,
         station
     }
 }
+
 function getCmdUpdateStation(station) {
     return {
         type: UPDATE_STATION,
         station
     }
-}
-function getCmdAddStationMsg(msg) {
-    return {
-        type: ADD_STATION_MSG,
-        msg
-    }
-}
-
-// unitTestActions()
-async function unitTestActions() {
-    await loadStations()
-    await addStation(stationService.getEmptyStation())
-    await updateStation({
-        _id: 'm1oC7',
-        vendor: 'Station-Good',
-    })
-    await removeStation('m1oC7')
-    // TODO unit test addStationMsg
 }
