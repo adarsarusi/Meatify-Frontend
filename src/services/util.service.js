@@ -53,7 +53,16 @@ export function debounce(func, timeout = 300) {
     }
 }
 
-function getRandomFromArr(arr, count) {
+export async function saveToStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value))
+}
+
+export async function loadFromStorage(key) {
+    const data = localStorage.getItem(key)
+    return (data) ? JSON.parse(data) : undefined
+}
+
+export function getRandomFromArr(arr, count) {
     const shuffled = [...arr].sort(() => 0.5 - Math.random())
     return shuffled.slice(0, count)
 }

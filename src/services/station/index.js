@@ -26,12 +26,12 @@ function getDefaultFilter() {
     }
 }
 
-const isLocal = import.meta.env.VITE_LOCAL === 'true'
+const isLocal = VITE_LOCAL === 'true'
 const service = isLocal ? local : remote
 
 if (isLocal) {
-    service.generateSpotifyData(20)
-    console.log()
+    console.log('ggs')
+    service.generateSpotifyData(100, 30)
 }
 export const stationService = { getEmptyStation, getDefaultFilter, ...service }
 

@@ -3,6 +3,7 @@ import { Provider } from "react-redux"
 import { createRoot } from "react-dom/client"
 
 import "./assets/main.css"
+import "./services/station"
 import App from "./App.jsx"
 
 const elRoot = document.getElementById("root")
