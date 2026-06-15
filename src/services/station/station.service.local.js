@@ -1,8 +1,9 @@
 import { storageService } from '../async-storage.service'
-import { utilService } from '../util.service'
 import { userService } from '../user'
+import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive } from '../util.service'
 
-const STORAGE_KEY = 'station'
+const STATION_STORAGE_KEY = 'station'
+const SONG_STORAGE_KEY = 'song'
 
 export const stationService = {
     query,
@@ -12,10 +13,11 @@ export const stationService = {
     addStationMsg,
     generateSpotifyData
 }
+
 window.cs = stationService
 
 async function query(filterBy = {}) {
-    let stations = await storageService.query(STORAGE_KEY)
+    let stations = await storageService.query(STATION_STORAGE_KEY)
     const { txt, tags, genres, artists } = filterBy
 
     if (txt) {
@@ -49,17 +51,17 @@ async function query(filterBy = {}) {
 }
 
 async function getById(stationId) {
-    return await storageService.get(STORAGE_KEY, stationId)
+    return await storageService.get(STATION_STORAGE_KEY, stationId)
 }
 
 async function remove(stationId) {
-    await storageService.remove(STORAGE_KEY, stationId)
+    await storageService.remove(STATION_STORAGE_KEY, stationId)
 }
 
 async function save(station) {
     var savedStation
     if (station._id) {
-        savedStation = await storageService.put(STORAGE_KEY, station)
+        savedStation = await storageService.put(STATION_STORAGE_KEY, station)
     } else {
         const stationToSave = {
             name: station.name,
@@ -69,7 +71,7 @@ async function save(station) {
             savedCount: 0,
             createdAt: Date.now()
         }
-        savedStation = await storageService.post(STORAGE_KEY, stationToSave)
+        savedStation = await storageService.post(STATION_STORAGE_KEY, stationToSave)
     }
     return savedStation
 }
@@ -78,25 +80,24 @@ async function addStationMsg(stationId, txt) {
     const station = await getById(stationId)
     if (!station.msgs) station.msgs = []
     station.msgs.push({
-        id: utilService.makeId(),
+        id: makeId(),
         txt,
         by: userService.getLoggedinUser()
     })
     return await save(station)
 }
 
-export async function generateSpotifyData() {
-    await _initData('song', _generateSong, 20)
-    await _initData('station', _generateStation, 5)
-    await _initData('user', _generateUser, 3)
+export async function generateSpotifyData(songsCount = 381, stationsCount = 147) {
+    await _initData(SONG_STORAGE_KEY, _generateSong, songsCount)
+    await _initData(STATION_STORAGE_KEY, _generateStation, stationsCount)
 }
 
 async function _initData(key, generateFn, count) {
-    var data = storageService.loadFromStorage(key)
+    var data = await loadFromStorage(key)
     if (data && data.length > 0) return
 
     data = await Promise.all(Array.from({ length: count }, (_, i) => generateFn(i)))
-    storageService.saveToStorage(key, data)
+    await saveToStorage(key, data)
 }
 
 async function _generateSong(idx) {
@@ -107,7 +108,7 @@ async function _generateSong(idx) {
         const json = await res.json()
         const track = json.data[idx % json.data.length]
         return {
-            _id: utilService.makeId(),
+            _id: makeId(),
             title: track.title,
             url: track.preview,
             imgUrl: track.album.cover_big,
@@ -116,7 +117,7 @@ async function _generateSong(idx) {
         }
     } catch (err) {
         return {
-            _id: utilService.makeId(),
+            _id: makeId(),
             title: 'Fallback Song',
             url: '',
             imgUrl: '',
@@ -126,23 +127,19 @@ async function _generateSong(idx) {
     }
 }
 
-function _generateStation(idx) {
+async function _generateStation(idx) {
     const names = ['Workout Mix', 'Chill Lofi', 'Deep Focus', 'Party Hits']
+    
+    // Pull the songs that were just generated in the previous step
+    const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
+    const shuffledSongs = allSongs.sort(() => Math.random() - 0.5)
+    const stationSongs = shuffledSongs.slice(0, 6)
+
     return {
-        _id: utilService.makeId(),
+        _id: makeId(),
         name: names[idx % names.length],
         tags: ['Funk', 'Happy'],
-        savedCount: utilService.getRandomIntInclusive(381, 999),
-        songs: []
-    }
-}
-
-function _generateUser(idx) {
-    return {
-        _id: utilService.makeId(),
-        fullname: `User ${749 + idx}`,
-        imgUrl: `https://robohash.org/${idx}?set=set4`,
-        likedStationIds: [],
-        likedSongIds: []
+        savedCount: getRandomIntInclusive(381, 999),
+        songs: stationSongs
     }
 }
