@@ -4,11 +4,12 @@ button {
 	border: 0;
 	margin: .5em;
 	cursor: pointer;
-	background-color: var(--clr1);
+	background-color: var(--primary);
 	color: whitesmoke;
 }
 
 button:hover {
 	transition: 0.3s;
-	background-color: var(--clr1-light)
+	background-color: var(--primary-light)
 }
+

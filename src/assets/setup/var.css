@@ -1,11 +1,10 @@
 :root {
-  --clr1: #ce2e6c;
-  --clr2: #4f3a65;
-  --clr3: #574f7d;
-  --clr4: #95adbe;
-  --clr5: #dff0ea;
-
-  --clr1-light: color-mix(in lab, var(--clr1), white 15%);
+  --primary: #d62828;
+  --bg-color: #121212;
+  --surface: #1e1e1e;
+  --accent: #ffb7c5;
+  --text-main: #fdfdfd;
+  --text-muted: #b3b3b3;
 
   --gray1: #ddd;
   --gray2: #aaa;
