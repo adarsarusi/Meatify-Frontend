@@ -1,0 +1,12 @@
+.station-preview{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    border-radius: 5px;
+    padding: 5px;
+
+    &:hover{
+        background-color: var(--gray4);
+    }
+}

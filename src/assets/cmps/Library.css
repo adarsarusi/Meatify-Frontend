@@ -1,0 +1,12 @@
+.app-library{
+    
+}
+
+.library-header{
+    display: flex;
+    justify-content: space-between;
+
+    >.library-controls{
+        display: flex;
+    }
+}

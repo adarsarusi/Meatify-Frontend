@@ -1,15 +1,16 @@
 
 
-export function StationPreview() {
+export function StationPreview({ station }) {
 
-	return <article className="station-preview">
-        <header>
-            <Link to={`/car/${car._id}`}>{car.vendor}</Link>
-        </header>
+    return <article className="station-preview">
 
-        <p>Speed: <span>{car.speed.toLocaleString()} Km/h</span></p>
-        {car.owner && <p>Owner: <span>{car.owner.fullname}</span></p>}
-        
+        <p>img</p>
+
+        <div className="station-info">
+            <h4>{station.name}</h4>
+            <h5>By: {station.name}</h5>
+        </div>
+
     </article>
-	
+
 }
