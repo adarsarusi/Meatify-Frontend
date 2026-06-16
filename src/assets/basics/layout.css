@@ -1,12 +1,12 @@
-
 .main-container {
     display: grid;
     grid-template-columns: 1rem 1fr 1rem;
+    grid-template-rows: auto 1fr;
 
     height: 100vh;
     overflow: hidden;
 
-    >* {
+    > * {
         grid-column: 2;
 
         &.full {
@@ -21,6 +21,9 @@
     grid-template-areas: "l a i";
 
     min-height: 0;
+    overflow: hidden;
+
+    align-content: start;
 
     >.app-library {
         grid-area: l;
