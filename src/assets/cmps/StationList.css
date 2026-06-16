@@ -1,6 +1,32 @@
-.station-list{
+.station-list {
     display: flex;
     flex-direction: column;
 
     gap: 0.5em;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.station-list::-webkit-scrollbar {
+    width: 12px;
+}
+
+.station-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.station-list::-webkit-scrollbar-thumb {
+    background: var(--gray4);
+}
+
+.station-list::-webkit-scrollbar-thumb:hover {
+    background: var(--gray3);
 }
