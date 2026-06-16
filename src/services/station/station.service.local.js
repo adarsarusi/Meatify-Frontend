@@ -2,7 +2,7 @@ import fetchJsonp from 'fetch-jsonp'
 import { storageService } from '../async-storage.service'
 import { userService } from '../user'
 import { generateDemoUsers } from '../user/user.service.local'
-import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive } from '../util.service'
+import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive, utilService } from '../util.service'
 
 const STATION_STORAGE_KEY = 'stationDB'
 const SONG_STORAGE_KEY = 'songDB'
@@ -69,7 +69,7 @@ async function save(station) {
             name: station.name,
             tags: station.tags || [],
             songs: station.songs || [],
-            createdBy: userService.getLoggedinUser(),
+            createdBy: userService.getLoggedinUser() || {fullname: 'You', imgUrl: '', _id: 'guest'},
             savedCount: 0,
             createdAt: Date.now()
         }
