@@ -101,12 +101,20 @@ export async function generateDemoUsers(userIdx) {
 }
 
 function _generateUser(idx) {
+    const firstNames = ['Alex', 'Jordan', 'Casey', 'Morgan', 'Taylor', 'Riley', 'Sam', 'Jamie', 'Drew', 'Quinn', 
+                       'Blake', 'River', 'Phoenix', 'Sage', 'Storm', 'Nova', 'Kai', 'Eden', 'Leo', 'Zara']
+    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
+                      'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Moore', 'Jackson', 'Martin', 'Lee']
+    
+    const firstName = firstNames[idx % firstNames.length]
+    const lastName = lastNames[Math.floor(idx / firstNames.length) % lastNames.length]
+    
     return {
         _id: makeId(),
-        fullname: `User ${749 + idx}`,
+        fullname: `${firstName} ${lastName}`,
         username: `user${idx}`,
         password: '123',
-        imgUrl: `https://robohash.org/${idx}?set=set4`,
+        imgUrl: `https://i.pravatar.cc/150?img=${idx}`,
         likedStationIds: [],
         likedSongIds: [],
         isAdmin: false
