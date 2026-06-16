@@ -4,7 +4,12 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { Routes, Route } from "react-router-dom"
 
 import { AppHeader } from "./cmps/AppHeader.jsx"
-import { HomePage } from "./pages/HomePage.jsx"
+import { AppContainer } from "./pages/AppContainer.jsx"
+import { Explore } from "./pages/Explore.jsx"
+import { Browse } from "./pages/Browse.jsx"
+import { Library } from "./cmps/Library.jsx"
+import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
+
 function App() {
   return (
     <Router>
@@ -12,17 +17,20 @@ function App() {
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main>
+        <main className="app-layout">
+          <Library />
           <Routes>
-            <Route path="" element={<HomePage />} />
-        {/* <Route path="user/:id" element={<UserDetails />} /> */}
-            {/* <Route path="auth" element={<LoginSignup />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          </Route> */}
+            {/* explore, browse, stationdetails, songdetails - dynamic area */}
+            <Route path="/" element={<Explore />} />  
+            <Route path="/browse" element={<Browse />} />
+            {/* <Route path="station/:id" element={<StationDetails />} /> */}
+            {/* <Route path="song/:id" element={<SongDetails />} /> */}
+            {/* <Route path="user/:id" element={<Profile />} /> */}
+
           </Routes>
+          <ArtistInfo />
         </main>
-        {/* <AppFooter /> */}
+        {/* <PlayBar /> */}
       </div>
     </Router>
   )

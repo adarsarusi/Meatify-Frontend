@@ -7,6 +7,7 @@ body {
     
     font-family: "Montserrat", sans-serif;
     color: var(--text-main);
+    background-color: var(--bg-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
