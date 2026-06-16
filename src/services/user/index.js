@@ -16,7 +16,6 @@ const isLocal = VITE_LOCAL === 'true'
 const service = isLocal ? local : remote
 
 if (isLocal) {
-    console.log('isLocal: ', isLocal)
     service.generateDemoUsers(100, 30)
 }
 export const userService = { ...service, getEmptyUser }
