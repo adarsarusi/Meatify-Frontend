@@ -1,17 +1,3 @@
-.station-details {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: 100vh;
-
-    font-size: 0.875rem;
-
-    padding: 0 1.5rem;
-    padding-block-start: 2rem;
-    padding-block-end: 1.5rem;
-
-    background: var(--gradient1);
-}
-
 .station-header {
     display: grid;
     grid-template-columns: auto 1fr;

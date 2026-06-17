@@ -1,0 +1,16 @@
+.station-details {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    font-size: 0.875rem;
+
+    padding: 0 1.5rem;
+    padding-block-start: 2rem;
+    padding-block-end: 1.5rem;
+
+    border-radius: 1rem;
+
+    background: var(--gradient1);
+    margin-inline-start: 1rem;
+    margin-inline-end: 1rem;
+}
