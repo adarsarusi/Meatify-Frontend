@@ -9,6 +9,7 @@ import { Explore } from "./pages/Explore.jsx"
 import { Browse } from "./pages/Browse.jsx"
 import { Library } from "./cmps/Library.jsx"
 import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
+import { StationDetails } from "./pages/StationDetails.jsx"
 
 function App() {
   return (
@@ -21,9 +22,9 @@ function App() {
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
-            <Route path="/" element={<Explore />} />  
+            <Route path="/" element={<Explore />} />
             <Route path="/browse" element={<Browse />} />
-            {/* <Route path="station/:id" element={<StationDetails />} /> */}
+            <Route path="station/:id" element={<StationDetails />} />
             {/* <Route path="song/:id" element={<SongDetails />} /> */}
             {/* <Route path="user/:id" element={<Profile />} /> */}
 

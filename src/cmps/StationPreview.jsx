@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 
 export function StationPreview({ station }) {
+
+    const navigate = useNavigate()
 
     return <article className="station-preview">
 
@@ -11,7 +14,7 @@ export function StationPreview({ station }) {
             </div>
         )}
 
-        <div className="station-info">
+        <div className="station-info" onClick={() => navigate(`/station/${station._id}`)}>
             <h4>{station.name}</h4>
             <h5>By: {station.createdBy.fullname} · {station.savedCount} saves </h5>
         </div>
