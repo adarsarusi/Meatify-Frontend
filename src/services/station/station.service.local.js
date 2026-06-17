@@ -2,7 +2,7 @@ import fetchJsonp from 'fetch-jsonp'
 import { storageService } from '../async-storage.service'
 import { userService } from '../user'
 import { generateDemoUsers } from '../user/user.service.local'
-import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive, utilService } from '../util.service'
+import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive, utilService, getRandomFromArr } from '../util.service'
 
 const STATION_STORAGE_KEY = 'stationDB'
 const SONG_STORAGE_KEY = 'songDB'
@@ -69,7 +69,8 @@ async function save(station) {
             name: station.name,
             tags: station.tags || [],
             songs: station.songs || [],
-            createdBy: userService.getLoggedinUser() || {fullname: 'You', imgUrl: '', _id: 'guest'},
+            isPrivate: station.isPrivate || false,
+            createdBy: userService.getLoggedinUser() || { fullname: 'You', imgUrl: '', _id: 'guest' },
             savedCount: 0,
             createdAt: Date.now()
         }
@@ -91,7 +92,7 @@ async function addStationMsg(stationId, txt) {
 
 // 1. CONSTANTS HOISTED TO PREVENT MEMORY REALLOCATION
 const FALLBACK_ARTISTS = [
-    'The Weeknd', 'Drake', 'Post Malone', 'Ariana Grande', 'Billie Eilish', 'Travis Scott', 
+    'The Weeknd', 'Drake', 'Post Malone', 'Ariana Grande', 'Billie Eilish', 'Travis Scott',
     'Bad Bunny', 'Dua Lipa', 'Olivia Rodrigo', 'Harry Styles', 'Doja Cat', 'Nicki Minaj',
     'Cardi B', 'SZA', 'Tyler, The Creator', 'Kendrick Lamar', 'J. Cole', 'Kanye West',
     'Eminem', 'Lil Baby', 'Playboi Carti', 'Juice WRLD', 'XXXTentacion', 'Trippie Redd',
@@ -167,7 +168,7 @@ async function _initData(key, generateFn, count) {
 
 async function _generateSong(idx) {
     const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
-    
+
     // Using the real API URL with JSONP to bypass CORS completely
     const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(term)}&limit=50&output=jsonp`
 
@@ -217,7 +218,7 @@ async function _generateStation(idx) {
     const tagCount = getRandomIntInclusive(3, 5)
     const stationTags = []
     const tagSet = new Set()
-    
+
     while (stationTags.length < tagCount && tagSet.size < ALL_TAGS.length) {
         const randomTag = ALL_TAGS[getRandomIntInclusive(0, ALL_TAGS.length - 1)]
         if (!tagSet.has(randomTag)) {
@@ -225,27 +226,39 @@ async function _generateStation(idx) {
             tagSet.add(randomTag)
         }
     }
-    
+
     const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
     const shuffledSongs = allSongs.sort(() => Math.random() - 0.5)
     const stationSongs = shuffledSongs.slice(0, getRandomIntInclusive(15, 30))
-    
+
     const allUsers = await loadFromStorage('userDB') || []
-    const randomUser = allUsers.length > 0 
+    const randomUser = allUsers.length > 0
         ? allUsers[getRandomIntInclusive(0, allUsers.length - 1)]
         : { _id: makeId(), fullname: `Creator ${idx}`, imgUrl: `https://i.pravatar.cc/150?img=${idx}` }
+
+    const randomUsers = getRandomFromArr(allUsers, getRandomIntInclusive(0, 5))
+    const participants = randomUsers.map(user => ({
+        _id: user._id,
+        fullname: user.fullname,
+        imgUrl: user.imgUrl
+    }))
+
+    const miniUser = {
+        _id: randomUser._id,
+        fullname: randomUser.fullname,
+        imgUrl: randomUser.imgUrl
+    }
 
     return {
         _id: makeId(),
         name: STATION_NAMES[idx % STATION_NAMES.length] + (idx >= STATION_NAMES.length ? ` ${Math.floor(idx / STATION_NAMES.length)}` : ''),
         tags: stationTags,
+        imgUrl: stationSongs.map(song => song.imgUrl).filter(Boolean).slice(0, 4),
+        isPrivate: Math.random() < 0.5,
         savedCount: getRandomIntInclusive(50, 9999),
         songs: stationSongs,
         createdAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
-        createdBy: {
-            _id: randomUser._id,
-            fullname: randomUser.fullname,
-            imgUrl: randomUser.imgUrl
-        }
+        createdBy: miniUser,
+        participants: participants,
     }
 }
