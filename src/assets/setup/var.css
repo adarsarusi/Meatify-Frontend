@@ -7,6 +7,9 @@
   --text-main: #fdfdfd;
   --text-muted: #b3b3b3;
 
+  --creatorIndex: 1;
+  --gradient1: linear-gradient(180deg, var(--gray3) 0%, var(--surface) 30%);
+
   --gray1: #ddd;
   --gray2: #aaa;
   --gray3: #777;
