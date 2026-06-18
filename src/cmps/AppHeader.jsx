@@ -1,12 +1,50 @@
 import { Link, NavLink } from "react-router-dom"
-import { useNavigate } from "react-router"
-import { useSelector } from "react-redux"
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
-import { logout } from "../store/actions/user.actions"
+import { isCookie, useNavigate } from "react-router"
+import { useSelector, useDispatch } from "react-redux"
+import { useState, useRef, useEffect } from "react"
+
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { logout } from "../store/actions/user.actions.js"
+import { debounce } from "../services/util.service.js"
+
+import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
+
+import { SET_FILTER_BY } from "../store/reducers/station.reducer.js"
+import { loadStations } from "../store/actions/station.actions.js"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const filterBy = useSelector((state) => state.stationModule.filterBy)
+  const stations = useSelector((state) => state.stationModule.stations)
+
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+
+  const debouncedApplyFilter = useRef(
+    debounce((updatedFilter) => {
+      dispatch({ type: SET_FILTER_BY, filterBy: updatedFilter })
+    }, 500),
+  ).current
+
+  useEffect(() => {
+    debouncedApplyFilter(filterByToEdit)
+  }, [filterByToEdit])
+
+  useEffect(() => {
+    loadStations(filterBy)
+  }, [filterBy])
+
+  function handleChange({ target }) {
+    const { name, value } = target
+
+    setFilterByToEdit((prevFilter) => ({
+      ...prevFilter,
+      [name]: value,
+    }))
+  }
 
   async function onLogout() {
     try {
@@ -33,8 +71,10 @@ export function AppHeader() {
 
         <div className="search-bar-container">
           <div className="home-btn-container">
-            <button className="home-btn search-bar-btns"
-                    onClick={() => navigate("/")}>
+            <button
+              className="home-btn search-bar-btns"
+              onClick={() => navigate("/")}
+            >
               <svg className="search-svg-icons home-svg" viewBox="0 0 24 24">
                 <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732z"></path>
               </svg>
@@ -53,22 +93,30 @@ export function AppHeader() {
             <input
               className="search-input"
               type="search"
-              name=""
+              name="txt"
               id=""
               placeholder="What do you want to play?"
+              value={filterByToEdit.txt}
+              onChange={handleChange}
+              onFocus={() => setIsOpen(true)}
+              onBlur={() => setIsOpen(false)}
             />
 
             <div className="search-browse-container">
-              <button className="browse-search-btn search-bar-btns"
-                      onClick={() => navigate("/browse")}>
+              <button
+                className="browse-search-btn search-bar-btns"
+                onClick={() => navigate("/browse")}
+              >
                 <svg viewBox="0 0 24 24" className="search-svg-icons">
                   <path d="M15 15.5c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2"></path>
                   <path d="M1.513 9.37A1 1 0 0 1 2.291 9h19.418a1 1 0 0 1 .979 1.208l-2.339 11a1 1 0 0 1-.978.792H4.63a1 1 0 0 1-.978-.792l-2.339-11a1 1 0 0 1 .201-.837zM3.525 11l1.913 9h13.123l1.913-9zM4 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4h-2V3H6v3H4z"></path>
                 </svg>
               </button>
             </div>
+            {isOpen && <SerachResultsDropdown stations={stations} />}
           </div>
         </div>
+
         {!user && (
           <NavLink to="auth/login" className="login-link">
             Login

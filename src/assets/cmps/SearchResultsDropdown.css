@@ -1,0 +1,23 @@
+.search-dropdown {
+  display: flex;
+  z-index: 10;
+  width: 100%;
+  max-height: 590px;
+
+  position: absolute;
+  top: 48px;
+
+  margin: 4px 0;
+  padding: 8px;
+
+  border-radius: 8px;
+
+  opacity: 1;
+  transition:
+    opacity 0.22s ease-in,
+    height 0.22s ease-in,
+    visibility 0.22s ease-in;
+
+  height: 590px;
+  background-color: var(--bg-hightlight-color);
+}
