@@ -12,7 +12,9 @@ function getEmptyStation() {
         tags: [],
         songs: [],
         createdBy: null,
-        savedCount: 0
+        savedCount: 0,
+        imgUrl: [],
+        isPrivate: false,
     }
 }
 

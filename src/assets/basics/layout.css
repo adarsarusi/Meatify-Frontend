@@ -36,6 +36,14 @@
     >.artist-info {
         grid-area: i;
     }
+
+    &.expanded{
+        grid-template-areas: " l l i";
+
+        .dynamic-area{
+            display: none;
+        }
+    }
 }
 
 .sample-grid-layout {

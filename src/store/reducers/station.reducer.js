@@ -7,10 +7,13 @@ export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 const initialStationState = {
     stations: [],
-    lastWatchedStation: null,
+    selectedStation: null,
+    lastWatchedStationId: null,
+    lastWatchedStations: [],
     filterBy: { txt: '', tags: [], genres: [], artists: [] },
     isLoading: false
 }
+console.log('initialStationState', initialStationState)
 
 export function stationReducer(state = initialStationState, action = {}) {
     switch (action.type) {
@@ -18,7 +21,14 @@ export function stationReducer(state = initialStationState, action = {}) {
             return { ...state, stations: action.stations }
 
         case SET_STATION:
-            return { ...state, lastWatchedStation: action.station }
+            const isAlreadyWatched = state.lastWatchedStations.includes(action.station._id)
+            return {
+                ...state,
+                selectedStation: action.station,
+                lastWatchedStationId: action.station._id,
+                lastWatchedStations: isAlreadyWatched ? state.lastWatchedStations :
+                    [...state.lastWatchedStations, state.lastWatchedStationId],
+            }
 
         case REMOVE_STATION:
             return {
