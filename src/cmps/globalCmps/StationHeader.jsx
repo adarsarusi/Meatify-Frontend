@@ -19,9 +19,14 @@ export function StationHeader({ station }) {
         <section className="station-header">
 
             <div className="station-img-container">
-                {station?.imgUrl.map(url => (
-                    <img key={url} src={url} alt={station?.name} className="station-img" />
-                ))}
+                {station?.imgUrl?.length
+                    ? station.imgUrl.map(url => (
+                        <img key={url} src={url} alt={station?.name} className="station-img" />
+                    ))
+                    : <div className="station-img-placeholder">
+                        ♪
+                    </div>
+                }
             </div>
             <div className="station-header__info ">
                 <p>{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>

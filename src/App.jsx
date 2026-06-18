@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from 'react-redux'
 
 import { BrowserRouter as Router } from "react-router-dom"
 import { Routes, Route } from "react-router-dom"
@@ -11,14 +12,21 @@ import { Library } from "./cmps/Library.jsx"
 import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
 import { StationDetails } from "./pages/StationDetails.jsx"
 
+
+
 function App() {
+
+  const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
+
+  console.log('APP isExpanded:', isExpanded)
+
   return (
     <Router>
       <div className="main-container">
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main className="app-layout">
+        <main className={isExpanded ? 'app-layout expanded' : 'app-layout'}>
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}

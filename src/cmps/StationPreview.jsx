@@ -6,15 +6,15 @@ export function StationPreview({ station }) {
 
     return <article className="station-preview">
 
-        {station.songs?.length ? (
-            <img src={station.songs[0].imgUrl} alt="" />
+        {station.imgUrl? (
+            <img src={station.imgUrl[0]} alt="" />
         ) : (
             <div className="playlist-placeholder">
                 ♪
             </div>
         )}
 
-        <div className="station-info" onClick={() => navigate(`/station/${station._id}`)}>
+        <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
             <h4>{station.name}</h4>
             <h5>By: {station.createdBy.fullname} · {station.savedCount} saves </h5>
         </div>
