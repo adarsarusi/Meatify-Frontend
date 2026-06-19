@@ -27,6 +27,7 @@
 
 @import "cmps/SearchResultsDropdown.css";
 @import "cmps/PlayBar.css";
+@import "icons/Icons.css";
 
 /* Pages */
 @import "pages/StationDetails.css";
