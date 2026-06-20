@@ -40,9 +40,15 @@ export function PlayBar() {
             </svg>
           </button>
           <button className="playpause-btn " onClick={onTogglePlay}>
-            <svg className="play-btn" viewBox="0 0 16 16">
-              <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288z"></path>
-            </svg>
+            {isPlaying ? (
+              <svg className="play-btn" viewBox="0 0 16 16">
+                <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288z"></path>
+              </svg>
+            ) : (
+              <svg className="play-btn" viewBox="0 0 16 16">
+                <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7z"></path>
+              </svg>
+            )}
           </button>
           <button className="next-song-btn playbar-btn">
             <svg className="playbar-svg-sizes" viewBox="0 0 16 16">
