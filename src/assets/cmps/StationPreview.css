@@ -1,4 +1,4 @@
-.station-preview{
+.station-preview {
     display: flex;
     align-items: center;
     gap: 1em;
@@ -6,14 +6,14 @@
     border-radius: 5px;
     padding: 5px;
 
-    &:hover{
+    /* &:hover {
         background-color: var(--gray4);
-    }
+    } */
 
     >img {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-    border-radius: 4px;
-}
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
 }

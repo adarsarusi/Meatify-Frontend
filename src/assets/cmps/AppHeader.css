@@ -27,7 +27,6 @@
   .user-info {
     display: flex;
     align-items: center;
-    margin-inline-start: auto;
 
     color: var(--clr1);
 

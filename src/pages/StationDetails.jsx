@@ -31,7 +31,7 @@ export function StationDetails() {
         <section className='station-details dynamic-area'>
             <StationHeader station={station} />
             <SquarePreview entity={station?.songs[0] || []} />
-            <SquarePreview entity={station} />
+            <SquarePreview entity={station || []} />
             <SongList songs={station?.songs || []} />
         </section>
     )

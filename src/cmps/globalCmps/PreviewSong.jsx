@@ -1,6 +1,8 @@
 import React from 'react'
 import { Icon } from './icon'
 
+import { LikeBtn } from '../LikeBtn'
+
 export function PreviewSong({ song, index }) {
 
     function formatTime(seconds = 0) {
@@ -26,9 +28,12 @@ export function PreviewSong({ song, index }) {
                 <button className="song-preview__btn song-preview__btn--play btn-reset">
                     <Icon name="play" className="icon--white" />
                 </button>
-                <button className="song-preview__btn song-preview__btn--like icon-btn btn-reset">
-                    <Icon name="like" className="icon--muted" />
-                </button>
+                <div className="song-preview__btn song-preview__btn--like">
+                    <LikeBtn
+                        itemId={song._id}
+                        userField="likedSongIds"
+                    />
+                </div>
                 <button className="song-preview__btn song-preview__btn--more icon-btn btn-reset">
                     <Icon name="more" className="icon--white" />
                 </button>

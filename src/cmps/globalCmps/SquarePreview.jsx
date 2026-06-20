@@ -2,7 +2,7 @@ import { Icon } from "./icon"
 
 export function SquarePreview({ entity }) {
 
-
+console.log('entity: ', entity)
     return <article className="entity-square-preview__item">
 
         <div className="entity-square-preview__meta">

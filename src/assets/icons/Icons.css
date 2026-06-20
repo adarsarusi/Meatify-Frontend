@@ -32,8 +32,8 @@
   transition: color 160ms ease, background 160ms ease;
 }
 
-.icon-btn:hover  { 
-  .icon{
+.icon-btn:not(.no-hover):hover { 
+  .icon {
     color: var(--icon--white); 
   }
 }
