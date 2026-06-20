@@ -2,6 +2,8 @@
     display: grid;
     grid-template-rows: auto 1fr;
 
+    overflow-y: auto;
+
     font-size: 0.875rem;
 
     padding: 0 1.5rem;
@@ -14,3 +16,4 @@
     margin-inline-start: 1rem;
     margin-inline-end: 1rem;
 }
+

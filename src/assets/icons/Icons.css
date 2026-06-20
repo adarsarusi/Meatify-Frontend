@@ -1,6 +1,8 @@
 /* icons.css */
 .icon {
   display: inline-block;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   vertical-align: middle;
   fill: currentColor;
@@ -27,10 +29,13 @@
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
-  color: #b3b3b3;
   transition: color 160ms ease, background 160ms ease;
 }
 
-.icon-btn:hover  { color: var(--icon--white); }
+.icon-btn:hover  { 
+  .icon{
+    color: var(--icon--white); 
+  }
+}
 .icon-btn:active { transform: scale(0.95); }
 .icon-btn.active { color: var(--icon--green); }

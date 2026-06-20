@@ -1,6 +1,8 @@
 import React from 'react'
+import { Icon } from './icon'
 
 export function PreviewSong({ song, index }) {
+
     function formatTime(seconds = 0) {
         const m = Math.floor(seconds / 60)
         const s = seconds % 60
@@ -8,19 +10,30 @@ export function PreviewSong({ song, index }) {
     }
 
     return (
-        <article className="song-list__item">
-            <div className="song-list__img">
-                {song.imgUrl ? <img src={song.imgUrl} alt={song.title} /> : <div className="song-list__thumb-placeholder">♪</div>}
+        <article className="song-preview__item">
+            <p className="song-preview__index">{index}</p>
+
+            <div className="song-preview__meta">
+                <div className="song-preview__img">
+                    {song.imgUrl ? <img src={song.imgUrl} alt={song.title} /> : <div className="song-preview__img-placeholder">♪</div>}
+                </div>
+                <div className='song-preview__meta-text'>
+                    <div className="song-preview__title">{song.title}</div>
+                    <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
+                </div>
             </div>
-            <div className="song-list__meta">
-                <div className="song-list__title">{song.title}</div>
-                <div className="song-list__artists">{(song.artists || []).join(', ')}</div>
+            <div className="song-preview__controls">
+                <button className="song-preview__btn song-preview__btn--play btn-reset">
+                    <Icon name="play" className="icon--white" />
+                </button>
+                <button className="song-preview__btn song-preview__btn--like icon-btn btn-reset">
+                    <Icon name="like" className="icon--muted" />
+                </button>
+                <button className="song-preview__btn song-preview__btn--more icon-btn btn-reset">
+                    <Icon name="more" className="icon--white" />
+                </button>
             </div>
-            <div className="song-list__controls">
-                <button className="song-list__btn song-list__btn--play">Play</button>
-                <button className="song-list__btn song-list__btn--add">Add</button>
-                <div className="song-list__duration">{formatTime(song.duration)}</div>
-            </div>
+            <div className="song-preview__duration">{formatTime(song.duration)}</div>
         </article>
     )
 }

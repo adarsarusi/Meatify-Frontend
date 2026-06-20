@@ -2,7 +2,11 @@
   --primary: #d62828;
   --bg-color: #121212;
   --bg-highlight-color: #2a2a2a;
-  --surface: #1e1e1e;
+
+  --bg-hover: #ffffff1a;
+  --bg-hover-clicked: #ffffff4d;
+
+  --surface: #121212;
   --accent: #ffb7c5;
   --text-main: #fdfdfd;
   --text-muted: #b3b3b3;
@@ -15,7 +19,7 @@
   --circle-bg-hover: #1f1f1f;
 
   --creatorIndex: 1;
-  --gradient1: linear-gradient(180deg, var(--gray3) 0%, var(--surface) 30%);
+  --gradient1: linear-gradient(180deg, var(--gray3) 0%, var(--surface) 20%);
 
   --gray1: #ddd;
   --gray2: #aaa;
