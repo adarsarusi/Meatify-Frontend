@@ -1,0 +1,36 @@
+export const SET_CURRENT_SONG = "SET_CURRENT_SONG"
+
+export const ADD_TO_QUEUE = "ADD_TO_QUEUE"
+export const REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE"
+
+export const TOGGLE_IS_PLAYING = "TOGGLE_IS_PLAYING"
+
+const initialState = {
+  currentSong: null,
+  queue: [],
+  isPlaying: false,
+}
+export function playerReducer(state = initialState, action = {}) {
+  switch (action.type) {
+    case SET_CURRENT_SONG:
+      return { ...state, currentSong: action.currentSong }
+
+    case ADD_TO_QUEUE:
+      return {
+        ...state,
+        queue: [...state.queue, action.song],
+      }
+
+    case REMOVE_FROM_QUEUE:
+      return {
+        ...state,
+        queue: state.queue.filter((song) => song._id !== action.songId),
+      }
+
+    case TOGGLE_IS_PLAYING:
+      return { ...state, isPlaying: !action.isPlaying }
+
+    default:
+      return state
+  }
+}
