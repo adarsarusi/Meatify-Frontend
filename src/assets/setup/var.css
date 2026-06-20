@@ -24,4 +24,6 @@
 
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
+
+  --button-hover-scale: 1.04;
 }
