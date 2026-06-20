@@ -9,6 +9,9 @@ function getEmptyUser() {
         password: '',
         email: '',
         fullname: '',
+        imgUrl: '',
+        likedStationIds: [],
+        likedSongIds: [],
     }
 }
 
@@ -16,8 +19,9 @@ const isLocal = VITE_LOCAL === 'true'
 const service = isLocal ? local : remote
 
 if (isLocal) {
-    service.generateDemoUsers(100, 30)
+    await service.setDemoLoggedinUser()
 }
+
 export const userService = { ...service, getEmptyUser }
 
 // Easy access to this service from the dev tools console
