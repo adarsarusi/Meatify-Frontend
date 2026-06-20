@@ -5,6 +5,8 @@
   background-color: var(--bg-color);
   padding: 0.8rem 1rem;
 
+  margin-bottom: 1.5rem;
+
   & nav {
     display: flex;
     justify-content: space-between;
@@ -25,7 +27,6 @@
   .user-info {
     display: flex;
     align-items: center;
-    margin-inline-start: auto;
 
     color: var(--clr1);
 
@@ -49,7 +50,7 @@
 
     .search-btn {
       :hover {
-        transform: scale(1.04);
+        transform: scale(var(--button-hover-scale));
         fill: var(--text-main);
       }
     }
@@ -66,7 +67,7 @@
 
     .browse-search-btn {
       :hover {
-        transform: scale(1.04);
+        transform: scale(var(--button-hover-scale));
         fill: var(--text-main);
       }
     }
@@ -128,7 +129,7 @@
 
   &:hover {
     background-color: var(--bg-hightlight-color);
-    transform: scale(1.04);
+    transform: scale(var(--button-hover-scale));
   }
 }
 

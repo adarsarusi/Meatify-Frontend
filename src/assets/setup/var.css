@@ -1,11 +1,21 @@
 :root {
   --primary: #d62828;
   --bg-color: #121212;
-  --bg-hightlight-color: #2a2a2a;
+  --bg-highlight-color: #2a2a2a;
   --surface: #1e1e1e;
   --accent: #ffb7c5;
   --text-main: #fdfdfd;
   --text-muted: #b3b3b3;
+
+  --icon--muted: #6b7280;
+  --icon--white: #ffffff;
+  --icon--green: #1DB954;
+  --icon--active: #1DB954;
+
+  --circle-bg-hover: #1f1f1f;
+
+  --creatorIndex: 1;
+  --gradient1: linear-gradient(180deg, var(--gray3) 0%, var(--surface) 30%);
 
   --gray1: #ddd;
   --gray2: #aaa;
@@ -14,4 +24,6 @@
 
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
+
+  --button-hover-scale: 1.04;
 }

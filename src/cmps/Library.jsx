@@ -7,11 +7,21 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { stationService } from '../services/station/'
 import { StationList } from './StationList'
 import { StationFilter } from './StationFilter.jsx'
+import { TOGGLE_EXPAND_LIBRARY } from '../store/reducers/system.reducer.js'
+import { store } from '../store/store.js'
+import { Icon } from './globalCmps/icon.jsx'
 
 export function Library() {
 
     const stations = useSelector(storeState => storeState.stationModule.stations)
-    const filterBy = useSelector(state => state.stationModule.filterBy)
+    const filterBy = useSelector(storeState => storeState.stationModule.filterBy)
+    const isExpanded = useSelector(
+        storeState => storeState.systemModule.isExpanded
+    )
+
+    function onExpand() {
+        store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
+    }
 
     useEffect(() => {
         loadStations(filterBy)
@@ -30,15 +40,21 @@ export function Library() {
     }
 
 
+
     return <section className="app-library">
         <div className="library-header">
             <h3>Your Library</h3>
 
             <section className="library-controls">
-                <button onClick={onAddStation}>Create</button>
-                <button>Expand</button>
+                <button onClick={onAddStation} className="icon-btn">
+                    Create
+                    <Icon name="create" className="icon--sm" />
+                </button>
+                <button onClick={onExpand} className="icon-btn">
+                    <Icon name="expend" className="icon--sm" />
+                </button>
             </section>
-        </div>
+        </div >
 
         <div className="filter">
             <StationFilter />
@@ -46,6 +62,6 @@ export function Library() {
 
         <StationList
             stations={stations} />
-    </section>
+    </section >
 
 }

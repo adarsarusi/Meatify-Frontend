@@ -1,0 +1,18 @@
+.song-list {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.song-list--empty {
+    color: var(--text-muted);
+    padding: 0.75rem;
+}
+
+.song-list::-webkit-scrollbar { width: 0.625rem }
+.song-list::-webkit-scrollbar-track { background: transparent }
+.song-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 0.5rem }
+.song-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.09) }

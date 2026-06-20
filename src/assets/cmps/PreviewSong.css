@@ -1,0 +1,62 @@
+.song-list__item {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    background: var(--surface);
+    color: var(--text-main);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.song-list__img img {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
+    border-radius: 0.375rem;
+}
+
+.song-list__img-placeholder {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    background: var(--bg-hightlight-color);
+    color: var(--text-muted);
+    border-radius: 0.375rem;
+}
+
+.song-list__meta .song-list__title {
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+.song-list__meta .song-list__artists {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+.song-list__controls {
+        display: grid;
+        grid-auto-flow: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+.song-list__btn {
+        background: transparent;
+        color: var(--accent);
+        border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+        padding: 0.375rem 0.5rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+    }
+
+.song-list__btn--play {
+        background: rgba(255, 183, 197, 0.06);
+    }
+
+.song-list__duration {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }

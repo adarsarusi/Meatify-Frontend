@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from 'react-redux'
 
 import { BrowserRouter as Router } from "react-router-dom"
 import { Routes, Route } from "react-router-dom"
@@ -9,28 +10,36 @@ import { Explore } from "./pages/Explore.jsx"
 import { Browse } from "./pages/Browse.jsx"
 import { Library } from "./cmps/Library.jsx"
 import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
+import { StationDetails } from "./pages/StationDetails.jsx"
 
+
+
+import { PlayBar } from "./cmps/PlayBar.jsx"
 function App() {
+
+  const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
+
+  console.log('APP isExpanded:', isExpanded)
+
   return (
     <Router>
       <div className="main-container">
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main className="app-layout">
+        <main className={isExpanded ? 'app-layout expanded' : 'app-layout'}>
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
-            <Route path="/" element={<Explore />} />  
+            <Route path="/" element={<Explore />} />
             <Route path="/browse" element={<Browse />} />
-            {/* <Route path="station/:id" element={<StationDetails />} /> */}
+            <Route path="station/:id" element={<StationDetails />} />
             {/* <Route path="song/:id" element={<SongDetails />} /> */}
             {/* <Route path="user/:id" element={<Profile />} /> */}
-
           </Routes>
           <ArtistInfo />
         </main>
-        {/* <PlayBar /> */}
+        <PlayBar />
       </div>
     </Router>
   )
