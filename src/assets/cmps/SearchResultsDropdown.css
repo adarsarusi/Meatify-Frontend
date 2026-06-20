@@ -20,5 +20,5 @@
 
   height: 590px;
   background-color: var(--circle-bg-hover);
-  /* background-color: white; */
+  color: var(--text-main);
 }
