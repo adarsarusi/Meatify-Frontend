@@ -19,5 +19,6 @@
     visibility 0.22s ease-in;
 
   height: 590px;
-  background-color: var(--bg-hightlight-color);
+  background-color: var(--circle-bg-hover);
+  /* background-color: white; */
 }
