@@ -1,36 +1,38 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
+import { updateUser } from '../store/actions/user.actions'
 import { Icon } from './globalCmps/icon'
 
-import { updateUser } from '../store/actions/user.actions'
-import { showSuccessMsg } from '../services/event-bus.service'
-
-export function LikeBtn({ song }) {
+export function LikeBtn({ itemId, userField }) {
     const loggedinUser = useSelector(
         state => state.userModule.user
     )
 
-    const isLiked =
-        loggedinUser?.likedSongIds?.includes(song._id)
+    if (!loggedinUser) return null
+
+    const likedIds = loggedinUser[userField] || []
+
+    const isLiked = likedIds.includes(itemId)
 
     async function toggleLike() {
-        const updatedUser = {
-            ...loggedinUser,
-            likedSongIds: isLiked
-                ? loggedinUser.likedSongIds.filter(
-                    id => id !== song._id
-                )
-                : [...loggedinUser.likedSongIds, song._id]
-        }
+        try {
+            const updatedUser = {
+                ...loggedinUser,
+                [userField]: isLiked
+                    ? likedIds.filter(id => id !== itemId)
+                    : [...likedIds, itemId]
+            }
 
-        await updateUser(updatedUser)
+            await updateUser(updatedUser)
+        } catch (err) {
+            console.error('Cannot update likes', err)
+        }
     }
 
     return (
         <button
             onClick={toggleLike}
-            className="icon-btn"
+            className="icon-btn like-btn"
         >
             <Icon
                 name={isLiked ? 'added' : 'like'}

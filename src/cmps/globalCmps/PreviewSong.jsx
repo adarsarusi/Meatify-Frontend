@@ -21,7 +21,10 @@ export function PreviewSong({ song, index }) {
             <div className="song-list__controls">
                 <button className="song-list__btn song-list__btn--play">Play</button>
 
-                <LikeBtn song={song}/>
+                <LikeBtn
+                    itemId={song._id}
+                    userField="likedSongIds"
+                />
 
                 {/* <button className="song-list__btn song-list__btn--add">Add</button> */}
                 <div className="song-list__duration">{formatTime(song.duration)}</div>

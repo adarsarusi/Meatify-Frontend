@@ -13,6 +13,20 @@
     padding: 0;
 
     list-style: none;
+
+    >.station-list-item {
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            background-color: var(--gray4);
+
+            .like-btn {
+                opacity: 1;
+            }
+        }
+    }
+
 }
 
 .station-list::-webkit-scrollbar {
