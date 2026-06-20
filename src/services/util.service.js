@@ -53,11 +53,11 @@ export function debounce(func, timeout = 300) {
     }
 }
 
-export async function saveToStorage(key, value) {
+export function saveToStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value))
 }
 
-export async function loadFromStorage(key) {
+export function loadFromStorage(key) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
 }
