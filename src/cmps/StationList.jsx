@@ -6,7 +6,6 @@ export function StationList({ stations }) {
             {stations.map(station =>
                 <li key={station._id}>
                     <StationPreview station={station}/>
-                    
                 </li>)
             }
         </ul>

@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { LikeBtn } from '../LikeBtn'
+
 export function PreviewSong({ song, index }) {
     function formatTime(seconds = 0) {
         const m = Math.floor(seconds / 60)
@@ -18,7 +20,10 @@ export function PreviewSong({ song, index }) {
             </div>
             <div className="song-list__controls">
                 <button className="song-list__btn song-list__btn--play">Play</button>
-                <button className="song-list__btn song-list__btn--add">Add</button>
+
+                <LikeBtn song={song}/>
+
+                {/* <button className="song-list__btn song-list__btn--add">Add</button> */}
                 <div className="song-list__duration">{formatTime(song.duration)}</div>
             </div>
         </article>
