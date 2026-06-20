@@ -153,7 +153,6 @@ const deezerFetchCache = {}
 // --- MAIN FUNCTIONS ---
 
 export async function generateSpotifyData(songsCount = 381, stationsCount = 147) {
-    await generateDemoUsers(50)
     await _initData(SONG_STORAGE_KEY, _generateSong, songsCount)
     await _initData(STATION_STORAGE_KEY, _generateStation, stationsCount)
 }
