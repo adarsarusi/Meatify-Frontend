@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { setCurrentSong } from '../../store/actions/player.actions'
+
 export function PreviewSong({ song, index }) {
     function formatTime(seconds = 0) {
         const m = Math.floor(seconds / 60)
@@ -17,7 +19,7 @@ export function PreviewSong({ song, index }) {
                 <div className="song-list__artists">{(song.artists || []).join(', ')}</div>
             </div>
             <div className="song-list__controls">
-                <button className="song-list__btn song-list__btn--play">Play</button>
+                <button className="song-list__btn song-list__btn--play" onClick={()=>setCurrentSong(song)}>Play</button>
                 <button className="song-list__btn song-list__btn--add">Add</button>
                 <div className="song-list__duration">{formatTime(song.duration)}</div>
             </div>

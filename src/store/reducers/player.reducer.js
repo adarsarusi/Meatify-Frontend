@@ -13,7 +13,7 @@ const initialState = {
 export function playerReducer(state = initialState, action = {}) {
   switch (action.type) {
     case SET_CURRENT_SONG:
-      return { ...state, currentSong: action.currentSong }
+      return { ...state, currentSong: action.song }
 
     case ADD_TO_QUEUE:
       return {
@@ -28,7 +28,7 @@ export function playerReducer(state = initialState, action = {}) {
       }
 
     case TOGGLE_IS_PLAYING:
-      return { ...state, isPlaying: !action.isPlaying }
+      return { ...state, isPlaying: !state.isPlaying }
 
     default:
       return state

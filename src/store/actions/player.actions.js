@@ -5,6 +5,8 @@ import { SET_CURRENT_SONG,ADD_TO_QUEUE,REMOVE_FROM_QUEUE,TOGGLE_IS_PLAYING } fro
 export function setCurrentSong(song) {
   try {
     store.dispatch({ type: SET_CURRENT_SONG, song })
+    console.log(song);
+    
   } catch (err) {
     console.log("Cannot set current song.", err)
     throw err
