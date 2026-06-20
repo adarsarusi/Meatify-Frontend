@@ -14,7 +14,7 @@
     align-items: center;
 
     margin-bottom: 8px;
-    gap: 16px;
+    gap: 8px;
 
     min-width: 500px;
     width: 100%;
@@ -27,6 +27,9 @@
       border-radius: 50%;
       width: 32px;
       cursor: pointer;
+      &:hover {
+        transform: scale(var(--button-hover-scale));
+      }
     }
 
     .playbar-btn {
@@ -35,6 +38,9 @@
       width: 32px;
       cursor: pointer;
       fill: var(--text-muted);
+      :hover {
+        fill: var(--text-main);
+      }
     }
   }
 }
