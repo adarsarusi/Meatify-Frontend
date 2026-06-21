@@ -6,7 +6,7 @@
     height: 100vh;
     overflow: hidden;
 
-    > * {
+    >* {
         grid-column: 2;
 
         &.full {
@@ -31,18 +31,34 @@
 
     >.dynamic-area {
         grid-area: a;
-
-        border-radius: 8px;
+        border-radius: 0.5rem;
+        background: var(--bg-base);
     }
 
     >.artist-info {
         grid-area: i;
     }
 
-    &.expanded{
+    .artist-info,
+    .app-library {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background: var(--bg-base);
+    }
+
+    &.expanded {
         grid-template-areas: " l l i";
 
-        .dynamic-area{
+        .dynamic-area {
+            display: none;
+        }
+    }
+
+    &.fullscreen {
+        grid-template-areas: " l l l";
+
+        .artist-info,
+        .dynamic-area {
             display: none;
         }
     }
@@ -53,15 +69,15 @@
     grid-template-columns: 12px 1fr 12px;
 
     @media (min-width: 624px) {
-        grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(12px, 1fr);        
+        grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(12px, 1fr);
     }
 
     @media (min-width: 784px) {
-        grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(12px, 1fr);        
+        grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(12px, 1fr);
     }
 
     @media (min-width: 1048px) {
-        grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(12px, 1fr);        
+        grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(12px, 1fr);
     }
 
 
@@ -85,7 +101,7 @@
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 10px;
 
-    > article {
+    >article {
         border: 1px solid #ccc;
         border-radius: 6px;
         padding: 2rem;

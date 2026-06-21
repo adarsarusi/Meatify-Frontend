@@ -21,6 +21,8 @@
         &:hover {
             background-color: var(--gray4);
 
+            cursor: pointer;
+
             .like-btn {
                 opacity: 1;
             }

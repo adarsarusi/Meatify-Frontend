@@ -2,7 +2,8 @@
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1rem;
-    padding-bottom: 1rem;
+    padding-block-start: 1.5rem;
+    padding-block-end: 1rem;
     border-bottom: 1px solid var(--gray2);
 
 }

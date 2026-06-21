@@ -1,6 +1,7 @@
 :root {
   --primary: #d62828;
-  --bg-color: #121212;
+  --bg-color: #000000;
+  --bg-base: #1b1b1b;
   --bg-highlight-color: #2a2a2a;
 
   --bg-hover: #ffffff1a;
@@ -19,7 +20,7 @@
   --circle-bg-hover: #1f1f1f;
 
   --creatorIndex: 1;
-  --gradient1: linear-gradient(180deg, var(--gray3) 0%, var(--surface) 20%);
+  --gradient1: linear-gradient(180deg, var(--accent) 0%, var(--bg-base) 80%);
 
   --gray1: #ddd;
   --gray2: #aaa;
