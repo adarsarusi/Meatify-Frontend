@@ -19,10 +19,10 @@
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-areas: "l a i";
+    gap: 1rem;
 
     min-height: 0;
     overflow: hidden;
-
     align-content: start;
 
     >.app-library {
