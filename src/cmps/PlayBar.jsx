@@ -2,16 +2,36 @@ import { useSelector, useDispatch } from "react-redux"
 import { useState, useRef, useEffect } from "react"
 import { toggleIsPlaying } from "../store/actions/player.actions.js"
 
+import { formatTime } from "../services/util.service.js"
+
 import ReactPlayer from "react-player"
+
 export function PlayBar() {
   // const currentSong = useSelector((state) => state.playerModule.currentSong)
   const isPlaying = useSelector((state) => state.playerModule.isPlaying)
   const audioRef = useRef(null)
 
+  const [duration, setDuration] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [volume, setVolume] = useState(1)
+  const [isMuted, setIsMuted] = useState(false)
+
   // Used to test if player is working - Need to fix api url's (date issue)
   const currentSong = {
     title: "Hit and Run",
+    artists: ["Skazi"],
     url: "https://www.youtube.com/watch?v=FvHjjhnslNg",
+  }
+
+  function handleProgressChange(ev) {
+    const newTime = +ev.target.value
+    setCurrentTime(newTime)
+    audioRef.current.currentTime = newTime
+  }
+
+  function handleVolumeChange(ev) {
+    setVolume(+ev.target.value)
+    if (isMuted) setIsMuted(false)
   }
 
   function onTogglePlay() {
@@ -19,21 +39,28 @@ export function PlayBar() {
     console.log(currentSong)
   }
 
+  function onSetDuration(ev) {
+    setDuration(+ev.target.duration)
+  }
+  function onSetCurrentTime(ev) {
+    setCurrentTime(+ev.target.currentTime)
+  }
+
+  function onToggleMute() {
+    setIsMuted(!isMuted)
+  }
+
   return (
     <div className="player-container">
-      <div style={{ display: "none" }}>
-        <ReactPlayer
-          ref={audioRef}
-          src={currentSong?.url}
-          playing={isPlaying}
-          config={{
-            youtube: {
-              playerVars: { autoplay: 0 },
-            },
-          }}
-        />
+      <div className="song-info-placeholder">
+        {/* image to be added later.*/}
+        <a className="player-song-title">{currentSong.title}</a>
+        <div className="player-song-artists">
+          {(currentSong.artists || []).join(", ")}
+        </div>
       </div>
-      <div className="general-buttons">
+
+      <div className="center-control">
         <div className="main-buttons">
           <button className="shuffle-song-btn playbar-btn">
             <svg className="playbar-svg-sizes" viewBox="0 0 16 16">
@@ -68,21 +95,63 @@ export function PlayBar() {
             </svg>
           </button>
         </div>
+
         <div className="progress-bar">
-          <span className="elapsed-time">00:00</span>
-          <label htmlFor="progressBar">
-            <input
-              type="range"
-              name="progressBar"
-              id="progressBar"
-              min={0}
-              step={0.1}
-              defaultValue={0}
-              // value={0}
-            />
-          </label>
-          <span className="remaining-time">00:00</span>
+          <span className="elapsed-time">{formatTime(currentTime)}</span>
+          <input
+            type="range"
+            min={0}
+            max={duration}
+            step={0.1}
+            value={currentTime}
+            onChange={handleProgressChange}
+            onEnded={onTogglePlay}
+          />
+          <span className="remaining-time">{formatTime(duration)}</span>
         </div>
+      </div>
+
+      <div className="volume-container">
+        <button className="volume-icon-btn playbar-btn" onClick={onToggleMute}>
+          {isMuted ? (
+            <svg className="playbar-svg-sizes" viewBox="0 0 16 16">
+              <path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06"></path>
+              <path d="M10.116 1.5A.75.75 0 0 0 8.991.85l-6.925 4a3.64 3.64 0 0 0-1.33 4.967 3.64 3.64 0 0 0 1.33 1.332l6.925 4a.75.75 0 0 0 1.125-.649v-1.906a4.7 4.7 0 0 1-1.5-.694v1.3L2.817 9.852a2.14 2.14 0 0 1-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694z"></path>
+            </svg>
+          ) : (
+            <svg className="playbar-svg-sizes" viewBox="0 0 16 16">
+              <path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.64 3.64 0 0 1-1.33-4.967 3.64 3.64 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.14 2.14 0 0 0 0 3.7l5.8 3.35V2.8zm8.683 6.087a4.502 4.502 0 0 0 0-8.474v1.65a3 3 0 0 1 0 5.175z"></path>
+            </svg>
+          )}
+        </button>
+
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          aria-valuetext="0:00"
+          value={isMuted ? 0 : volume}
+          onChange={handleVolumeChange}
+          className="volume-bar"
+        ></input>
+      </div>
+
+      <div style={{ display: "none" }}>
+        <ReactPlayer
+          ref={audioRef}
+          src={currentSong?.url}
+          playing={isPlaying}
+          onDurationChange={onSetDuration}
+          onTimeUpdate={onSetCurrentTime}
+          volume={isMuted ? 0 : volume}
+          muted={isMuted}
+          config={{
+            youtube: {
+              playerVars: { autoplay: 0 },
+            },
+          }}
+        />
       </div>
     </div>
   )

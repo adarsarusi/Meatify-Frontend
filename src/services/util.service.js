@@ -66,3 +66,9 @@ export function getRandomFromArr(arr, count) {
     const shuffled = [...arr].sort(() => 0.5 - Math.random())
     return shuffled.slice(0, count)
 }
+
+export function formatTime(seconds = 0) {
+    const s = Math.floor(seconds % 60)
+    const m = Math.floor(seconds / 60)
+    return `${m}:${s.toString().padStart(2, "0")}`
+  }
