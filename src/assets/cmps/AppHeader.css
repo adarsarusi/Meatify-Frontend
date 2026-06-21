@@ -82,7 +82,7 @@
 
     font-size: 1rem;
     color: var(--text-main);
-    background-color: var(--surface);
+    background-color: var(--bg-base);
     box-shadow: none;
 
     transition:
@@ -113,7 +113,7 @@
 
   cursor: pointer;
 
-  background-color: var(--surface);
+  background-color: var(--bg-base);
   border-radius: 50%;
 
   padding: 12px;

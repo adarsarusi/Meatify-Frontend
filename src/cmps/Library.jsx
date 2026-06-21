@@ -48,10 +48,10 @@ export function Library() {
             <section className="library-controls">
                 <button onClick={onAddStation} className="icon-btn">
                     Create
-                    <IconComp name="create" className="icon--sm" />
+                    <IconComp name="create" className="icon--sm icon--muted" />
                 </button>
                 <button onClick={onExpand} className="icon-btn">
-                    <IconComp name="expend" className="icon--sm" />
+                    <IconComp name="expend" className="icon--sm icon--muted" />
                 </button>
             </section>
         </div >
