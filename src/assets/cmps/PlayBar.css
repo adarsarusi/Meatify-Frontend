@@ -67,6 +67,7 @@
   gap: 8px;
   width: 100%;
   font-size: 11px;
+  max-width: 572px;
 }
 
 input[type="range"] {
