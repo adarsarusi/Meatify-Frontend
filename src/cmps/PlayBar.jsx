@@ -1,31 +1,38 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useState, useRef, useEffect } from "react"
 import { toggleIsPlaying } from "../store/actions/player.actions.js"
+
+import ReactPlayer from "react-player"
 export function PlayBar() {
-  const currentSong = useSelector((state) => state.playerModule.currentSong)
+  // const currentSong = useSelector((state) => state.playerModule.currentSong)
   const isPlaying = useSelector((state) => state.playerModule.isPlaying)
   const audioRef = useRef(null)
 
-  function onTogglePlay() {
-    if (isPlaying) {
-      audioRef.current.pause()
-      console.log("pause song")
-    } else {
-      audioRef.current.play()
-      console.log("play song")
-    }
-    toggleIsPlaying()
+  // Used to test if player is working - Need to fix api url's (date issue)
+  const currentSong = {
+    title: "Hit and Run",
+    url: "https://www.youtube.com/watch?v=FvHjjhnslNg",
   }
-  useEffect(() => {
-    console.log("currentSong:", currentSong)
-    if (!audioRef.current || !currentSong) return
-    audioRef.current.load()
-    audioRef.current.play()
-  }, [currentSong])
+
+  function onTogglePlay() {
+    toggleIsPlaying()
+    console.log(currentSong)
+  }
 
   return (
     <div className="player-container">
-      <audio ref={audioRef} src={currentSong?.url} />
+      <div style={{ display: "none" }}>
+        <ReactPlayer
+          ref={audioRef}
+          src={currentSong?.url}
+          playing={isPlaying}
+          config={{
+            youtube: {
+              playerVars: { autoplay: 0 },
+            },
+          }}
+        />
+      </div>
       <div className="general-buttons">
         <div className="main-buttons">
           <button className="shuffle-song-btn playbar-btn">
@@ -42,11 +49,11 @@ export function PlayBar() {
           <button className="playpause-btn " onClick={onTogglePlay}>
             {isPlaying ? (
               <svg className="play-btn" viewBox="0 0 16 16">
-                <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288z"></path>
+                <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7z"></path>
               </svg>
             ) : (
               <svg className="play-btn" viewBox="0 0 16 16">
-                <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7z"></path>
+                <path d="M3 1.713a.7.7 0 0 1 .7-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288z"></path>
               </svg>
             )}
           </button>
@@ -70,7 +77,8 @@ export function PlayBar() {
               id="progressBar"
               min={0}
               step={0.1}
-              value={0}
+              defaultValue={0}
+              // value={0}
             />
           </label>
           <span className="remaining-time">00:00</span>
