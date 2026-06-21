@@ -18,14 +18,29 @@ export function StationList({ stations }) {
     return <ul className={isSquare ? 'station-list' : 'station-list demo-square-list'}>
         {stations.map(station =>
             <li key={station._id} className="station-list-item">
-                {!isExpanded && <>
+                {!isExpanded && isSquare && <>
                     <StationPreview station={station} />
                     <LikeBtn
                         itemId={station._id}
                         userField="likedStationIds"
                     />
                 </>}
-                {isExpanded && <SquarePreview entity={station} />}
+
+                {isExpanded && isSquare && <>
+                    <StationPreview station={station} />
+                    <LikeBtn
+                        itemId={station._id}
+                        userField="likedStationIds"
+                    />
+                </>
+                }
+
+                {!isExpanded && !isSquare &&
+                    <SquarePreview entity={station} />}
+
+                {isExpanded && !isSquare &&
+                    <SquarePreview entity={station} />}
+
             </li>)
         }
     </ul>
