@@ -11,7 +11,11 @@ export function StationList({ stations }) {
         storeState => storeState.systemModule.isExpanded
     )
 
-    return <ul className="station-list demo-square-list">
+    const isSquare = useSelector(
+        storeState => storeState.systemModule.isSquare
+    )
+
+    return <ul className={isSquare ? 'station-list' : 'station-list demo-square-list'}>
         {stations.map(station =>
             <li key={station._id} className="station-list-item">
                 {!isExpanded && <>

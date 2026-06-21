@@ -40,7 +40,6 @@ export function Library() {
     }
 
 
-
     return <section className="app-library">
         <div className="library-header">
             <h3>Your Library</h3>

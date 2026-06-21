@@ -1,4 +1,34 @@
-.station-filter{
+.station-filter {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.station-filter-search {
+    display: flex;
+    gap: 10px;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    opacity: 0.5;
+    transition: 0.2s;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.grid-toggle-btn {
+    cursor: pointer;
+
+    opacity: 0.5;
+    transition: 0.2s;
+
+    &:hover {
+        opacity: 1;
+    }
 }
