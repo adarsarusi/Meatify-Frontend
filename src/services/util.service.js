@@ -8,7 +8,8 @@ export const utilService = {
 
 window.cs = utilService
 
-export function makeId(length = 6) {
+export function makeId(prefix = '') {
+    let length = 6
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -16,7 +17,7 @@ export function makeId(length = 6) {
         txt += possible.charAt(Math.floor(Math.random() * possible.length))
     }
 
-    return txt
+    return `${prefix} + ${txt}`
 }
 
 export function makeLorem(size = 100) {

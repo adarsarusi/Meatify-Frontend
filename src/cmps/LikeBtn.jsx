@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 import { updateUser } from '../store/actions/user.actions'
-import { Icon } from './globalCmps/icon'
+import { IconComp } from './globalCmps/IconComp'
 
 export function LikeBtn({ itemId, userField }) {
     const loggedinUser = useSelector(
@@ -34,7 +34,7 @@ export function LikeBtn({ itemId, userField }) {
             onClick={toggleLike}
             className={`icon-btn like-btn ${isLiked ? 'no-hover' : ''} `}
         >
-            <Icon
+            <IconComp
                 name={isLiked ? 'added' : 'like'}
                 className={`${isLiked ? 'icon--active' : ''} icon--muted`}
             />

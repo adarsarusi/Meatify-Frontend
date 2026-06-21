@@ -1,22 +1,15 @@
-import { Icon } from "./icon"
+import { IconComp } from "./IconComp"
+import { StationCover } from "./StationCover"
 
 export function SquarePreview({ entity }) {
 
-console.log('entity: ', entity)
     return <article className="entity-square-preview__item">
 
         <div className="entity-square-preview__meta">
             <div className="entity-square-preview__img">
-                {entity.imgUrl ? (
-                    <img
-                        src={Array.isArray(entity.imgUrl) && entity.imgUrl.length ? entity.imgUrl[0] : entity.imgUrl}
-                        alt={entity.title || entity.name}
-                    />
-                ) : (
-                    <div className="entity-square-preview__img-placeholder">♪</div>
-                )}
+                <StationCover entity={entity} />
                 <button className="entity-square-preview__btn entity-square-preview__btn--play btn-reset">
-                    <Icon name="play" />
+                    <IconComp name="play" />
                 </button>
             </div>
             <div className='entity-square-preview__meta-text'>
@@ -26,5 +19,6 @@ console.log('entity: ', entity)
         </div>
     </article>
 }
+
 
 

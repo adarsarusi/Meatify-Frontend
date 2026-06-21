@@ -11,7 +11,7 @@ import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
 
 import { SET_FILTER_BY } from "../store/reducers/station.reducer.js"
 import { loadStations } from "../store/actions/station.actions.js"
-import { Icon } from "./globalCmps/icon.jsx"
+import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -61,7 +61,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <Icon name="spotify-logo" className="icon--white icon--lg" />
+          <IconComp name="spotify-logo" className="icon--white icon--lg" />
         </NavLink>
 
         <div className="search-bar-container">
@@ -69,14 +69,14 @@ export function AppHeader() {
             <button
               className="home-btn search-bar-btns"
               onClick={() => navigate("/")}>
-              <Icon name="home" className="icon--white" />
+              <IconComp name="home" className="icon--white" />
             </button>
           </div>
 
           <div className="search-bar">
             <div className="search-btn-container">
               <button className="search-btn search-bar-btns">
-                <Icon name="search" className="icon--muted" />
+                <IconComp name="search" className="icon--muted" />
               </button>
             </div>
 
@@ -97,7 +97,7 @@ export function AppHeader() {
                 className="browse-search-btn search-bar-btns"
                 onClick={() => navigate("/browse")}
               >
-                <Icon name="browse" className="icon--muted" />
+                <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
             {isOpen && <SerachResultsDropdown stations={stations} />}

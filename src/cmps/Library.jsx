@@ -9,7 +9,7 @@ import { StationList } from './StationList'
 import { StationFilter } from './StationFilter.jsx'
 import { TOGGLE_EXPAND_LIBRARY } from '../store/reducers/system.reducer.js'
 import { store } from '../store/store.js'
-import { Icon } from './globalCmps/icon.jsx'
+import { IconComp } from './globalCmps/IconComp.jsx'
 
 export function Library() {
 
@@ -48,10 +48,10 @@ export function Library() {
             <section className="library-controls">
                 <button onClick={onAddStation} className="icon-btn">
                     Create
-                    <Icon name="create" className="icon--sm" />
+                    <IconComp name="create" className="icon--sm" />
                 </button>
                 <button onClick={onExpand} className="icon-btn">
-                    <Icon name="expend" className="icon--sm" />
+                    <IconComp name="expend" className="icon--sm" />
                 </button>
             </section>
         </div >

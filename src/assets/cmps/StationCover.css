@@ -1,0 +1,7 @@
+.station-cover-img__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    border-radius: 0.3rem;
+    overflow: hidden;
+}

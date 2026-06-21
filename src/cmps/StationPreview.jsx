@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import { IconComp } from './globalCmps/IconComp'
+import { StationCover } from './globalCmps/StationCover'
 
 export function StationPreview({ station }) {
 
@@ -6,13 +8,7 @@ export function StationPreview({ station }) {
 
     return <article className="station-preview">
 
-        {station.imgUrl? (
-            <img src={station.imgUrl[0]} alt="" />
-        ) : (
-            <div className="playlist-placeholder">
-                ♪
-            </div>
-        )}
+        <StationCover entity={station} />
 
         <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
             <h4>{station.name}</h4>

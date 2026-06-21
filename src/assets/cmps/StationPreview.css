@@ -1,7 +1,7 @@
 .station-preview {
-    display: flex;
-    align-items: center;
-    gap: 1em;
+    display: grid;
+    grid-template-columns: 3rem minmax(2.5rem, 1fr);
+    gap: 1rem;
 
     border-radius: 5px;
     padding: 5px;

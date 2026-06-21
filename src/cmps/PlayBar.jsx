@@ -39,7 +39,7 @@ export function PlayBar() {
               id="progressBar"
               min={0}
               step={0.1}
-              value={0}
+              // value={0}
             />
           </label>
           <span className="remaining-time">00:00</span>

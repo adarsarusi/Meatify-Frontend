@@ -193,7 +193,8 @@ async function _generateSong(idx) {
                 artists: [track.artist?.name || 'Unknown'],
                 addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
                 album: track.album?.title || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
-                duration: track.duration || getRandomIntInclusive(180, 420)
+                duration: track.duration || getRandomIntInclusive(180, 420),
+                type: 'song'
             }
         }
     } catch (err) {
@@ -209,7 +210,8 @@ async function _generateSong(idx) {
         artists: [FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]],
         addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
         album: FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
-        duration: getRandomIntInclusive(180, 420)
+        duration: getRandomIntInclusive(180, 420),
+        type: 'song'
     }
 }
 
@@ -252,12 +254,14 @@ async function _generateStation(idx) {
         _id: makeId(),
         name: STATION_NAMES[idx % STATION_NAMES.length] + (idx >= STATION_NAMES.length ? ` ${Math.floor(idx / STATION_NAMES.length)}` : ''),
         tags: stationTags,
-        imgUrl: stationSongs.map(song => song.imgUrl).filter(Boolean).slice(0, 4),
+        uploadImgUrl: '',
+        songsImagesUrls: stationSongs.map(song => song.imgUrl).filter(Boolean).slice(0, 4),
         isPrivate: Math.random() < 0.5,
         savedCount: getRandomIntInclusive(50, 9999),
         songs: stationSongs,
         createdAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
         createdBy: miniUser,
         participants: participants,
+        type: 'station'
     }
 }

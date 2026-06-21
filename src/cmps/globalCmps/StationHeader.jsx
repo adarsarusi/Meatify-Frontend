@@ -1,3 +1,5 @@
+import { StationCover } from "./StationCover"
+
 export function StationHeader({ station }) {
     if (!station) return null
 
@@ -17,16 +19,8 @@ export function StationHeader({ station }) {
 
     return (
         <section className="station-header">
-
             <div className="station-img-container">
-                {station?.imgUrl?.length
-                    ? station.imgUrl.map(url => (
-                        <img key={url} src={url} alt={station?.name} className="station-img" />
-                    ))
-                    : <div className="station-img-placeholder">
-                        ♪
-                    </div>
-                }
+                <StationCover entity={station} />
             </div>
             <div className="station-header__info ">
                 <p>{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>

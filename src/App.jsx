@@ -20,8 +20,6 @@ function App() {
 
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
 
-  console.log('APP isExpanded:', isExpanded)
-
   return (
     <Router>
       <div className="main-container">

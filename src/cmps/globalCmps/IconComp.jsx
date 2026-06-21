@@ -1,4 +1,4 @@
-export function Icon({ name, size = 24, className = '', label }) {
+export function IconComp({ name, size = 24, className = '', label }) {
     return (
         <div className="icon-container">
             <svg
@@ -10,7 +10,7 @@ export function Icon({ name, size = 24, className = '', label }) {
                 role={label ? 'img' : undefined}
                 focusable="false"
             >
-                <use href={`/src/assets/icons/icons.svg#icon-${name}`} />
+                <use href={`/src/assets/icons/Icons.svg#icon-${name}`} />
             </svg>
         </div>
 
