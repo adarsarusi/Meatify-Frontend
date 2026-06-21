@@ -20,14 +20,18 @@
 @import "cmps/StationList.css";
 @import "cmps/StationPreview.css";
 @import "cmps/SongList.css";
-@import "cmps/PreviewSong.css";
+@import "cmps/SongPreview.css";
 @import "cmps/StationFilter.css";
 @import "cmps/StationHeader.css";
 @import "cmps/StationFilter.css";
+@import "cmps/SquarePreview.css";
+@import "cmps/StationCover.css";
 
 @import "cmps/SearchResultsDropdown.css";
 @import "cmps/PlayBar.css";
 @import "icons/Icons.css";
+@import "icons/LikeBtn.css";
 
 /* Pages */
 @import "pages/StationDetails.css";
+@import "pages/Profile.css";

@@ -1,7 +1,7 @@
 * {
     box-sizing: border-box;
 }
-   
+
 body {
     margin: 0 auto;
     font-size: 16px;
@@ -10,7 +10,12 @@ body {
     background-color: var(--bg-color);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
 }
 
@@ -40,6 +45,25 @@ img,
 embed,
 video,
 object {
-  max-width: 100%;
-  display: block;
+    max-width: 100%;
+    display: block;
+}
+
+
+/* Scroll bar re-design */
+::-webkit-scrollbar {
+    width: 0.625rem
+}
+
+::-webkit-scrollbar-track {
+    background: transparent
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 0.5rem
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.09)
 }

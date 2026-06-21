@@ -11,6 +11,7 @@ import { Browse } from "./pages/Browse.jsx"
 import { Library } from "./cmps/Library.jsx"
 import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
 import { StationDetails } from "./pages/StationDetails.jsx"
+import { Profile } from "./pages/Profile.jsx"
 
 
 
@@ -18,8 +19,6 @@ import { PlayBar } from "./cmps/PlayBar.jsx"
 function App() {
 
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
-
-  console.log('APP isExpanded:', isExpanded)
 
   return (
     <Router>
@@ -34,8 +33,8 @@ function App() {
             <Route path="/" element={<Explore />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="station/:id" element={<StationDetails />} />
+            <Route path="user/:id" element={<Profile />} />
             {/* <Route path="song/:id" element={<SongDetails />} /> */}
-            {/* <Route path="user/:id" element={<Profile />} /> */}
           </Routes>
           <ArtistInfo />
         </main>

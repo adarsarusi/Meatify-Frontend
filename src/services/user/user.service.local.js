@@ -19,7 +19,7 @@ export const userService = {
 }
 
 async function getUsers() {
-    const users = await storageService.query('user')
+    const users = await storageService.query(USER_STORAGE_KEY)
     return users.map(user => {
         delete user.password
         return user
@@ -27,26 +27,30 @@ async function getUsers() {
 }
 
 async function getById(userId) {
-    return await storageService.get('user', userId)
+    return await storageService.get(USER_STORAGE_KEY, userId)
 }
 
 function remove(userId) {
-    return storageService.remove('user', userId)
+    return storageService.remove(USER_STORAGE_KEY, userId)
 }
 
-async function update({ _id }) {
-    const user = await storageService.get('user', _id)
-    await storageService.put('user', user)
+async function update(user) {
+    const updatedUser = await storageService.put(
+        USER_STORAGE_KEY,
+        user
+    )
 
-    // When admin updates other user's details, do not update loggedinUser
     const loggedinUser = getLoggedinUser()
-    if (loggedinUser._id === user._id) saveLoggedinUser(user)
 
-    return user
+    if (loggedinUser?._id === updatedUser._id) {
+        saveLoggedinUser(updatedUser)
+    }
+
+    return updatedUser
 }
 
 async function login(userCred) {
-    const users = await storageService.query('user')
+    const users = await storageService.query(USER_STORAGE_KEY)
     const user = users.find(user => user.username === userCred.username)
 
     if (user) return saveLoggedinUser(user)
@@ -55,7 +59,7 @@ async function login(userCred) {
 async function signup(userCred) {
     if (!userCred.imgUrl) userCred.imgUrl = 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
 
-    const user = await storageService.post('user', userCred)
+    const user = await storageService.post(USER_STORAGE_KEY, userCred)
     return saveLoggedinUser(user)
 }
 
@@ -68,28 +72,35 @@ function getLoggedinUser() {
 }
 
 function saveLoggedinUser(user) {
+
     user = {
         _id: user._id,
         fullname: user.fullname,
         imgUrl: user.imgUrl,
     }
-    console.log('user: ', user)
+    
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
     return user
 }
 
+export async function generateDemoUsers(userCount) {
+    let users = loadFromStorage(USER_STORAGE_KEY)
 
-export async function generateDemoUsers(userIdx) {
-    var data = await loadFromStorage('user')
-    if (data && data.length > 0) return
+    if (users?.length) return users
 
-    data = await Promise.all(Array.from({ length: userIdx }, (_, i) => _generateUser(i)))
-    await saveToStorage(USER_STORAGE_KEY, data)
+    users = Array.from({ length: userCount }, (_, i) => _generateUser(i))
+
+    saveToStorage(USER_STORAGE_KEY, users)
+
+    return users
 }
 
-async function setDemoLoggedinUser() {
-    const users = await loadFromStorage(USER_STORAGE_KEY) || []
-    if (!users.length) return null
+export async function setDemoLoggedinUser() {
+    let users = loadFromStorage(USER_STORAGE_KEY)
+
+    if (!users?.length) {
+        users = await generateDemoUsers(50)
+    }
 
     const user = {
         _id: users[0]._id,
@@ -100,18 +111,33 @@ async function setDemoLoggedinUser() {
         likedSongIds: users[0].likedSongIds || [],
     }
 
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
+    sessionStorage.setItem(
+        STORAGE_KEY_LOGGEDIN_USER,
+        JSON.stringify(user)
+    )
+
     return user
 }
 
 function _generateUser(idx) {
-    const firstNames = ['Alex', 'Jordan', 'Casey', 'Morgan', 'Taylor', 'Riley', 'Sam', 'Jamie', 'Drew', 'Quinn',
-        'Blake', 'River', 'Phoenix', 'Sage', 'Storm', 'Nova', 'Kai', 'Eden', 'Leo', 'Zara']
-    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
-        'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Moore', 'Jackson', 'Martin', 'Lee']
+    const firstNames = [
+        'Alex', 'Jordan', 'Casey', 'Morgan', 'Taylor',
+        'Riley', 'Sam', 'Jamie', 'Drew', 'Quinn',
+        'Blake', 'River', 'Phoenix', 'Sage', 'Storm',
+        'Nova', 'Kai', 'Eden', 'Leo', 'Zara'
+    ]
+
+    const lastNames = [
+        'Smith', 'Johnson', 'Williams', 'Brown', 'Jones',
+        'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
+        'Hernandez', 'Lopez', 'Gonzalez', 'Wilson',
+        'Anderson', 'Thomas', 'Moore', 'Jackson',
+        'Martin', 'Lee'
+    ]
 
     const firstName = firstNames[idx % firstNames.length]
-    const lastName = lastNames[Math.floor(idx / firstNames.length) % lastNames.length]
+    const lastName =
+        lastNames[Math.floor(idx / firstNames.length) % lastNames.length]
 
     return {
         _id: makeId(),

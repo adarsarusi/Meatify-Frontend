@@ -1,0 +1,103 @@
+.song-preview__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(2.5rem, 1fr) auto auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    color: var(--text-main);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+
+    &:hover {
+        background: var(--bg-hover);
+
+        .song-preview__controls {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .song-preview__index {
+            visibility: hidden;
+        }
+    }
+}
+
+.song-preview__index {
+    padding: 0.5rem 1rem;
+    margin: 0;
+}
+
+.song-preview__meta {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1rem;
+    min-width: 0;
+}
+
+.song-preview__meta .song-preview__meta-text {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.song-preview__meta .song-preview__title,
+.song-preview__meta .song-preview__artists {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.song-preview__meta .song-preview__artists {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.song-preview__img img {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    display: block;
+}
+
+.song-preview__img-placeholder {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    background: var(--bg-highlight-color);
+    color: var(--text-muted);
+    border-radius: 0.375rem;
+}
+
+.song-preview__controls {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(2.5rem, 1fr) auto auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+    box-sizing: border-box;
+}
+
+.song-preview__btn--play {
+    grid-column: 1;
+}
+
+.song-preview__btn--like {
+    grid-column: 3;
+}
+
+.song-preview__btn--more {
+    grid-column: 6;
+}
+
+.song-preview__duration {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}

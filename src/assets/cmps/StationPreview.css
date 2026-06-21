@@ -1,19 +1,19 @@
-.station-preview{
-    display: flex;
-    align-items: center;
-    gap: 1em;
+.station-preview {
+    display: grid;
+    grid-template-columns: 3rem minmax(2.5rem, 1fr);
+    gap: 1rem;
 
     border-radius: 5px;
     padding: 5px;
 
-    &:hover{
+    /* &:hover {
         background-color: var(--gray4);
-    }
+    } */
 
     >img {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-    border-radius: 4px;
-}
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
 }

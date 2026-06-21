@@ -13,8 +13,10 @@ function getEmptyStation() {
         songs: [],
         createdBy: null,
         savedCount: 0,
-        imgUrl: [],
+        uploadImgUrl: '',
+        songsImagesUrls: [],
         isPrivate: false,
+        type: 'station'
     }
 }
 
