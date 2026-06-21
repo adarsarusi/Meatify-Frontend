@@ -10,6 +10,7 @@ const SONG_STORAGE_KEY = 'songDB'
 export const stationService = {
     query,
     getById,
+    getByIds,
     save,
     remove,
     addStationMsg,
@@ -54,6 +55,14 @@ async function query(filterBy = {}) {
 
 async function getById(stationId) {
     return await storageService.get(STATION_STORAGE_KEY, stationId)
+}
+
+async function getByIds(stationIds) {
+    const stations = await storageService.query(STATION_STORAGE_KEY)
+
+    return stations.filter(station =>
+        stationIds.includes(station._id)
+    )
 }
 
 async function remove(stationId) {

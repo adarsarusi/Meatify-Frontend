@@ -1,10 +1,14 @@
 .user-details {
-    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
     color: #fff;
     background: var(--gradient1);
 
     padding-bottom: 4rem;
-
     margin-inline: 1rem;
 }
 
@@ -16,6 +20,7 @@
     padding: 5rem 2rem 2rem;
 
     min-height: 340px;
+    flex-shrink: 0;
 }
 
 .profile-avatar-upload {
@@ -98,6 +103,7 @@
 .user-details-liked-stations,
 .user-details-liked-songs {
     padding: 2rem;
+    flex-shrink: 0;
 
     h2 {
         margin: 0 0 1.5rem;

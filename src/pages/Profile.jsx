@@ -1,10 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+
+import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
+import { SongList } from '../cmps/globalCmps/SongList'
 
 import { loadUser, updateUser } from '../store/actions/user.actions'
 import { store } from '../store/store'
 import { userService } from '../services/user'
+import { stationService } from '../services/station'
 import { uploadService } from '../services/upload.service'
 import { showSuccessMsg } from '../services/event-bus.service'
 // import { socketService, SOCKET_EVENT_USER_UPDATED, SOCKET_EMIT_USER_WATCH } from '../services/socket.service'
@@ -13,6 +17,26 @@ export function Profile() {
 
   const params = useParams()
   const user = useSelector(storeState => storeState.userModule.watchedUser)
+  const songs = useSelector(storeState => storeState.songModule.songs)
+  const [likedStations, setLikedStations] = useState([])
+
+  const likedSongs = songs.filter(song =>
+    user?.likedSongIds?.includes(song._id)
+  )
+
+  console.log(user.likedSongIds)
+
+  useEffect(() => {
+    loadLikedStations()
+  }, [])
+
+  async function loadLikedStations() {
+    const stations = await stationService.getByIds(
+      user.likedStationIds
+    )
+
+    setLikedStations(stations)
+  }
 
   useEffect(() => {
     loadUser(params.id)
@@ -52,6 +76,7 @@ export function Profile() {
     }
   }
 
+
   return (
     <section className="user-details dynamic-area">
       {user && (
@@ -85,15 +110,21 @@ export function Profile() {
 
           {user.likedStationIds?.length > 0 && (
             <section className="user-details-liked-stations">
-              <h2>Public Playlists</h2>
-              Liked Stations CMP
+              <h2>Liked Playlists</h2>
+              <ul className='station-list demo-square-list'>
+                {likedStations.map(station =>
+
+                  <li key={station._id} className="user-details-liked-stations-list">
+                    <SquarePreview entity={station} />
+                  </li>)}
+              </ul>
             </section>
           )}
 
           {user.likedSongIds?.length > 0 && (
             <section className="user-details-liked-songs">
               <h2>Liked Songs</h2>
-              Liked Songs CMP
+              <SongList songs={likedSongs} />
             </section>
           )}
         </>

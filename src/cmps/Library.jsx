@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { addStation, loadStations } from '../store/actions/station.actions'
+import { loadSongs } from '../store/actions/song.actions.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 import { stationService } from '../services/station/'
@@ -22,6 +23,10 @@ export function Library() {
     function onExpand() {
         store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
     }
+
+    useEffect(() => {
+        loadSongs()
+    }, [])
 
     useEffect(() => {
         loadStations(filterBy)

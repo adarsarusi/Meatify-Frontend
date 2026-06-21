@@ -6,7 +6,7 @@ export const TOGGLE_SQUARE_LIBRARY = 'TOGGLE_SQUARE_LIBRARY'
 const initialState = {
   isLoading: false,
   isExpanded: false,
-  isSquare: false,
+  isSquare: true,
 }
 
 export function systemReducer(state = initialState, action = {}) {
