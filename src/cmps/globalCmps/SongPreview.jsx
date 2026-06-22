@@ -3,6 +3,7 @@ import { IconComp } from './IconComp'
 
 import { LikeBtn } from '../LikeBtn'
 import { StationCover } from './StationCover'
+import { setCurrentSong } from '../../store/actions/player.actions'
 
 export function PreviewSong({ song, index }) {
 
@@ -25,7 +26,7 @@ export function PreviewSong({ song, index }) {
                 </div>
             </div>
             <div className="song-preview__controls">
-                <button className="song-preview__btn song-preview__btn--play btn-reset">
+                <button className="song-preview__btn song-preview__btn--play btn-reset" onClick={()=>setCurrentSong(song)}>
                     <IconComp name="play" className="icon--white" />
                 </button>
                 <div className="song-preview__btn song-preview__btn--like">

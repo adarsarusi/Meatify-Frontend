@@ -12,9 +12,6 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function PlayBar() {
 
-  const stations = useSelector(storeState => storeState.stationModule.stations)
-  const isLoading = useSelector(storeState => storeState.stationModule.isLoading)
-
   const currentSong = useSelector((storeState) => storeState.playerModule.currentSong)
   const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
   const audioRef = useRef(null)
@@ -23,25 +20,6 @@ export function PlayBar() {
   const [currentTime, setCurrentTime] = useState(0)
   const [volume, setVolume] = useState(0.2)
   const [isMuted, setIsMuted] = useState(false)
-
-  // Used to test if player is working - Need to fix api url's (date issue)
-
-  // Demo //
-  const hasInitialized = useRef(false)
-
-  useEffect(() => {
-    if (stations && stations.length && !currentSong && !hasInitialized.current) {
-      const validStations = stations.filter(station => station.songs && station.songs.length)
-
-      if (validStations.length) {
-        const randomStation = validStations[Math.floor(Math.random() * validStations.length)]
-        const demoSong = randomStation.songs[Math.floor(Math.random() * randomStation.songs.length)]
-
-        store.dispatch({ type: SET_CURRENT_SONG, song: demoSong })
-        hasInitialized.current = true
-      }
-    }
-  }, [stations, currentSong])
 
 
   function handleProgressChange(ev) {
@@ -70,9 +48,6 @@ export function PlayBar() {
   function onToggleMute() {
     setIsMuted(!isMuted)
   }
-
-  if (!isLoading && !currentSong) return <p>Loading...</p>
-
 
   return (
     <div className="player-container">
