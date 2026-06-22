@@ -31,18 +31,3 @@
 
 }
 
-.station-list::-webkit-scrollbar {
-    width: 12px;
-}
-
-.station-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.station-list::-webkit-scrollbar-thumb {
-    background: var(--gray4);
-}
-
-.station-list::-webkit-scrollbar-thumb:hover {
-    background: var(--gray3);
-}
