@@ -35,7 +35,6 @@ export function PlayBar() {
 
   function onTogglePlay() {
     toggleIsPlaying()
-    console.log(currentSong)
   }
 
   function onSetDuration(ev) {
