@@ -2,23 +2,26 @@
   display: flex;
   z-index: 10;
   width: 100%;
-  max-height: 20rem;
-
+  
+  
   position: absolute;
   top: 48px;
-
+  
   margin: 4px 0;
   padding: 8px;
-
+  
   border-radius: 8px;
-
+  
   opacity: 1;
   transition:
-    opacity 0.22s ease-in,
-    height 0.22s ease-in,
-    visibility 0.22s ease-in;
-
+  opacity 0.22s ease-in,
+  height 0.22s ease-in,
+  visibility 0.22s ease-in;
+  
   height: 590px;
+  max-height: 36.875rem;
+
+  
   background-color: var(--circle-bg-hover);
   color: var(--text-main);
 }

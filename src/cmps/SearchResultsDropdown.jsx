@@ -4,9 +4,11 @@ export function SerachResultsDropdown({ stations }) {
   return (
     <section className="search-dropdown">
       <ul>
-        {stations.map((station) => {
-          ;<li key={station._id}>{station.name}</li>
-        })}
+        {stations.map((station) => (
+          <li key={station._id}>
+            <span>{station.name}</span>
+          </li>
+        ))}
       </ul>
     </section>
   )
