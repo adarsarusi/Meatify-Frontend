@@ -27,14 +27,21 @@ export function PlayBar() {
   // Used to test if player is working - Need to fix api url's (date issue)
 
   // Demo //
+  const hasInitialized = useRef(false)
+
   useEffect(() => {
-    if (stations && stations.length) {
-      const demoSong = stations[0]?.songs[10]
-      if (demoSong && !currentSong) {
+    if (stations && stations.length && !currentSong && !hasInitialized.current) {
+      const validStations = stations.filter(station => station.songs && station.songs.length)
+
+      if (validStations.length) {
+        const randomStation = validStations[Math.floor(Math.random() * validStations.length)]
+        const demoSong = randomStation.songs[Math.floor(Math.random() * randomStation.songs.length)]
+
         store.dispatch({ type: SET_CURRENT_SONG, song: demoSong })
+        hasInitialized.current = true
       }
     }
-  }, [stations, currentSong]) // Re-run if these change, though the if-statements protect it
+  }, [stations, currentSong])
 
 
   function handleProgressChange(ev) {
