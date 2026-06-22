@@ -24,7 +24,7 @@ export function Profile() {
     user?.likedSongIds?.includes(song._id)
   )
 
-  console.log(user.likedSongIds)
+  console.log(user?.likedSongIds)
 
   useEffect(() => {
     loadLikedStations()

@@ -4,6 +4,7 @@ export const REMOVE_STATION = 'REMOVE_STATION'
 export const ADD_STATION = 'ADD_STATION'
 export const UPDATE_STATION = 'UPDATE_STATION'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
+export const SET_STATION_LOADING = 'SET_STATION_LOADING'
 
 const initialStationState = {
     stations: [],
@@ -52,6 +53,9 @@ export function stationReducer(state = initialStationState, action = {}) {
 
         case SET_FILTER_BY:
             return { ...state, filterBy: action.filterBy }
+
+        case SET_STATION_LOADING:
+            return { ...state, isLoading: action.isLoading }
 
         default:
             return state

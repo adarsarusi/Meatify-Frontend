@@ -52,7 +52,7 @@ export function StationFilter() {
     return <ul className="station-filter">
         <div className="station-filter-search">
 
-            <button onClick={toggleTextBox} className='search-btn'>
+            <button onClick={toggleTextBox} className='station-filter__search-btn'>
                 <IconComp name="search" className="icon--md icon--white" />
             </button>
             {isVisible && (

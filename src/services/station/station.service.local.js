@@ -176,12 +176,9 @@ async function _initData(key, generateFn, count) {
 
 async function _generateSong(idx) {
     const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
-
-    // Using the real API URL with JSONP to bypass CORS completely
     const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(term)}&limit=50&output=jsonp`
 
     try {
-        // If we haven't fetched this genre yet, start the fetch using fetchJsonp
         if (!deezerFetchCache[term]) {
             deezerFetchCache[term] = fetchJsonp(deezerUrl).then(res => {
                 if (!res.ok) throw new Error('Deezer API unavailable')
@@ -189,9 +186,17 @@ async function _generateSong(idx) {
             })
         }
 
-        // Await the cached promise (this instantly resolves for songs 11 through 381)
         const json = await deezerFetchCache[term]
-        const track = json?.data?.[idx % (json.data?.length || 1)]
+
+        // 1. FILTER IMMEDIATELY: Keep only tracks available in the user's current location
+        // Tracks that cannot be played here will have track.readable === false
+        const availableTracks = json?.data?.filter(track => track.readable === true) || []
+
+        // 2. Fall back to the original list if the filtered array is completely empty
+        const tracksToUse = availableTracks.length > 0 ? availableTracks : (json?.data || [])
+
+        // 3. Pick a track using modulo safely against our available tracks array
+        const track = tracksToUse[idx % tracksToUse.length]
 
         if (track && track.title) {
             return {

@@ -75,7 +75,7 @@ export function AppHeader() {
 
           <div className="search-bar">
             <div className="search-btn-container">
-              <button className="search-btn search-bar-btns">
+              <button className="search-btn search-bar-btns img-btn">
                 <IconComp name="search" className="icon--muted" />
               </button>
             </div>
@@ -94,7 +94,7 @@ export function AppHeader() {
 
             <div className="search-browse-container">
               <button
-                className="browse-search-btn search-bar-btns"
+                className="browse-search-btn search-bar-btns img-btn"
                 onClick={() => navigate("/browse")}
               >
                 <IconComp name="browse" className="icon--muted" />

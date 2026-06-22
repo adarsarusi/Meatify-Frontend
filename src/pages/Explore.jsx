@@ -6,7 +6,6 @@ export function Explore() {
     const stations = useSelector(storeState => storeState.stationModule.stations)
     const isLoading = useSelector(storeState => storeState.stationModule.isLoading)
     const user = useSelector(storeState => storeState.userModule.user)
-    console.log('user: ', user)
 
     if (isLoading && !stations) return (
         <section className="station-details">
