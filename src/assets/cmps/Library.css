@@ -13,3 +13,25 @@
         display: flex;
     }
 }
+
+.library-controls{
+    gap: 5px;
+}
+
+.icon-btn.create-btn{
+    color: var(--gray2);
+    background: var(--gray4);
+
+    border-radius: 100vw;
+
+    &:hover{
+        color: var(--gray1);
+    }
+}
+
+.icon-btn.expand-btn{
+    color: var(--gray2);
+    background: var(--gray4);
+
+    border-radius: 100vw;
+}

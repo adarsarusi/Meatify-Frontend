@@ -24,11 +24,17 @@ export function Profile() {
     user?.likedSongIds?.includes(song._id)
   )
 
-  console.log(user?.likedSongIds)
-
   useEffect(() => {
-    loadLikedStations()
-  }, [])
+    if (!user?.likedStationIds?.length) return
+
+      ; (async () => {
+        const stations = await stationService.getByIds(
+          user.likedStationIds
+        )
+
+        setLikedStations(stations)
+      })()
+  }, [user])
 
   async function loadLikedStations() {
     const stations = await stationService.getByIds(

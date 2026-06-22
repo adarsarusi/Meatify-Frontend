@@ -50,11 +50,11 @@ export function Library() {
             <h3>Your Library</h3>
 
             <section className="library-controls">
-                <button onClick={onAddStation} className="icon-btn">
+                <button onClick={onAddStation} className="icon-btn create-btn">
                     Create
                     <IconComp name="create" className="icon--sm icon--muted" />
                 </button>
-                <button onClick={onExpand} className="icon-btn">
+                <button onClick={onExpand} className="icon-btn expand-btn">
                     <IconComp name="expend" className="icon--sm icon--muted" />
                 </button>
             </section>
