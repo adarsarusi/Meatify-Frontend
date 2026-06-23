@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useState, useRef, useEffect } from "react"
 import {
   setCurrentSong,
+  setQueue,
   toggleIsPlaying,
 } from "../store/actions/player.actions.js"
 import { StationCover } from "./globalCmps/StationCover.jsx"
@@ -10,9 +11,11 @@ import { formatTime } from "../services/util.service.js"
 
 import ReactPlayer from "react-player"
 import { store } from "../store/store.js"
-import { SET_CURRENT_SONG } from "../store/reducers/player.reducer.js"
+
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
+
+import { shuffle } from "../services/util.service.js"
 
 export function PlayBar() {
   const currentSong = useSelector(
@@ -28,6 +31,9 @@ export function PlayBar() {
   const [currentTime, setCurrentTime] = useState(0)
   const [volume, setVolume] = useState(0.2)
   const [isMuted, setIsMuted] = useState(false)
+  const [isRepeat, setIsRepeat] = useState(false)
+  const [isShuffle, setIsShuffle] = useState(false)
+  const [originalQueue, setOriginalQueue] = useState([])
 
   function handleNextPrev(direction) {
     const currIdx = queue.findIndex((song) => song._id === currentSong._id)
@@ -37,6 +43,20 @@ export function PlayBar() {
         ? queue[currIdx + 1] || queue[0]
         : queue[currIdx - 1] || queue[queue.length - 1]
     setCurrentSong(nextSong)
+  }
+
+  function handleShuffle(queue) {
+    if (!isShuffle) {
+      setOriginalQueue(queue)
+      const shuffledQueue = shuffle(queue)
+      setQueue(shuffledQueue)
+      setIsShuffle(true)
+    } else {
+      setQueue(originalQueue)
+      setIsShuffle(false)
+    }
+    console.log(queue);
+    
   }
 
   function handleProgressChange(ev) {
@@ -65,6 +85,10 @@ export function PlayBar() {
     setIsMuted(!isMuted)
   }
 
+  function onRepeat() {
+    setIsRepeat(!isRepeat)
+  }
+
   return (
     <div className="player-container">
       <div className="song-info-placeholder">
@@ -80,9 +104,12 @@ export function PlayBar() {
 
       <div className="center-control">
         <div className="main-buttons">
-          <button className="shuffle-song-btn playbar-btn icon-btn">
+          {isShuffle ?<button className="shuffle-song-btn playbar-btn icon-btn" onClick={()=> handleShuffle(queue)} title="Enable shuffle">
             <IconComp name="shuffle" className="icon--muted" />
-          </button>
+          </button> : <button className="shuffle-song-btn playbar-btn icon-btn" onClick={()=> handleShuffle(queue)} title="Disable shuffle">
+            <IconComp name="shuffle" className="icon--green" />
+          </button> }
+          
           <button
             className="previous-song-btn playbar-btn icon-btn"
             onClick={() => handleNextPrev("prev")}
@@ -102,9 +129,23 @@ export function PlayBar() {
           >
             <IconComp name="next-song" className="icon--muted" />
           </button>
-          <button className="repeat-song-btn playbar-btn">
-            <IconComp name="repeat" className="icon--muted" />
-          </button>
+          {isRepeat ? (
+            <button
+              className="repeat-song-btn playbar-btn"
+              onClick={onRepeat}
+              title="Enable repeat"
+            >
+              <IconComp name="repeat" className="icon--muted" />
+            </button>
+          ) : (
+            <button
+              className="repeat-song-btn playbar-btn"
+              onClick={onRepeat}
+              title="Disable repeat"
+            >
+              <IconComp name="repeat" className="icon--green" />
+            </button>
+          )}
         </div>
 
         <div className="progress-bar">
@@ -152,6 +193,7 @@ export function PlayBar() {
           onTimeUpdate={onSetCurrentTime}
           volume={isMuted ? 0 : volume}
           muted={isMuted}
+          loop={isRepeat}
           onEnded={() => handleNextPrev("next")}
           config={{
             youtube: {
