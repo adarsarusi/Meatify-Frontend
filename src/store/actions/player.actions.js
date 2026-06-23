@@ -1,6 +1,6 @@
 import { store } from "../store.js"
 
-import { SET_CURRENT_SONG,ADD_TO_QUEUE,REMOVE_FROM_QUEUE,TOGGLE_IS_PLAYING } from "../reducers/player.reducer.js"
+import { SET_CURRENT_SONG,ADD_TO_QUEUE,REMOVE_FROM_QUEUE,TOGGLE_IS_PLAYING,SET_QUEUE } from "../reducers/player.reducer.js"
 
 export function setCurrentSong(song) {
   try {
@@ -8,6 +8,14 @@ export function setCurrentSong(song) {
     
   } catch (err) {
     console.log("Cannot set current song.", err)
+    throw err
+  }
+
+}export function setQueue(songs) {
+  try {
+    store.dispatch({ type: SET_QUEUE, songs })
+  } catch (err) {
+    console.log("Cannot set the queue.", err)
     throw err
   }
 }

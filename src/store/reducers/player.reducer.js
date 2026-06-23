@@ -1,5 +1,6 @@
 export const SET_CURRENT_SONG = "SET_CURRENT_SONG"
 
+export const SET_QUEUE = "SET_QUEUE"
 export const ADD_TO_QUEUE = "ADD_TO_QUEUE"
 export const REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE"
 
@@ -14,6 +15,12 @@ export function playerReducer(state = initialState, action = {}) {
   switch (action.type) {
     case SET_CURRENT_SONG:
       return { ...state, currentSong: action.song }
+
+    case SET_QUEUE:
+      return {
+        ...state,
+        queue: action.songs,
+      }
 
     case ADD_TO_QUEUE:
       return {
