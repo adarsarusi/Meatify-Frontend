@@ -2,28 +2,45 @@ import { makeId } from "../../services/util.service"
 import { IconComp } from "./IconComp"
 
 export function StationCover({ entity }) {
+    if (!entity) return null
 
-    const isMediaType = ['artist', 'album', 'song'].includes(entity?.type)
+    const isMediaType = ['artist', 'album', 'song'].includes(entity.type)
+
+    const coverImg =
+        entity.uploadImgUrl ||
+        entity.imgUrl
 
     return (
-        <article>
-            {entity?.uploadImgUrl ? (
-                <img src={entity?.uploadImgUrl} alt='' />
+        <article className="station-cover">
+
+            {coverImg ? (
+                <img src={coverImg} alt={entity.name || ''} className="station-img" />
             ) : isMediaType ? (
-                <img src={entity?.imgUrl} alt='' />
+                <img src={entity.imgUrl} alt={entity.name || ''} className="station-img" />
             ) : (
                 <div className="station-cover-img__container">
-                    {entity?.songsImagesUrls?.length ? (
-                        entity?.songsImagesUrls.map((url) => (
-                            <img key={makeId('img')} src={url} alt={entity?.name ?? ''} className="station-img" />
+
+                    {entity.songsImagesUrls?.length ? (
+                        entity.songsImagesUrls.map(url => (
+                            <img
+                                key={makeId('img')}
+                                src={url}
+                                alt={entity.name || ''}
+                                className="station-img"
+                            />
                         ))
                     ) : (
                         <div className="playlist-placeholder">
-                            <IconComp className='icon--xl icon--muted' />
+                            <IconComp
+                                name="playlist"
+                                className="icon--xl icon--muted"
+                            />
                         </div>
                     )}
+
                 </div>
             )}
+
         </article>
     )
 }
