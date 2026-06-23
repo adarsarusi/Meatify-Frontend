@@ -55,8 +55,7 @@ export function PlayBar() {
       setQueue(originalQueue)
       setIsShuffle(false)
     }
-    console.log(queue);
-    
+    console.log(queue)
   }
 
   function handleProgressChange(ev) {
@@ -86,7 +85,10 @@ export function PlayBar() {
   }
 
   function onRepeat() {
+    console.log(isRepeat)
+
     setIsRepeat(!isRepeat)
+    console.log(isRepeat)
   }
 
   return (
@@ -104,12 +106,17 @@ export function PlayBar() {
 
       <div className="center-control">
         <div className="main-buttons">
-          {isShuffle ?<button className="shuffle-song-btn playbar-btn icon-btn" onClick={()=> handleShuffle(queue)} title="Enable shuffle">
-            <IconComp name="shuffle" className="icon--muted" />
-          </button> : <button className="shuffle-song-btn playbar-btn icon-btn" onClick={()=> handleShuffle(queue)} title="Disable shuffle">
-            <IconComp name="shuffle" className="icon--green" />
-          </button> }
-          
+          <button
+            className="shuffle-song-btn playbar-btn icon-btn"
+            onClick={() => handleShuffle(queue)}
+            title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
+          >
+            <IconComp
+              name="shuffle"
+              className={isShuffle ? "icon--green" : "icon--muted"}
+            />
+          </button>
+
           <button
             className="previous-song-btn playbar-btn icon-btn"
             onClick={() => handleNextPrev("prev")}
@@ -129,23 +136,17 @@ export function PlayBar() {
           >
             <IconComp name="next-song" className="icon--muted" />
           </button>
-          {isRepeat ? (
-            <button
-              className="repeat-song-btn playbar-btn"
-              onClick={onRepeat}
-              title="Enable repeat"
-            >
-              <IconComp name="repeat" className="icon--muted" />
-            </button>
-          ) : (
-            <button
-              className="repeat-song-btn playbar-btn"
-              onClick={onRepeat}
-              title="Disable repeat"
-            >
-              <IconComp name="repeat" className="icon--green" />
-            </button>
-          )}
+
+          <button
+            className="repeat-song-btn playbar-btn"
+            onClick={onRepeat}
+            title={isRepeat ? "Disable repeat" : "Enable repeat"}
+          >
+            <IconComp
+              name="repeat"
+              className={isRepeat ? "icon--green" : "icon--muted"}
+            />
+          </button>
         </div>
 
         <div className="progress-bar">
