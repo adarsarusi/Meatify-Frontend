@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { addStation, loadStations } from '../store/actions/station.actions'
 import { loadSongs } from '../store/actions/song.actions.js'
@@ -14,6 +15,7 @@ import { IconComp } from './globalCmps/IconComp.jsx'
 
 export function Library() {
 
+    const navigate = useNavigate()
     const stations = useSelector(storeState => storeState.stationModule.stations)
     const filterBy = useSelector(storeState => storeState.stationModule.filterBy)
     const isExpanded = useSelector(
@@ -32,25 +34,27 @@ export function Library() {
         loadStations(filterBy)
     }, [filterBy])
 
-    async function onAddStation() {
+    async function onCreateStation() {
         const station = stationService.getEmptyStation()
-        station.name = prompt('Enter station name:')
 
         try {
             const savedStation = await addStation(station)
-            showSuccessMsg(`Station added!`)
+
+            showSuccessMsg('Station added!')
+            navigate(`/station/${savedStation._id}`)
+
         } catch (err) {
-            showErrorMsg(`Couldn't add Station`)
+            console.log('Could not create station', err)
+            showErrorMsg("Couldn't add station")
         }
     }
-
 
     return <section className="app-library">
         <div className="library-header">
             <h3>Your Library</h3>
 
             <section className="library-controls">
-                <button onClick={onAddStation} className="icon-btn create-btn">
+                <button onClick={onCreateStation} className="icon-btn create-btn">
                     Create
                     <IconComp name="create" className="icon--sm icon--muted" />
                 </button>

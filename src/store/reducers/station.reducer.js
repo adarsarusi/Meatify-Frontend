@@ -45,19 +45,22 @@ export function stationReducer(state = initialStationState, action = {}) {
         ),
       }
 
-    case ADD_STATION:
-      return {
-        ...state,
-        stations: [...state.stations, action.station],
-      }
+        case ADD_STATION:
+            return {
+                ...state,
+                stations: [action.station, ...state.stations]
+            }
 
-    case UPDATE_STATION:
-      return {
-        ...state,
-        stations: state.stations.map((station) =>
-          station._id === action.station._id ? action.station : station,
-        ),
-      }
+        case UPDATE_STATION:
+            return {
+                ...state,
+                stations: state.stations.map(station =>
+                    station._id === action.station._id
+                        ? action.station
+                        : station
+                ),
+                selectedStation: action.station
+            }
 
     case SET_FILTER_BY:
       return { ...state, filterBy: action.filterBy }
