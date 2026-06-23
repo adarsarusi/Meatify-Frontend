@@ -1,27 +1,24 @@
 .search-dropdown {
-  display: flex;
   z-index: 9999;
-  width: 100%;
-  
-  
   position: absolute;
-  top: 48px;
-  
-  margin: 4px 0;
-  padding: 8px;
-  
+  top: 3.2rem;
+
+  display: grid;
+  width: 100%;
+  overflow-y: scroll;
+
+  max-height: 20rem;
+
+  padding: 1rem;
   border-radius: 8px;
-  
+
   opacity: 1;
-  transition:
-  opacity 0.22s ease-in,
+  transition: opacity 0.22s ease-in,
   height 0.22s ease-in,
   visibility 0.22s ease-in;
-  
-  height: 590px;
-  max-height: 36.875rem;
 
-  
+
+
   background-color: var(--circle-bg-hover);
   color: var(--text-main);
 }

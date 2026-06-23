@@ -97,7 +97,7 @@ export function AppHeader() {
                 <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
-            {/* {isOpen && <SerachResultsDropdown stations={stations} />} */}
+            <SerachResultsDropdown stations={stations} />
           </div>
         </div>
 
