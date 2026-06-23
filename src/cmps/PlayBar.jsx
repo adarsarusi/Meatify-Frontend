@@ -1,6 +1,9 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useState, useRef, useEffect } from "react"
-import { toggleIsPlaying } from "../store/actions/player.actions.js"
+import {
+  setCurrentSong,
+  toggleIsPlaying,
+} from "../store/actions/player.actions.js"
 import { StationCover } from "./globalCmps/StationCover.jsx"
 
 import { formatTime } from "../services/util.service.js"
@@ -12,9 +15,13 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
 
 export function PlayBar() {
-
-  const currentSong = useSelector((storeState) => storeState.playerModule.currentSong)
-  const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
+  const currentSong = useSelector(
+    (storeState) => storeState.playerModule.currentSong,
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.playerModule.isPlaying,
+  )
+  const queue = useSelector((storeState) => storeState.playerModule.queue)
   const audioRef = useRef(null)
 
   const [duration, setDuration] = useState(0)
@@ -22,6 +29,15 @@ export function PlayBar() {
   const [volume, setVolume] = useState(0.2)
   const [isMuted, setIsMuted] = useState(false)
 
+  function handleNextPrev(direction) {
+    const currIdx = queue.findIndex((song) => song._id === currentSong._id)
+
+    const nextSong =
+      direction === "next"
+        ? queue[currIdx + 1] || queue[0]
+        : queue[currIdx - 1] || queue[queue.length - 1]
+    setCurrentSong(nextSong)
+  }
 
   function handleProgressChange(ev) {
     const newTime = +ev.target.value
@@ -59,32 +75,35 @@ export function PlayBar() {
             {(currentSong?.artists || []).join(", ")}
           </div>
         </div>
-        <LikeBtn
-          itemId={currentSong?._id}
-          userField="likedSongIds"
-        />
+        <LikeBtn itemId={currentSong?._id} userField="likedSongIds" />
       </div>
 
       <div className="center-control">
         <div className="main-buttons">
           <button className="shuffle-song-btn playbar-btn icon-btn">
-            <IconComp name='shuffle' className="icon--muted" />
+            <IconComp name="shuffle" className="icon--muted" />
           </button>
-          <button className="previous-song-btn playbar-btn icon-btn">
-            <IconComp name='previous-song' className="icon--muted" />
+          <button
+            className="previous-song-btn playbar-btn icon-btn"
+            onClick={() => handleNextPrev("prev")}
+          >
+            <IconComp name="previous-song" className="icon--muted" />
           </button>
           <button className="playpause-btn " onClick={onTogglePlay}>
             {isPlaying ? (
-              <IconComp name='pause' className="icon--black" />
+              <IconComp name="pause" className="icon--black" />
             ) : (
-              <IconComp name='play' className="icon--black" />
+              <IconComp name="play" className="icon--black" />
             )}
           </button>
-          <button className="next-song-btn playbar-btn icon-btn">
-            <IconComp name='next-song' className="icon--muted" />
+          <button
+            className="next-song-btn playbar-btn icon-btn"
+            onClick={() => handleNextPrev("next")}
+          >
+            <IconComp name="next-song" className="icon--muted" />
           </button>
           <button className="repeat-song-btn playbar-btn">
-            <IconComp name='repeat' className="icon--muted" />
+            <IconComp name="repeat" className="icon--muted" />
           </button>
         </div>
 
@@ -106,9 +125,9 @@ export function PlayBar() {
       <div className="volume-container">
         <button className="volume-icon-btn playbar-btn" onClick={onToggleMute}>
           {isMuted ? (
-            <IconComp name='volume-off' className="icon--muted" />
+            <IconComp name="volume-off" className="icon--muted" />
           ) : (
-            <IconComp name='volume' className="icon--muted" />
+            <IconComp name="volume" className="icon--muted" />
           )}
         </button>
 
@@ -133,6 +152,7 @@ export function PlayBar() {
           onTimeUpdate={onSetCurrentTime}
           volume={isMuted ? 0 : volume}
           muted={isMuted}
+          onEnded={() => handleNextPrev("next")}
           config={{
             youtube: {
               playerVars: { autoplay: 0 },
