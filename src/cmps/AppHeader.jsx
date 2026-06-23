@@ -65,20 +65,17 @@ export function AppHeader() {
         </NavLink>
 
         <div className="search-bar-container">
-          <div className="home-btn-container">
+          <div className="app-header__btn">
             <button
-              className="home-btn search-bar-btns"
+              className="search-bar__btn img-btn"
               onClick={() => navigate("/")}>
               <IconComp name="home" className="icon--white" />
             </button>
           </div>
-
           <div className="search-bar">
-            <div className="search-btn-container">
-              <button className="search-btn search-bar-btns img-btn">
-                <IconComp name="search" className="icon--muted" />
-              </button>
-            </div>
+            <button className="search-bar__btn img-btn">
+              <IconComp name="search" className="icon--muted" />
+            </button>
 
             <input
               className="search-input"
@@ -94,13 +91,13 @@ export function AppHeader() {
 
             <div className="search-browse-container">
               <button
-                className="browse-search-btn search-bar-btns img-btn"
+                className="browse-search-btn search-bar__btn img-btn"
                 onClick={() => navigate("/browse")}
               >
                 <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
-            {isOpen && <SerachResultsDropdown stations={stations} />}
+            {/* {isOpen && <SerachResultsDropdown stations={stations} />} */}
           </div>
         </div>
 
@@ -110,15 +107,13 @@ export function AppHeader() {
           </NavLink>
         )}
         {user && (
-          <div className="user-info">
+          <div className="user-info app-header__btn">
             <Link to={`user/${user._id}`}>
-              {user.imgUrl && <img src={user.imgUrl} />}
-              {user.fullname}
+              {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
             </Link>
-            <button onClick={onLogout}>logout</button>
           </div>
         )}
       </nav>
-    </header>
+    </header >
   )
 }

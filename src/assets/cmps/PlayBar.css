@@ -1,10 +1,11 @@
 .player-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 30% 1fr 30%;
   justify-content: space-between;
   align-items: center;
+  gap: 2rem;
 
-  padding: 0 16px;
+  padding: 1rem;
   height: 90px;
   width: 100%;
 }
@@ -17,11 +18,10 @@
 
 .song-info-placeholder {
   display: grid;
-  grid-template-columns: 3.5rem auto;
+  grid-template-columns: 3.5rem auto auto;
   gap: 1rem;
   font-size: 0.9;
 
-  width: 30%;
 
   .player-song-title {
     font-size: 0.875rem;
@@ -35,16 +35,17 @@
 
   >div {
     align-self: center;
-   
+
   }
 }
 
 .center-control {
-  width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+
+  width: 100%;
 }
 
 .playbar-btn {
@@ -120,7 +121,8 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 .volume-container {
-  width: 30%;
+  justify-self: end;
+
   display: flex;
   justify-content: flex-end;
   align-items: center;

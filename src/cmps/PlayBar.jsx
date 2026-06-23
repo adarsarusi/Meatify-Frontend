@@ -9,6 +9,7 @@ import ReactPlayer from "react-player"
 import { store } from "../store/store.js"
 import { SET_CURRENT_SONG } from "../store/reducers/player.reducer.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
+import { LikeBtn } from "./LikeBtn.jsx"
 
 export function PlayBar() {
 
@@ -58,6 +59,10 @@ export function PlayBar() {
             {(currentSong?.artists || []).join(", ")}
           </div>
         </div>
+        <LikeBtn
+          itemId={currentSong?._id}
+          userField="likedSongIds"
+        />
       </div>
 
       <div className="center-control">

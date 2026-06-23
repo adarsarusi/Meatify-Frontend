@@ -29,7 +29,7 @@ async function query(filterBy = {}) {
             regex.test(station.name) ||
             regex.test(station.tags?.join(' ')) ||
             regex.test(station.genres?.join(' ') || '') ||
-            station.songs.some(song =>
+            station.songs?.some(song =>
                 regex.test(song.title) ||
                 (song.artists && song.artists.some(artist => regex.test(artist)))
             )
@@ -38,14 +38,14 @@ async function query(filterBy = {}) {
 
     if (tags && tags.length && !tags.includes('')) {
         stations = stations.filter(station =>
-            tags.some(tag => station.tags.includes(tag))
+            (station.tags || []).some(tag => tags.includes(tag))
         )
     }
 
     if (artists && artists.length && !artists.includes('')) {
         stations = stations.filter(station =>
-            station.songs.some(song =>
-                song.artists.some(artist => artists.includes(artist))
+            (station.songs || []).some(song =>
+                (song.artists || []).some(artist => artists.includes(artist))
             )
         )
     }
@@ -59,10 +59,7 @@ async function getById(stationId) {
 
 async function getByIds(stationIds) {
     const stations = await storageService.query(STATION_STORAGE_KEY)
-
-    return stations.filter(station =>
-        stationIds.includes(station._id)
-    )
+    return stations.filter(station => stationIds.includes(station._id))
 }
 
 async function remove(stationId) {
@@ -70,13 +67,14 @@ async function remove(stationId) {
 }
 
 async function save(station) {
-    var savedStation
+    let savedStation
     if (station._id) {
         savedStation = await storageService.put(STATION_STORAGE_KEY, station)
     } else {
         const stationToSave = {
             name: station.name,
             tags: station.tags || [],
+            genres: station.genres || [],
             songs: station.songs || [],
             isPrivate: station.isPrivate || false,
             createdBy: userService.getLoggedinUser() || { fullname: 'You', imgUrl: '', _id: 'guest' },
@@ -99,7 +97,6 @@ async function addStationMsg(stationId, txt) {
     return await save(station)
 }
 
-// 1. CONSTANTS HOISTED TO PREVENT MEMORY REALLOCATION
 const FALLBACK_ARTISTS = [
     'The Weeknd', 'Drake', 'Post Malone', 'Ariana Grande', 'Billie Eilish', 'Travis Scott',
     'Bad Bunny', 'Dua Lipa', 'Olivia Rodrigo', 'Harry Styles', 'Doja Cat', 'Nicki Minaj',
@@ -156,10 +153,10 @@ const ALL_TAGS = [
     'Morning', 'Afternoon', 'Evening', 'Night', 'Late Night', 'Dawn'
 ]
 
-// 2. PROMISE CACHE: Prevents 381 simultaneous network requests
 const deezerFetchCache = {}
+const youtubeFetchCache = {}
 
-// --- MAIN FUNCTIONS ---
+const YOUTUBE_API_KEY = 'AIzaSyBs9ONkEGLFSV9Wt9dvCU9ea5kgPnQYUbs'
 
 export async function generateSpotifyData(songsCount = 381, stationsCount = 147) {
     await _initData(SONG_STORAGE_KEY, _generateSong, songsCount)
@@ -167,64 +164,258 @@ export async function generateSpotifyData(songsCount = 381, stationsCount = 147)
 }
 
 async function _initData(key, generateFn, count) {
-    var data = await loadFromStorage(key)
+    let data = await loadFromStorage(key)
     if (data && data.length > 0) return
 
     data = await Promise.all(Array.from({ length: count }, (_, i) => generateFn(i)))
     await saveToStorage(key, data)
 }
 
-async function _generateSong(idx) {
-    const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
-    const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(term)}&limit=50&output=jsonp`
+function parseISODurationToSeconds(iso) {
+    if (!iso) return 0
+    
+    // Robust regex that gracefully handles Days, Hours, Minutes, and Seconds (e.g., P1DT2H, PT5M4S)
+    const match = iso.match(/P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/i)
+    if (!match) return 0
+    
+    const [, d, h, m, s] = match
+    return (Number(d || 0) * 86400) + 
+           (Number(h || 0) * 3600) + 
+           (Number(m || 0) * 60) + 
+           Number(s || 0)
+}
 
-    try {
-        if (!deezerFetchCache[term]) {
-            deezerFetchCache[term] = fetchJsonp(deezerUrl).then(res => {
+function formatDuration(seconds) {
+    // Catch invalid inputs to prevent NaN:NaN renders
+    if (seconds === null || seconds === undefined || isNaN(Number(seconds))) return '0:00'
+    
+    const totalSeconds = Math.max(0, Math.floor(Number(seconds)))
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const secs = totalSeconds % 60
+
+    if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    }
+
+    return `${minutes}:${String(secs).padStart(2, '0')}`
+}
+
+async function fetchJson(url) {
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    return res.json()
+}
+
+function normalizeText(str = '') {
+    return str
+        .toLowerCase()
+        .replace(/\(.*?\)|\[.*?\]/g, ' ')
+        .replace(/\b(official|video|audio|lyrics|lyric|hd|4k|remastered|remaster|live|feat|ft)\b/g, ' ')
+        .replace(/[^\w\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+}
+
+function scoreDeezerMatch(ytTrack, dzTrack, term) {
+    let score = 0
+
+    const ytTitle = normalizeText(ytTrack.title)
+    const dzTitle = normalizeText(dzTrack.title)
+    const ytArtist = normalizeText(ytTrack.artists?.[0] || '')
+    const dzArtist = normalizeText(dzTrack.artists?.[0] || '')
+    const q = normalizeText(term)
+
+    if (ytTitle && dzTitle && (ytTitle.includes(dzTitle) || dzTitle.includes(ytTitle))) score += 5
+    if (ytArtist && dzArtist && (ytArtist.includes(dzArtist) || dzArtist.includes(ytArtist))) score += 4
+    if (q && dzTitle.includes(q)) score += 1
+    if (dzTrack.readable) score += 1
+    if (dzTrack.imgUrl) score += 2
+    if (dzTrack.previewUrl) score += 1
+
+    return score
+}
+
+async function fetchYoutubeTracks(term) {
+    if (!YOUTUBE_API_KEY) {
+        console.warn('Missing VITE_YOUTUBE_API_KEY')
+        return []
+    }
+
+    if (!youtubeFetchCache[term]) {
+        youtubeFetchCache[term] = (async () => {
+            const searchParams = new URLSearchParams({
+                key: YOUTUBE_API_KEY,
+                part: 'snippet',
+                q: term,
+                type: 'video',
+                maxResults: '25',
+                videoEmbeddable: 'true',
+                videoSyndicated: 'true',
+                videoCategoryId: '10'
+            })
+
+            const searchJson = await fetchJson(`https://www.googleapis.com/youtube/v3/search?${searchParams}`)
+
+            const ids = (searchJson.items || [])
+                .map(item => item?.id?.videoId)
+                .filter(Boolean)
+
+            if (!ids.length) return []
+
+            const detailsParams = new URLSearchParams({
+                key: YOUTUBE_API_KEY,
+                part: 'snippet,contentDetails,status',
+                id: ids.join(',')
+            })
+
+            const detailsJson = await fetchJson(`https://www.googleapis.com/youtube/v3/videos?${detailsParams}`)
+
+            return (detailsJson.items || [])
+                .filter(video => video?.status?.embeddable !== false)
+                .map(video => {
+                    const duration = parseISODurationToSeconds(video.contentDetails?.duration)
+
+                    return {
+                        youtubeId: video.id,
+                        title: video.snippet?.title || 'Unknown title',
+                        url: `https://www.youtube.com/watch?v=${video.id}`,
+                        youtubeImgUrl:
+                            video.snippet?.thumbnails?.maxres?.url ||
+                            video.snippet?.thumbnails?.standard?.url ||
+                            video.snippet?.thumbnails?.high?.url ||
+                            video.snippet?.thumbnails?.medium?.url ||
+                            video.snippet?.thumbnails?.default?.url ||
+                            '',
+                        artists: [video.snippet?.channelTitle || 'Unknown artist'],
+                        addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
+                        album: 'YouTube',
+                        duration,
+                        durationLabel: formatDuration(duration),
+                        type: 'song'
+                    }
+                })
+        })()
+    }
+
+    return youtubeFetchCache[term]
+}
+
+async function fetchDeezerTracks(term) {
+    if (!deezerFetchCache[term]) {
+        const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(term)}&limit=25&output=jsonp`
+
+        deezerFetchCache[term] = fetchJsonp(deezerUrl)
+            .then(res => {
                 if (!res.ok) throw new Error('Deezer API unavailable')
                 return res.json()
             })
+            .then(json => {
+                const availableTracks = json?.data?.filter(track => track.readable === true) || []
+                const tracksToUse = availableTracks.length ? availableTracks : (json?.data || [])
+
+                return tracksToUse.map(track => {
+                    const duration = Number(track.duration) || 0
+
+                    return {
+                        title: track.title || 'Unknown title',
+                        previewUrl: track.preview || '',
+                        imgUrl:
+                            track.album?.cover_big ||
+                            track.album?.cover_medium ||
+                            track.album?.cover ||
+                            '',
+                        artists: [track.artist?.name || 'Unknown'],
+                        album: track.album?.title || 'Unknown album',
+                        duration,
+                        durationLabel: formatDuration(duration),
+                        readable: track.readable === true,
+                        type: 'song'
+                    }
+                })
+            })
+    }
+
+    return deezerFetchCache[term]
+}
+
+async function _generateSong(idx) {
+    const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
+
+    try {
+        const [youtubeTracks, deezerTracks] = await Promise.all([
+            fetchYoutubeTracks(term),
+            fetchDeezerTracks(term)
+        ])
+
+        const ytTrack = youtubeTracks.length ? youtubeTracks[idx % youtubeTracks.length] : null
+
+        if (ytTrack) {
+            let bestDeezer = null
+
+            if (deezerTracks.length) {
+                bestDeezer = [...deezerTracks].sort(
+                    (a, b) => scoreDeezerMatch(ytTrack, b, term) - scoreDeezerMatch(ytTrack, a, term)
+                )[0]
+            }
+
+            // Fix: Prioritize Deezer's studio track duration over YouTube's music video duration
+            const resolvedDuration =
+                (bestDeezer && bestDeezer.duration > 0) ? bestDeezer.duration :
+                (ytTrack && ytTrack.duration > 0) ? ytTrack.duration :
+                getRandomIntInclusive(180, 420)
+
+            return {
+                _id: makeId(),
+                title: bestDeezer?.title || ytTrack.title,
+                url: ytTrack.url,
+                youtubeId: ytTrack.youtubeId,
+                previewUrl: bestDeezer?.previewUrl || '',
+                imgUrl: bestDeezer?.imgUrl || ytTrack.youtubeImgUrl || FALLBACK_IMG_URLS[idx % FALLBACK_IMG_URLS.length],
+                artists: bestDeezer?.artists || ytTrack.artists || [FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]],
+                addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
+                album: bestDeezer?.album || ytTrack.album || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
+                duration: resolvedDuration,
+                durationLabel: formatDuration(resolvedDuration),
+                type: 'song'
+            }
         }
 
-        const json = await deezerFetchCache[term]
+        if (deezerTracks.length) {
+            const track = deezerTracks[idx % deezerTracks.length]
+            const resolvedDuration = track.duration || getRandomIntInclusive(180, 420)
 
-        // 1. FILTER IMMEDIATELY: Keep only tracks available in the user's current location
-        // Tracks that cannot be played here will have track.readable === false
-        const availableTracks = json?.data?.filter(track => track.readable === true) || []
-
-        // 2. Fall back to the original list if the filtered array is completely empty
-        const tracksToUse = availableTracks.length > 0 ? availableTracks : (json?.data || [])
-
-        // 3. Pick a track using modulo safely against our available tracks array
-        const track = tracksToUse[idx % tracksToUse.length]
-
-        if (track && track.title) {
             return {
                 _id: makeId(),
                 title: track.title,
-                url: track.preview || `https://example.com/track/${idx}`,
-                imgUrl: track.album?.cover_big || track.album?.cover_medium || '',
-                artists: [track.artist?.name || 'Unknown'],
+                url: track.previewUrl || `https://example.com/track/${idx}`,
+                previewUrl: track.previewUrl || '',
+                imgUrl: track.imgUrl || FALLBACK_IMG_URLS[idx % FALLBACK_IMG_URLS.length],
+                artists: track.artists || [FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]],
                 addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
-                album: track.album?.title || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
-                duration: track.duration || getRandomIntInclusive(180, 420),
+                album: track.album || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
+                duration: resolvedDuration,
+                durationLabel: formatDuration(resolvedDuration),
                 type: 'song'
             }
         }
     } catch (err) {
-        console.warn(`Deezer fetch failed for ${term}, using fallback data.`, err)
+        console.warn(`YouTube/Deezer fetch failed for ${term}, using fallback data.`, err)
     }
 
-    // Fallback data
+    const fallbackDuration = getRandomIntInclusive(180, 420)
+
     return {
         _id: makeId(),
         title: FALLBACK_TITLES[idx % FALLBACK_TITLES.length],
         url: `https://example.com/track/${idx}`,
+        previewUrl: '',
         imgUrl: FALLBACK_IMG_URLS[idx % FALLBACK_IMG_URLS.length],
         artists: [FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]],
         addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
         album: FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
-        duration: getRandomIntInclusive(180, 420),
+        duration: fallbackDuration,
+        durationLabel: formatDuration(fallbackDuration),
         type: 'song'
     }
 }
@@ -243,7 +434,7 @@ async function _generateStation(idx) {
     }
 
     const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
-    const shuffledSongs = allSongs.sort(() => Math.random() - 0.5)
+    const shuffledSongs = [...allSongs].sort(() => Math.random() - 0.5)
     const stationSongs = shuffledSongs.slice(0, getRandomIntInclusive(15, 30))
 
     const allUsers = await loadFromStorage('userDB') || []
