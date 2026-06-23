@@ -1,0 +1,114 @@
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    z-index: 1000;
+}
+
+.details-modal {
+    width: 32rem;
+
+    padding: 1.5rem;
+
+    border-radius: 8px;
+
+    background-color: #3e3e3e;
+    color: var(--text-main);
+
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+
+    h2 {
+        margin: 0 0 1rem;
+
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    form {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
+
+.details-modal__img {
+    width: 150px;
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 4px;
+
+    flex-shrink: 0;
+}
+
+.details-modal__content {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.details-modal input {
+    width: 100%;
+
+    padding: 0.5rem;
+
+    border: none;
+
+    background-color: var(--gray1);
+    color: var(--gray4);
+
+    font-size: 1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-actions button {
+    padding: 0.5rem 1rem;
+
+    color: var( --gray4);
+    background-color: var(--gray1);
+
+    border-radius: 100vw;
+
+    &:hover {
+        background-color: var(--gray2);
+    }
+
+    border: none;
+
+    cursor: pointer;
+}
+
+.details-modal__img-upload {
+    cursor: pointer;
+    position: relative;
+}
+
+.details-modal__img-upload:hover::after {
+    content: "Change photo";
+
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    color: white;
+    font-weight: 600;
+}

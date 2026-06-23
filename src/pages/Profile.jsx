@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
 import { SongList } from '../cmps/globalCmps/SongList'
+import { EditModal } from '../cmps/globalCmps/EditModal'
 
 import { loadUser, updateUser } from '../store/actions/user.actions'
 import { store } from '../store/store'
@@ -18,6 +19,7 @@ export function Profile() {
   const params = useParams()
   const user = useSelector(storeState => storeState.userModule.watchedUser)
   const songs = useSelector(storeState => storeState.songModule.songs)
+  const [isEditOpen, setIsEditOpen] = useState(false)
   const [likedStations, setLikedStations] = useState([])
 
   const likedSongs = songs.filter(song =>
@@ -106,7 +108,9 @@ export function Profile() {
             <div className="user-details-header">
               <p className="profile-type">Profile</p>
 
-              <h1 onClick={changeNickname}>{user.fullname}</h1>
+              <h1 onClick={() => setIsEditOpen(true)}>
+                {user.fullname}
+              </h1>
 
               <p className="profile-stats">
                 {user.likedStationIds?.length || 0} public playlists · 0 following
@@ -132,6 +136,15 @@ export function Profile() {
               <h2>Liked Songs</h2>
               <SongList songs={likedSongs} />
             </section>
+          )}
+
+          {isEditOpen && (
+            <EditModal
+              title="Edit profile"
+              entity={user}
+              onClose={() => setIsEditOpen(false)}
+              onSave={updateUser}
+            />
           )}
         </>
       )}

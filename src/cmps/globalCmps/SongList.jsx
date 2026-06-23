@@ -1,7 +1,7 @@
 import React from 'react'
 import SongPreview from './SongPreview'
 
-export function SongList({ songs = [] }) {
+export function SongList({ songs = [], isOwner }) {
     if (!songs || songs.length === 0) return <div className="song-list song-list--empty">No songs</div>
 
     return (

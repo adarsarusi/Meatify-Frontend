@@ -72,14 +72,11 @@ async function save(station) {
         savedStation = await storageService.put(STATION_STORAGE_KEY, station)
     } else {
         const stationToSave = {
-            name: station.name,
-            tags: station.tags || [],
-            genres: station.genres || [],
-            songs: station.songs || [],
-            isPrivate: station.isPrivate || false,
-            createdBy: userService.getLoggedinUser() || { fullname: 'You', imgUrl: '', _id: 'guest' },
-            savedCount: 0,
-            createdAt: Date.now()
+            ...station,
+            createdBy: userService.getLoggedinUser(),
+            savedCount: station.savedCount || 0,
+            createdAt: Date.now(),
+            type: 'station'
         }
         savedStation = await storageService.post(STATION_STORAGE_KEY, stationToSave)
     }
@@ -173,22 +170,22 @@ async function _initData(key, generateFn, count) {
 
 function parseISODurationToSeconds(iso) {
     if (!iso) return 0
-    
+
     // Robust regex that gracefully handles Days, Hours, Minutes, and Seconds (e.g., P1DT2H, PT5M4S)
     const match = iso.match(/P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/i)
     if (!match) return 0
-    
+
     const [, d, h, m, s] = match
-    return (Number(d || 0) * 86400) + 
-           (Number(h || 0) * 3600) + 
-           (Number(m || 0) * 60) + 
-           Number(s || 0)
+    return (Number(d || 0) * 86400) +
+        (Number(h || 0) * 3600) +
+        (Number(m || 0) * 60) +
+        Number(s || 0)
 }
 
 function formatDuration(seconds) {
     // Catch invalid inputs to prevent NaN:NaN renders
     if (seconds === null || seconds === undefined || isNaN(Number(seconds))) return '0:00'
-    
+
     const totalSeconds = Math.max(0, Math.floor(Number(seconds)))
     const hours = Math.floor(totalSeconds / 3600)
     const minutes = Math.floor((totalSeconds % 3600) / 60)
@@ -362,8 +359,8 @@ async function _generateSong(idx) {
             // Fix: Prioritize Deezer's studio track duration over YouTube's music video duration
             const resolvedDuration =
                 (bestDeezer && bestDeezer.duration > 0) ? bestDeezer.duration :
-                (ytTrack && ytTrack.duration > 0) ? ytTrack.duration :
-                getRandomIntInclusive(180, 420)
+                    (ytTrack && ytTrack.duration > 0) ? ytTrack.duration :
+                        getRandomIntInclusive(180, 420)
 
             return {
                 _id: makeId(),
