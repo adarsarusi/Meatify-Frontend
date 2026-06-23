@@ -2,17 +2,21 @@ import { useState } from 'react'
 import { uploadService } from '../../services/upload.service'
 
 export function EditModal({ title, entity, onSave, onClose }) {
+    const isUser = entity.type !== 'station'
+
     const [name, setName] = useState(entity.fullname || entity.name || '')
-    const [imgUrl, setImgUrl] = useState(entity.imgUrl || '')
+
+    const [imgUrl, setImgUrl] = useState(entity.imgUrl || entity.uploadImgUrl || '')
 
     function handleSubmit(ev) {
         ev.preventDefault()
 
         onSave({
             ...entity,
-            imgUrl,
-            fullname: entity.fullname ? name : undefined,
-            name: entity.name ? name : undefined
+
+            ...(isUser ? { imgUrl } : { uploadImgUrl: imgUrl }),
+
+            ...(entity.fullname ? { fullname: name } : { name })
         })
 
         onClose()
@@ -21,6 +25,7 @@ export function EditModal({ title, entity, onSave, onClose }) {
     async function onUploadImg(ev) {
         try {
             const imgData = await uploadService.uploadImg(ev)
+
             setImgUrl(imgData.secure_url)
 
         } catch (err) {
@@ -30,16 +35,15 @@ export function EditModal({ title, entity, onSave, onClose }) {
 
     return (
         <div className="modal-backdrop" onClick={onClose}>
-            <div className="details-modal" onClick={ev => ev.stopPropagation()}>
+            <div
+                className="details-modal"
+                onClick={ev => ev.stopPropagation()}
+            >
                 <h2>{title}</h2>
 
                 <form onSubmit={handleSubmit}>
                     <label className="details-modal__img-upload">
-                        <img
-                            className="details-modal__img"
-                            src={imgUrl}
-                            alt=""
-                        />
+                        <img className="details-modal__img" src={imgUrl} alt="" />
 
                         <input
                             type="file"
@@ -52,10 +56,11 @@ export function EditModal({ title, entity, onSave, onClose }) {
                     <div className="details-modal__content">
                         <input autoFocus
                             value={name}
-                            onChange={ev => setName(ev.target.value)} />
+                            onChange={ev => setName(ev.target.value)}
+                        />
 
                         <div className="modal-actions">
-                            <button type="button" onClick={onClose} >
+                            <button type="button" onClick={onClose}>
                                 Cancel
                             </button>
 
