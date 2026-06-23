@@ -48,10 +48,21 @@
     white-space: nowrap;
 }
 
-.song-preview__meta .song-preview__artists {
+
+
+
+.song-preview__meta {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+
+
+
+
+
+
+
+
 
 .song-preview__img img {
     width: 3.5rem;

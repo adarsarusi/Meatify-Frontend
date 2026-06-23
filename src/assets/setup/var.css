@@ -19,34 +19,42 @@
   --icon--active: #1DB954;
 
   --circle-bg-hover: #1f1f1f;
-
-  --creatorIndex: 1;
+  
   --gradient1: linear-gradient(180deg, var(--accent) 0%, var(--bg-base) 80%);
-
+  
   --gray1: #ddd;
   --gray2: #aaa;
   --gray3: #777;
   --gray4: #333;
-
+  
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
-
+  
   --button-hover-scale: 1.04;
 
 
+    /* Sizes */
+  --creatorIndex: 1;
+  
+  /* Text-sizes */
 
+  /* Base text */
+  --font-xs: 0.75rem;   /* 12px */
+  --font-sm: 0.875rem;  /* 14px */
+  --font-md: 1rem;      /* 16px */
+  --font-lg: 1.125rem;  /* 18px */
+  
+  /* Headings */
+  --font-xl: 1.25rem;   /* 20px */
+  --font-2xl: 1.5rem;   /* 24px */
+  --font-3xl: 2rem;     /* 32px */
+  --font-4xl: 2.5rem;   /* 40px */
+  
+ 
 
+/* Spotify-colors vars  */
 
-
-
-
-
-
-
-
-
-  /* test */
-  /* --background-base: #121212;
+  --background-base: #121212;
   --background-highlight: #1f1f1f;
   --background-press: #000;
   --background-elevated-base: #1f1f1f;
@@ -55,6 +63,7 @@
   --background-tinted-base: #ffffff1a;
   --background-tinted-highlight: #ffffff24;
   --background-tinted-press: #ffffff36;
+
   --text-base: #fff;
   --text-subdued: #b3b3b3;
   --text-bright-accent: #1ed760;
@@ -62,6 +71,7 @@
   --text-warning: #ffa42b;
   --text-positive: #1ed760;
   --text-announcement: #539df5;
+
   --essential-base: #fff;
   --essential-subdued: #7c7c7c;
   --essential-bright-accent: #1ed760;
@@ -69,6 +79,7 @@
   --essential-warning: #ffa42b;
   --essential-positive: #1ed760;
   --essential-announcement: #1278f2;
+
   --decorative-base: #fff;
-  --decorative-subdued: #292929; */
-}
+  --decorative-subdued: #292929;
+  }
