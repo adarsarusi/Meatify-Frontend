@@ -10,32 +10,45 @@ export const ADD_SONG_TO_STATION = "ADD_SONG_TO_STATION"
 export const REMOVE_SONG_FROM_STATION = "REMOVE_SONG_FROM_STATION"
 
 const initialStationState = {
-  stations: [],
-  selectedStation: null,
-  lastWatchedStationId: null,
-  lastWatchedStations: [],
-  filterBy: { txt: "", tags: [], genres: [], artists: [] },
-  isLoading: false,
+    stations: [],
+    userLikedStation: {
+        _id: 'likedSongs',
+        name: 'Liked Songs',
+        type: 'station',
+        createdBy: {
+            _id: '',
+            fullname: '',
+            imgUrl: '',
+        },
+        songs: [],
+        uploadImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.png',
+    },
+    selectedStation: null,
+    lastWatchedStationId: null,
+    lastWatchedStations: [],
+    filterBy: { txt: '', tags: [], genres: [], artists: [] },
+    isLoading: false
 }
-console.log("initialStationState", initialStationState)
 
 export function stationReducer(state = initialStationState, action = {}) {
-  switch (action.type) {
-    case SET_STATIONS:
-      return { ...state, stations: action.stations }
+    switch (action.type) {
+        case SET_STATIONS:
+            const allStations = action.stations.filter(station => station._id !== 'likedSongs')
+            return {
+                ...state,
+                stations: [state.userLikedStation, ...allStations]
+            }
 
-    case SET_STATION:
-      const isAlreadyWatched = state.lastWatchedStations.includes(
-        action.station._id,
-      )
-      return {
-        ...state,
-        selectedStation: action.station,
-        lastWatchedStationId: action.station._id,
-        lastWatchedStations: isAlreadyWatched
-          ? state.lastWatchedStations
-          : [...state.lastWatchedStations, state.lastWatchedStationId],
-      }
+        case SET_STATION:
+            const isAlreadyWatched = state.lastWatchedStations.includes(action.station._id)
+            return {
+                ...state,
+                selectedStation: action.station,
+                lastWatchedStationId: action.station._id,
+                lastWatchedStations: isAlreadyWatched
+                    ? state.lastWatchedStations
+                    : [...state.lastWatchedStations, action.station._id],
+            }
 
     case REMOVE_STATION:
       return {

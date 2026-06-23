@@ -2,7 +2,13 @@ import { StationCover } from "./StationCover"
 import { useState, useEffect } from "react"
 import { IconComp } from "./IconComp"
 
-export function StationHeader({ station, isOwner, onRemoveStation, onEditStation }) {
+export function StationHeader({
+    likedStation,
+    station,
+    isOwner,
+    onRemoveStation,
+    onEditStation,
+    user, }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     useEffect(() => {
@@ -16,8 +22,6 @@ export function StationHeader({ station, isOwner, onRemoveStation, onEditStation
             window.removeEventListener('click', closeMenu)
         }
     }, [])
-
-    if (!station) return null
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -85,7 +89,7 @@ export function StationHeader({ station, isOwner, onRemoveStation, onEditStation
                             <div className="avatar-wrapper" style={{ "--index": 1 }}>
                                 <img src={station.createdBy?.imgUrl || ''} alt={station.createdBy?.fullname || ''} />
                             </div>
-                            {station.participants?.map((participant, i) => (
+                            {!likedStation && station.participants?.map((participant, i) => (
                                 <div className="avatar-wrapper" key={participant._id} style={{ "--index": i + 2 }}>
                                     <img src={participant.imgUrl} alt={participant.fullname} />
                                 </div>
@@ -97,8 +101,8 @@ export function StationHeader({ station, isOwner, onRemoveStation, onEditStation
                         )}
                     </div>
 
-                    <p> • {station.savedCount ?? 0} saves • </p>
-                    <p>{station.songs?.length ?? 0} songs,</p>
+                    {!likedStation && <p> • {station.savedCount ?? 0} saves • </p>}
+                    <p> {station.songs?.length ?? 0} songs,</p>
                     <p>about {formatDuration(station.songs)}</p>
                 </div>
 

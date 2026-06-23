@@ -4,6 +4,7 @@ import { userService } from '../user'
 import { generateDemoUsers } from '../user/user.service.local'
 import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive, utilService, getRandomFromArr } from '../util.service'
 
+
 const STATION_STORAGE_KEY = 'stationDB'
 const SONG_STORAGE_KEY = 'songDB'
 
@@ -20,7 +21,28 @@ export const stationService = {
 window.cs = stationService
 
 async function query(filterBy = {}) {
-    let stations = await storageService.query(STATION_STORAGE_KEY)
+    let stations = await storageService.query(STATION_STORAGE_KEY) || []
+
+    const hasLikedStation = stations.some(station => station._id === 'likedSongs')
+    
+    if (!hasLikedStation) {
+        const likedStation = {
+            _id: 'likedSongs',
+            name: 'Liked Songs',
+            type: 'station',
+            createdBy: userService.getLoggedinUser() || { _id: 'guest', fullname: 'You', imgUrl: '' },
+            songs: [],
+            uploadImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.png',
+            isPrivate: true,
+            savedCount: 0,
+            createdAt: Date.now()
+        }
+        
+        stations.unshift(likedStation)
+        
+        await saveToStorage(STATION_STORAGE_KEY, stations)
+    }
+
     const { txt, tags, genres, artists } = filterBy
 
     if (txt) {
@@ -63,6 +85,9 @@ async function getByIds(stationIds) {
 }
 
 async function remove(stationId) {
+    if (stationId === 'likedSongs') {
+        throw new Error('Cannot remove the Liked Songs station')
+    }
     await storageService.remove(STATION_STORAGE_KEY, stationId)
 }
 
@@ -162,8 +187,8 @@ export async function generateSpotifyData(songsCount = 381, stationsCount = 147)
 
 async function _initData(key, generateFn, count) {
     let data = await loadFromStorage(key)
-    if (data && data.length > 0) return
-
+    if (data && data.length > 1) return
+    
     data = await Promise.all(Array.from({ length: count }, (_, i) => generateFn(i)))
     await saveToStorage(key, data)
 }

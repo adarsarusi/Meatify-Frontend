@@ -11,10 +11,9 @@ export function StationCover({ entity }) {
         entity.imgUrl
 
     return (
-        <article className="station-cover">
-
-            {coverImg ? (
-                <img src={coverImg} alt={entity.name || ''} className="station-img" />
+        <article className="station-cover-img">
+            {entity?.uploadImgUrl ? (
+                <img src={entity?.uploadImgUrl} alt='' />
             ) : isMediaType ? (
                 <img src={entity.imgUrl} alt={entity.name || ''} className="station-img" />
             ) : (
