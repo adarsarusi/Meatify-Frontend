@@ -32,7 +32,7 @@
     >.dynamic-area {
         grid-area: a;
         border-radius: 0.5rem;
-        background: var(--bg-base);
+        background: var(--background-base);
     }
 
     >.artist-info {
@@ -43,7 +43,7 @@
     .app-library {
         padding: 1rem;
         border-radius: 0.5rem;
-        background: var(--bg-base);
+        background: var(--background-base);
     }
 
     &.expanded {

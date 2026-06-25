@@ -53,10 +53,10 @@
   border: none;
   /* width: 32px; */
   cursor: pointer;
-  fill: var(--text-muted);
+  color: var(--text-muted);
 
   :hover {
-    fill: var(--text-main);
+    color: var(--text-main);
   }
 }
 

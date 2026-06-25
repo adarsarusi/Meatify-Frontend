@@ -82,4 +82,34 @@
 
   --decorative-base: #fff;
   --decorative-subdued: #292929;
+
+
+
+
+
+  /* Other vars */
+    --encore-shortest-1: 50ms;
+    --encore-shortest-2: .1s;
+    --encore-shortest-3: .15s;
+    --encore-shortest-4: .2s;
+    --encore-short-1: .25s;
+    --encore-short-2: .3s;
+    --encore-productive: cubic-bezier(.3, 0, 0, 1);
+    --encore-productive-decelerate: cubic-bezier(0, 0, .2, 1);
+    --encore-productive-accelerate: cubic-bezier(.8, 0, 1, 1);
+    --encore-productive-exit-duration: var(--encore-shortest-4);
+    --encore-opacity-disabled: .3;
+    --encore-opacity-active: .7;
+    --encore-border-radius-rounded: 9999px;
+    --encore-overlay-box-shadow: 0 4px 12px 0 #0000004d;
+    --encore-overlay-drop-shadow: 0 4px 6px #0000004d;
+    --encore-focus-box-shadow: 0 3px 0 0;
+    --encore-sidebar-base-width: 200px;
+    --encore-z-index-popover: 1060;
+    --encore-z-index-skiplink: 9999;
+    --encore-z-index-dialog: 1050;
+    --encore-button-hover-scale: 1.04;
+    --encore-productive-enter: var(--encore-short-1) var(--encore-productive-decelerate);
+    --encore-productive-exit: var(--encore-shortest-4) var(--encore-productive-accelerate);
   }
+  

@@ -1,0 +1,88 @@
+/* Flex helpers */
+.flex {
+    display: flex;
+
+    >.full {
+        flex: 1;
+    }
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.justify-center {
+        justify-content: center;
+    }
+
+    &.align-center {
+        align-items: center;
+    }
+}
+
+/* Simple and useful CSS Debugging Technique */
+.debug * {
+    outline: 1px solid gold
+}
+
+
+.btn {
+    position: relative;
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+
+    height: 2.1875rem;
+    aspect-ratio: 1/1;
+
+    padding: 0.5rem;
+
+    cursor: pointer;
+    text-align: center;
+    border-radius: 9999px;
+    border: none;
+
+    background-color: transparent;
+    transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+
+    &.hover-bg {
+        &:hover {
+            background-color: var(--background-highlight);
+            color: var(--essential-base);
+        }
+    }
+
+    &.bg-button {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 0.5rem;
+
+        font-weight: 600;
+        color: var(--essential-base);
+
+        padding: 0.5rem 1rem;
+
+        background-color: var(--background-elevated-base);
+        transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+
+        &:hover {
+            background-color: var(--background-elevated-highlight);
+            .icon {
+                color: var(--icon--white);
+            }
+        }
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    &.active {
+        color: var(--icon--active);
+    }
+}

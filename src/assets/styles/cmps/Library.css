@@ -1,0 +1,19 @@
+.app-library {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+
+    >.library-controls {
+        display: flex;
+    }
+}
+
+.library-controls{
+    gap: 5px;
+}

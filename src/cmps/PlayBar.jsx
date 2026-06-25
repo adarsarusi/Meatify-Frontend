@@ -107,7 +107,7 @@ export function PlayBar() {
       <div className="center-control">
         <div className="main-buttons">
           <button
-            className="shuffle-song-btn playbar-btn icon-btn"
+            className="shuffle-song-btn playbar-btn btn"
             onClick={() => handleShuffle(queue)}
             title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
           >
@@ -118,12 +118,12 @@ export function PlayBar() {
           </button>
 
           <button
-            className="previous-song-btn playbar-btn icon-btn"
+            className="previous-song-btn playbar-btn btn"
             onClick={() => handleNextPrev("prev")}
           >
             <IconComp name="previous-song" className="icon--muted" />
           </button>
-          <button className="playpause-btn " onClick={onTogglePlay}>
+          <button className="playpause-btn btn " onClick={onTogglePlay}>
             {isPlaying ? (
               <IconComp name="pause" className="icon--black" />
             ) : (
@@ -131,7 +131,7 @@ export function PlayBar() {
             )}
           </button>
           <button
-            className="next-song-btn playbar-btn icon-btn"
+            className="next-song-btn playbar-btn "
             onClick={() => handleNextPrev("next")}
           >
             <IconComp name="next-song" className="icon--muted" />
@@ -165,7 +165,7 @@ export function PlayBar() {
       </div>
 
       <div className="volume-container">
-        <button className="volume-icon-btn playbar-btn" onClick={onToggleMute}>
+        <button className="volume- playbar-btn" onClick={onToggleMute}>
           {isMuted ? (
             <IconComp name="volume-off" className="icon--muted" />
           ) : (

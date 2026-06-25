@@ -1,0 +1,31 @@
+:root {
+  --icon-size-sm:   1rem;      /* 16px */
+  --icon-size:      1.25rem;   /* 20px — default */
+  --icon-size-md:   1.5rem;    /* 24px */
+  --icon-size-lg:   2rem;      /* 32px */
+  --icon-size-xl:   3rem;      /* 48px */
+}
+
+/* --- Base --- */
+.icon {
+  display: inline-block;
+  width: var(--icon-size);
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  vertical-align: middle;
+  color: inherit;
+  fill: currentColor;
+  transition: color 160ms ease, transform 160ms ease, opacity 160ms ease;
+}
+
+/* --- Sizes --- */
+.icon--sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
+.icon--md { width: var(--icon-size-md); height: var(--icon-size-md); }
+.icon--lg { width: var(--icon-size-lg); height: var(--icon-size-lg); }
+.icon--xl { width: var(--icon-size-xl); height: var(--icon-size-xl); }
+
+/* --- Colors --- */
+.icon--muted   { color: var(--icon--muted); }
+.icon--white   { color: var(--icon--white); }
+.icon--green   { color: var(--icon--green); }
+.icon--active  { color: var(--icon--active); }

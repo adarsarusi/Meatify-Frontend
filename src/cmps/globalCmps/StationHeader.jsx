@@ -47,7 +47,7 @@ export function StationHeader({
                 {isOwner && (
                     <div className="station-menu-container">
 
-                        <button className="icon-btn"
+                        <button className=""
                             onClick={(ev) => {
                                 ev.stopPropagation()
                                 setIsMenuOpen(prev => !prev)

@@ -1,10 +1,9 @@
 export function IconComp({ name, size = 24, className = '', label }) {
     return (
-        <div className="icon-container">
             <svg
                 width={size}
                 height={size}
-                className={`icon icon-${name} ${className}`}
+                className={`icon icon-${name} ${className}`.trim()}
                 aria-hidden={!label}
                 aria-label={label}
                 role={label ? 'img' : undefined}
@@ -12,7 +11,5 @@ export function IconComp({ name, size = 24, className = '', label }) {
             >
                 <use href={`/src/assets/icons/Icons.svg#icon-${name}`} />
             </svg>
-        </div>
-
     )
 }

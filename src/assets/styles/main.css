@@ -1,5 +1,6 @@
 @import "setup/var.css";
 @import "setup/typography.css";
+@import "setup/reset.css";
 
 @import "basics/helpers.css";
 @import "basics/layout.css";
@@ -27,11 +28,10 @@
 @import "cmps/SquarePreview.css";
 @import "cmps/StationCover.css";
 @import "cmps/EditModal.css";
-
+@import "cmps/LikeBtn.css";
 @import "cmps/SearchResultsDropdown.css";
 @import "cmps/PlayBar.css";
-@import "icons/Icons.css";
-@import "icons/LikeBtn.css";
+@import "cmps/Icons.css";
 
 /* Pages */
 @import "pages/StationDetails.css";

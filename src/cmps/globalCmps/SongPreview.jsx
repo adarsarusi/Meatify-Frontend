@@ -35,7 +35,7 @@ export function PreviewSong({ song, index }) {
                         userField="likedSongIds"
                     />
                 </div>
-                <button className="song-preview__btn song-preview__btn--more icon-btn btn-reset">
+                <button className="song-preview__btn song-preview__btn--more  btn-reset">
                     <IconComp name="more" className="icon--white" />
                 </button>
             </div>

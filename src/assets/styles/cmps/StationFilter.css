@@ -9,7 +9,7 @@
     gap: 10px;
 }
 
-.station-filter__search-btn {
+/* .station-filter__search-btn {
     background: none;
     border: none;
     cursor: pointer;
@@ -20,7 +20,7 @@
     &:hover {
         opacity: 1;
     }
-}
+} */
 
 .grid-toggle-btn {
     cursor: pointer;
