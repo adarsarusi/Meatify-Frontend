@@ -36,6 +36,7 @@ export function PlayBar() {
   const [originalQueue, setOriginalQueue] = useState([])
 
   function handleNextPrev(direction) {
+    if (isRepeat) return
     const currIdx = queue.findIndex((song) => song._id === currentSong._id)
 
     const nextSong =
@@ -85,10 +86,7 @@ export function PlayBar() {
   }
 
   function onRepeat() {
-    console.log(isRepeat)
-
     setIsRepeat(!isRepeat)
-    console.log(isRepeat)
   }
 
   return (
