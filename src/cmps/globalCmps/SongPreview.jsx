@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { IconComp } from './IconComp'
 
 import { LikeBtn } from '../LikeBtn'
@@ -6,6 +7,7 @@ import { StationCover } from './StationCover'
 import { setCurrentSong } from '../../store/actions/player.actions'
 
 export function PreviewSong({ song, index }) {
+      const navigate = useNavigate()
 
     function formatTime(seconds = 0) {
         const m = Math.floor(seconds / 60)
@@ -13,8 +15,13 @@ export function PreviewSong({ song, index }) {
         return `${m}:${s.toString().padStart(2, '0')}`
     }
 
+    function navigateToSong(ev){
+        ev.preventDefault()
+      navigate(`/song/${song._id}`)
+    }
+
     return (
-        <article className="song-preview__item">
+        <article className="song-preview__item" onClick={navigateToSong}>
             <p className="song-preview__index">{index}</p>
 
             <div className="song-preview__meta">

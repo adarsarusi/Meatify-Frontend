@@ -12,7 +12,7 @@ import { Library } from "./cmps/Library.jsx"
 import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
 import { StationDetails } from "./pages/StationDetails.jsx"
 import { Profile } from "./pages/Profile.jsx"
-
+import { SongDetails } from "./pages/SongDetails.jsx"
 
 
 import { PlayBar } from "./cmps/PlayBar.jsx"
@@ -34,7 +34,7 @@ function App() {
             <Route path="/browse" element={<Browse />} />
             <Route path="station/:id" element={<StationDetails />} />
             <Route path="user/:id" element={<Profile />} />
-            {/* <Route path="song/:id" element={<SongDetails />} /> */}
+            <Route path="song/:id" element={<SongDetails />} />
           </Routes>
           <ArtistInfo />
         </main>
