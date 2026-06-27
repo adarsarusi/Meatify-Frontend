@@ -36,7 +36,6 @@ export function PlayBar() {
   const [originalQueue, setOriginalQueue] = useState([])
 
   function handleNextPrev(direction) {
-    if (isRepeat) return
     const currIdx = queue.findIndex((song) => song._id === currentSong._id)
 
     const nextSong =
@@ -193,7 +192,9 @@ export function PlayBar() {
           volume={isMuted ? 0 : volume}
           muted={isMuted}
           loop={isRepeat}
-          onEnded={() => handleNextPrev("next")}
+          onEnded={() => {
+            if (!isRepeat) handleNextPrev("next")
+          }}
           config={{
             youtube: {
               playerVars: { autoplay: 0 },
