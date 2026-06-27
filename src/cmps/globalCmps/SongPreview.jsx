@@ -16,7 +16,8 @@ export function PreviewSong({ song, index }) {
     }
 
     function navigateToSong(ev){
-        ev.preventDefault()
+        // Added z-index to song title because something sits above it and it prevents clicking on it
+        //  - need to fix and remove z-index.
       navigate(`/song/${song._id}`)
     }
 
@@ -27,8 +28,8 @@ export function PreviewSong({ song, index }) {
             <div className="song-preview__meta">
                 <StationCover entity={song} />
 
-                <div className='song-preview__meta-text'>
-                    <div className="song-preview__title" onClick={navigateToSong}>{song.title}</div>
+                <div className='song-preview__meta-text' >
+                    <div className="song-preview__title" style={{ cursor: 'pointer', zIndex: 10 }} onClick={navigateToSong} >{song.title}</div>
                     <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
