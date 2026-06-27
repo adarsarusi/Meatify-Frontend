@@ -21,14 +21,14 @@ export function PreviewSong({ song, index }) {
     }
 
     return (
-        <article className="song-preview__item" onClick={navigateToSong}>
+        <article className="song-preview__item">
             <p className="song-preview__index">{index}</p>
 
             <div className="song-preview__meta">
                 <StationCover entity={song} />
 
                 <div className='song-preview__meta-text'>
-                    <div className="song-preview__title">{song.title}</div>
+                    <div className="song-preview__title" onClick={navigateToSong}>{song.title}</div>
                     <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
