@@ -1,0 +1,57 @@
+.tag-details {
+    min-height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(80, 155, 245, 0.4) 0,
+        var(--bg-base) 350px
+    );
+}
+
+.tag-details__header {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+
+    min-height: 340px;
+    padding: 5rem 2rem 2rem;
+
+    img {
+        width: 232px;
+        height: 232px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+        flex-shrink: 0;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        color: white;
+    }
+
+    p:first-child {
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(3rem, 8vw, 6rem);
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+    }
+
+    p:last-child {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--text-subdued);
+    }
+}
+
+.tag-details .song-list {
+    padding: 1.5rem 2rem 3rem;
+}
