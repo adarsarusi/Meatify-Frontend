@@ -1,10 +1,9 @@
 .tag-details {
-    min-height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(80, 155, 245, 0.4) 0,
-        var(--bg-base) 350px
-    );
+    min-height: 0;
+    overflow-y: auto;
+    background: linear-gradient(to bottom,
+            rgba(80, 155, 245, 0.4) 0,
+            var(--bg-base) 350px);
 }
 
 .tag-details__header {
@@ -15,6 +14,8 @@
     min-height: 340px;
     padding: 5rem 2rem 2rem;
 
+    background-color: var(--tag-color);
+
     img {
         width: 232px;
         height: 232px;
@@ -24,7 +25,7 @@
         flex-shrink: 0;
     }
 
-    > div {
+    >div {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -52,6 +53,27 @@
     }
 }
 
-.tag-details .song-list {
-    padding: 1.5rem 2rem 3rem;
+.tag-details__lists {
+
+    background:
+        linear-gradient(to bottom,
+            color-mix(in srgb, var(--tag-color) 35%, transparent),
+            transparent 250px);
+}
+
+.tag-details__station-list,
+.tag-details__song-list {
+    padding: 2rem;
+    flex-shrink: 0;
+
+    ul{
+        list-style: none;
+    }
+
+    h2 {
+        margin: 0 0 1.5rem;
+
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
 }

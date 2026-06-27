@@ -8,6 +8,7 @@
 .library-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     >.library-controls {
         display: flex;
