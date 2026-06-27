@@ -55,7 +55,6 @@ export function PlayBar() {
       setQueue(originalQueue)
       setIsShuffle(false)
     }
-    console.log(queue)
   }
 
   function handleProgressChange(ev) {
