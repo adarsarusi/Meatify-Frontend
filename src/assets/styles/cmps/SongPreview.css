@@ -1,7 +1,7 @@
 .song-preview__item {
     position: relative;
     display: grid;
-    grid-template-columns: 2.5rem minmax(2.5rem, 1fr) auto auto auto auto;
+    grid-template-columns: 3.5rem repeat(auto-fit, minmax(2.5rem, 1fr));
     gap: 1rem;
     align-items: center;
     color: var(--text-main);
@@ -50,17 +50,10 @@
 
 
 
-
 .song-preview__meta {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
-
-
-
-
-
-
 
 
 

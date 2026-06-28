@@ -8,16 +8,15 @@ export const utilService = {
 
 window.cs = utilService
 
-export function makeId(prefix = '') {
-    let length = 6
-    var txt = ''
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+export function makeId(prefix = '', length = 6) {
+    let txt = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
+    for (let i = 0; i < length; i++) {
+        txt += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 
-    return `${prefix} + ${txt}`
+    return `${prefix}${txt}`;
 }
 
 export function makeLorem(size = 100) {

@@ -7,6 +7,16 @@
 }
 
 .station-cover-img {
+    position: relative;
     border-radius: 0.3rem;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.station-cover__hover {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: black;
+    opacity: 0;
 }

@@ -121,7 +121,7 @@ export function Profile() {
           {user.likedStationIds?.length > 0 && (
             <section className="user-details-liked-stations">
               <h2>Liked Playlists</h2>
-              <ul className='station-list demo-square-list'>
+              <ul className='station-list square-list'>
                 {likedStations.map(station =>
 
                   <li key={station._id} className="user-details-liked-stations-list">

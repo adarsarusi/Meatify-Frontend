@@ -77,28 +77,22 @@ export async function addStationMsg(stationId, txt) {
   }
 }
 
-export async function addSongToPlaylist(station, song) {
+export async function addSongToStation(stationId, songId) {
   try {
-    const updatedStation = {
-      ...station,
-      songs: [...station.songs, song],
-    }
-    await updateStation(updatedStation)
+    const addedSong = await stationService.addSongToStation(stationId, songId)
+    await updateStation(addedSong)
   } catch (err) {
-    console.log("Cannot add song to playlist", err)
+    console.log("Cannot add song to station", err)
     throw err
   }
 }
 
-export async function removeSongFromPlaylist(station, song) {
+export async function removeSongFromStation(stationId, songId) {
   try {
-    const updatedStation = {
-      ...station,
-      songs: station.songs.filter((s) => s._id !== song._id)
-    }
-    await updateStation(updatedStation)
+    const removedSong = await stationService.removeSongFromStation(stationId, songId)
+    await updateStation(removedSong)
   } catch (err) {
-    console.log("Cannot remove song from playlist", err)
+    console.log("Cannot remove song from station", err)
     throw err
   }
 }

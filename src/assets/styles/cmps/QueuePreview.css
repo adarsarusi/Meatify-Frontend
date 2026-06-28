@@ -1,4 +1,4 @@
-.station-preview {
+.queue-preview {
     position: relative;
 
     display: grid;
@@ -14,7 +14,7 @@
         background-color: var(--gray4);
         cursor: pointer;
 
-        .station-preview__controls {
+        .queue-preview__controls {
             opacity: 1;
         }
 
@@ -24,17 +24,17 @@
     }
 }
 
-.station-preview__title {
+.queue-preview__title {
     font-size: var(--font-base);
 }
 
-.station-preview__creator-name,
-.station-preview__song-length {
+.queue-preview__creator-name,
+.queue-preview__song-length {
     font-size: var(--font-sm);
     color: var(--text-subdued);
 }
 
-.station-preview__controls {
+.queue-preview__controls {
     z-index: 2;
     position: absolute;
 
@@ -53,11 +53,11 @@
     transition: opacity 150ms ease;
 }
 
-.station-preview__btn--play {
+.queue-preview__btn--play {
     z-index: 999;
     grid-column: 1;
 }
 
-.station-preview__btn--more {
+.queue-preview__btn--more {
     grid-column: -1;
 }

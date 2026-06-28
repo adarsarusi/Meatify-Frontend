@@ -21,7 +21,7 @@ export function PreviewSong({ song, index }) {
     }
 
     return (
-        <article className="song-preview__item" onClick={navigateToSong}>
+        <article className="song-preview__item" >
             <p className="song-preview__index">{index}</p>
 
             <div className="song-preview__meta">

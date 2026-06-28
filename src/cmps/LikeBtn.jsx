@@ -3,9 +3,14 @@ import { useSelector } from 'react-redux'
 import { updateUser } from '../store/actions/user.actions'
 import { IconComp } from './globalCmps/IconComp'
 
+import { addSongToStation, removeSongFromStation } from '../store/actions/station.actions'
+
 export function LikeBtn({ itemId, userField }) {
+
+    const stations = useSelector(storeState => storeState.stationModule.stations)
+
     const loggedinUser = useSelector(
-        state => state.userModule.user
+        storeState => storeState.userModule.user
     )
 
     if (!loggedinUser) return null
@@ -15,6 +20,8 @@ export function LikeBtn({ itemId, userField }) {
     const isLiked = likedIds.includes(itemId)
 
     async function toggleLike() {
+        const station = stations[0]
+
         try {
             const updatedUser = {
                 ...loggedinUser,
@@ -23,7 +30,9 @@ export function LikeBtn({ itemId, userField }) {
                     : [...likedIds, itemId]
             }
 
+            isLiked ? await removeSongFromStation(station._id, itemId) : await addSongToStation(station._id, itemId)
             await updateUser(updatedUser)
+
         } catch (err) {
             console.error('Cannot update likes', err)
         }

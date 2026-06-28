@@ -23,7 +23,7 @@ export function Explore() {
                 <p>Made For</p>
                 <h1>{user.fullname}</h1>
             </div>
-            <ul className="demo-square-list">
+            <ul className="square-list">
                 {stations.map(station =>
                     <li key={station._id} className="station-list-item">
                         <SquarePreview entity={station || []} />

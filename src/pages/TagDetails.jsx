@@ -59,7 +59,7 @@ export function TagDetails() {
                 {filteredStations.length > 0 && (
                     <div className="tag-details__station-list">
                         <h2>Stations</h2>
-                        <ul className='demo-square-list'>
+                        <ul className='square-list'>
                             {filteredStations.map(station =>
 
                                 <li key={station._id}>

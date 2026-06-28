@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
-import { songService } from "../services/song/song.service.local"
+import { songService } from "../services/song"
 
 export function SongDetails() {
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
