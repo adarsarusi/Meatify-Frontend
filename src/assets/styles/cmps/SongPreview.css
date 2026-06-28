@@ -1,7 +1,7 @@
 .song-preview__item {
     position: relative;
     display: grid;
-    grid-template-columns: 3.5rem repeat(auto-fit, minmax(2.5rem, 1fr));
+    grid-template-columns: 1rem minmax(180px, 4fr) minmax(120px, 2fr);
     gap: 1rem;
     align-items: center;
     color: var(--text-main);
@@ -19,12 +19,31 @@
         .song-preview__index {
             visibility: hidden;
         }
-    }
-}
 
-.song-preview__index {
-    padding: 0.5rem 1rem;
-    margin: 0;
+        .song-preview__play {
+            visibility: visible;
+        }
+    }
+
+    .song-preview__play {
+        display: grid;
+        place-items: center;
+        > * {
+            grid-area: 1 / 1 / -1 / -1 ;
+        }
+    }
+    
+    .song-preview__index {
+        visibility: visible;
+        padding: 0.5rem 1rem;
+        margin: 0;
+    }
+
+    .song-preview__btn--play {
+        visibility: hidden;
+    }
+
+
 }
 
 .song-preview__meta {

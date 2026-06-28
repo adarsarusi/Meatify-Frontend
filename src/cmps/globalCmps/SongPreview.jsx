@@ -21,8 +21,16 @@ export function PreviewSong({ song, index }) {
     }
 
     return (
-        <article className="song-preview__item" >
+        <section aria-label={song.title} className="song-preview__item" >
+            <div className='song-preview__play'>
+
             <p className="song-preview__index">{index}</p>
+            
+                <button className="song-preview__btn song-preview__btn--play btn-reset" onClick={()=>setCurrentSong(song)}>
+                    <IconComp name="play" className="icon--white" />
+                </button>
+
+            </div>
 
             <div className="song-preview__meta">
                 <StationCover entity={song} />
@@ -32,22 +40,22 @@ export function PreviewSong({ song, index }) {
                     <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
-            <div className="song-preview__controls">
-                <button className="song-preview__btn song-preview__btn--play btn-reset" onClick={()=>setCurrentSong(song)}>
-                    <IconComp name="play" className="icon--white" />
-                </button>
+   
+
                 <div className="song-preview__btn song-preview__btn--like">
                     <LikeBtn
                         itemId={song._id}
                         userField="likedSongIds"
                     />
                 </div>
+
                 <button className="song-preview__btn song-preview__btn--more  btn-reset">
                     <IconComp name="more" className="icon--white" />
                 </button>
-            </div>
+      
             <div className="song-preview__duration">{formatTime(song.duration)}</div>
-        </article>
+
+        </section>
     )
 }
 
