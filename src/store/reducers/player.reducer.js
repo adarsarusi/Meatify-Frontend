@@ -5,6 +5,7 @@ export const ADD_TO_QUEUE = "ADD_TO_QUEUE"
 export const REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE"
 
 export const TOGGLE_IS_PLAYING = "TOGGLE_IS_PLAYING"
+export const SET_IS_PLAYING = "SET_IS_PLAYING"
 
 const initialState = {
   currentSong: null,
@@ -36,6 +37,9 @@ export function playerReducer(state = initialState, action = {}) {
 
     case TOGGLE_IS_PLAYING:
       return { ...state, isPlaying: !state.isPlaying }
+
+    case SET_IS_PLAYING:
+      return { ...state, isPlaying: action.isPlaying }
 
     default:
       return state
