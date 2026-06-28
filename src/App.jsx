@@ -13,6 +13,7 @@ import { ArtistInfo } from "./cmps/ArtistInfo.jsx"
 import { StationDetails } from "./pages/StationDetails.jsx"
 import { Profile } from "./pages/Profile.jsx"
 import { SongDetails } from "./pages/SongDetails.jsx"
+import { TagDetails } from "./pages/TagDetails.jsx"
 
 
 import { PlayBar } from "./cmps/PlayBar.jsx"
@@ -32,6 +33,7 @@ function App() {
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
             <Route path="/" element={<Explore />} />
             <Route path="/browse" element={<Browse />} />
+            <Route path="/browse/:tag" element={<TagDetails />} />
             <Route path="station/:id" element={<StationDetails />} />
             <Route path="user/:id" element={<Profile />} />
             <Route path="song/:id" element={<SongDetails />} />

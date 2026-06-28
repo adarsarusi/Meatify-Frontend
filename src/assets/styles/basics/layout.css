@@ -37,6 +37,8 @@
 
     >.artist-info {
         grid-area: i;
+        min-height: 0;
+        overflow-y: auto;
     }
 
     .artist-info,

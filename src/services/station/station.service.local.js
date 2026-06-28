@@ -24,7 +24,7 @@ async function query(filterBy = {}) {
     let stations = await storageService.query(STATION_STORAGE_KEY) || []
 
     const hasLikedStation = stations.some(station => station._id === 'likedSongs')
-    
+
     if (!hasLikedStation) {
         const likedStation = {
             _id: 'likedSongs',
@@ -37,9 +37,9 @@ async function query(filterBy = {}) {
             savedCount: 0,
             createdAt: Date.now()
         }
-        
+
         stations.unshift(likedStation)
-        
+
         await saveToStorage(STATION_STORAGE_KEY, stations)
     }
 
@@ -155,7 +155,8 @@ const FALLBACK_IMG_URLS = [
     'https://images.unsplash.com/photo-1516280440614-37882060ae69?w=300&h=300&fit=crop'
 ]
 
-const SEARCH_TERMS = ['pop', 'rock', 'hip hop', 'jazz', 'electronic', 'r&b', 'alternative', 'indie', 'country', 'reggae']
+const SEARCH_TERMS = ['pop', 'hip hop', 'rock', 'electronic', 'latin', 'k-pop', 'jazz', 'r&b', 'indie', 'reggae']
+
 
 const STATION_NAMES = [
     'Morning Vibes', 'Deep Focus', 'Workout Mix', 'Chill Lofi', 'Party Hits', 'Late Night Drive',
@@ -166,19 +167,106 @@ const STATION_NAMES = [
 ]
 
 const ALL_TAGS = [
-    'Pop', 'Rock', 'Hip Hop', 'Jazz', 'Classical', 'Electronic', 'Country', 'R&B', 'Soul', 'Reggae',
-    'Blues', 'Metal', 'Punk', 'Indie', 'Alternative', 'Folk', 'Latin', 'K-Pop', 'Anime', 'Gaming',
-    'Chill', 'Happy', 'Sad', 'Energetic', 'Relaxing', 'Melancholic', 'Romantic', 'Uplifting', 'Intense', 'Peaceful',
-    'Moody', 'Powerful', 'Dreamy', 'Nostalgic', 'Euphoric', 'Dark', 'Playful', 'Introspective',
-    'Workout', 'Focus', 'Party', 'Sleep', 'Study', 'Cooking', 'Driving', 'Running', 'Yoga', 'Meditation',
-    'Dancing', 'Gaming', 'Working', 'Commute', 'Weekend', 'Date Night', 'Hangout', 'Gym',
-    'Morning', 'Afternoon', 'Evening', 'Night', 'Late Night', 'Dawn'
+    'Pop', 'Hip Hop', 'Rock', 'Electronic', 'Latin', 'K-Pop',
+    'Chill', 'Workout', 'Party', 'Focus', 'Sleep',
+    'Gaming', 'Driving', 'Mood', 'Trending',
+]
+
+const SONG_TAGS_MAP = {
+    pop: ['Pop', 'Trending', 'Party'],
+    'hip hop': ['Hip Hop', 'Workout', 'Party'],
+    rock: ['Rock', 'Driving'],
+    electronic: ['Electronic', 'Party', 'Gaming'],
+    latin: ['Latin', 'Party', 'Mood'],
+    'k-pop': ['K-Pop', 'Trending', 'Party'],
+    jazz: ['Focus', 'Sleep'],
+    'r&b': ['Mood', 'Chill'],
+    indie: ['Chill', 'Focus'],
+    reggae: ['Chill', 'Mood', 'Party'],
+}
+
+export const TAGS_DATA = [
+    {
+        title: 'Pop',
+        color: '#f16cd5',
+        imgUrl: '/tags/pop.webp',
+    },
+    {
+        title: 'Hip Hop',
+        color: '#b74aff',
+        imgUrl: '/tags/hip-hop.webp',
+    },
+    {
+        title: 'Rock',
+        color: '#E8115B',
+        imgUrl: '/tags/rock.webp',
+    },
+    {
+        title: 'Electronic',
+        color: '#3edd3e',
+        imgUrl: '/tags/electronic.webp',
+    },
+    {
+        title: 'Latin',
+        color: '#E13300',
+        imgUrl: '/tags/latin.webp',
+    },
+    {
+        title: 'K-Pop',
+        color: '#af2896',
+        imgUrl: '/tags/k-pop.webp',
+    },
+    {
+        title: 'Chill',
+        color: '#477D95',
+        imgUrl: '/tags/chill.webp',
+    },
+    {
+        title: 'Workout',
+        color: '#f7b968',
+        imgUrl: '/tags/workout.webp',
+    },
+    {
+        title: 'Party',
+        color: '#c268f7',
+        imgUrl: '/tags/party.webp',
+    },
+    {
+        title: 'Focus',
+        color: '#dd9e6a',
+        imgUrl: '/tags/focus.webp',
+    },
+    {
+        title: 'Sleep',
+        color: '#2D46B9',
+        imgUrl: '/tags/sleep.webp',
+    },
+    {
+        title: 'Gaming',
+        color: '#27856A',
+        imgUrl: '/tags/gaming.webp',
+    },
+    {
+        title: 'Driving',
+        color: '#8f8e8d',
+        imgUrl: '/tags/driving.webp',
+    },
+    {
+        title: 'Mood',
+        color: '#509BF5',
+        imgUrl: '/tags/mood.webp',
+    },
+    {
+        title: 'Trending',
+        color: '#ee632c',
+        imgUrl: '/tags/trending.webp',
+    },
 ]
 
 const deezerFetchCache = {}
 const youtubeFetchCache = {}
 
-const YOUTUBE_API_KEY = 'AIzaSyBs9ONkEGLFSV9Wt9dvCU9ea5kgPnQYUbs'
+const YOUTUBE_API_KEY = 'AIzaSyAuUmX2nSr4Lp1cre--z_WzHV2LhoHYwFo'
 
 export async function generateSpotifyData(songsCount = 381, stationsCount = 147) {
     await _initData(SONG_STORAGE_KEY, _generateSong, songsCount)
@@ -188,7 +276,7 @@ export async function generateSpotifyData(songsCount = 381, stationsCount = 147)
 async function _initData(key, generateFn, count) {
     let data = await loadFromStorage(key)
     if (data && data.length > 1) return
-    
+
     data = await Promise.all(Array.from({ length: count }, (_, i) => generateFn(i)))
     await saveToStorage(key, data)
 }
@@ -363,6 +451,7 @@ async function fetchDeezerTracks(term) {
 
 async function _generateSong(idx) {
     const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
+    const tags = SONG_TAGS_MAP[term] || ['Trending']
 
     try {
         const [youtubeTracks, deezerTracks] = await Promise.all([
@@ -399,6 +488,7 @@ async function _generateSong(idx) {
                 album: bestDeezer?.album || ytTrack.album || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
                 duration: resolvedDuration,
                 durationLabel: formatDuration(resolvedDuration),
+                tags,
                 type: 'song'
             }
         }
@@ -418,6 +508,7 @@ async function _generateSong(idx) {
                 album: track.album || FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
                 duration: resolvedDuration,
                 durationLabel: formatDuration(resolvedDuration),
+                tags,
                 type: 'song'
             }
         }
@@ -438,6 +529,7 @@ async function _generateSong(idx) {
         album: FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
         duration: fallbackDuration,
         durationLabel: formatDuration(fallbackDuration),
+        tags,
         type: 'song'
     }
 }
