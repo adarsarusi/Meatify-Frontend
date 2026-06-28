@@ -2,7 +2,7 @@
     position: relative;
 
     display: grid;
-    grid-template-columns: 3rem auto;
+    grid-template-columns: 3rem auto auto;
     gap: 0.5rem;
 
     width: 100%;
@@ -11,15 +11,13 @@
     padding: 0.5rem;
 
     &:hover {
-        background-color: var(--gray4);
+        background-color: var(--background-elevated-base);
         cursor: pointer;
 
-        .queue-preview__controls {
-            opacity: 1;
-        }
-
-        .station-cover__hover {
-            opacity: 0.5;
+        .station-cover__hover,
+        .queue-preview__btn {
+            visibility: visible;
+            
         }
     }
 }
@@ -34,30 +32,22 @@
     color: var(--text-subdued);
 }
 
-.queue-preview__controls {
-    z-index: 2;
-    position: absolute;
-
+.queue-preview__cover-container {
     display: grid;
-    grid-template-columns: 3rem auto;
-    gap: 0.5rem;
-    align-items: center;
-
-    width: 100%;
-    height: 100%;
-
-    padding: 0.5rem;
-
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 150ms ease;
-}
-
-.queue-preview__btn--play {
-    z-index: 999;
-    grid-column: 1;
+    position: relative;
 }
 
 .queue-preview__btn--more {
-    grid-column: -1;
+    justify-self: end;
+    visibility: hidden;
+
+}
+
+.queue-preview__btn--play {
+    position: absolute;
+    visibility: hidden;
+
+    align-self: center;
+    justify-self: center;
+    place-items: center;
 }

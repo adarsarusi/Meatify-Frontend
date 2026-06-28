@@ -119,7 +119,7 @@ export function PlayBar() {
           >
             <IconComp name="previous-song" className="icon--muted" />
           </button>
-          <button className="playpause-btn btn " onClick={onTogglePlay}>
+          <button className="playpause-btn btn" onClick={onTogglePlay}>
             {isPlaying ? (
               <IconComp name="pause" className="icon--black" />
             ) : (

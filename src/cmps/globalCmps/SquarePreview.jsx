@@ -3,6 +3,7 @@ import { StationCover } from "./StationCover"
 
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
+
 export function SquarePreview({ entity }) {
 
   const type = entity.type
@@ -25,7 +26,7 @@ export function SquarePreview({ entity }) {
         <div className="entity-square-preview__img">
           <StationCover entity={entity} />
           <button
-            className="entity-square-preview__btn entity-square-preview__btn--play btn-reset"
+            className="entity-square-preview__btn entity-square-preview__btn--play"
             onClick={() => {
               setQueue(entity.songs)
               setCurrentSong(entity.songs[0])
