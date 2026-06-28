@@ -86,3 +86,7 @@
         color: var(--icon--active);
     }
 }
+
+.playing-song{
+    color : var(--icon--active);
+}

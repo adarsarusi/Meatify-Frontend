@@ -30,13 +30,13 @@ export function SongPreview({ song, index }) {
 
     return (
         <article className="song-preview__item">
-            <p className="song-preview__index">{index}</p>
+            <p className={`song-preview__index ${isCurrentSong ? 'playing-song' : ''}`}>{index}</p>
 
             <div className="song-preview__meta">
                 <StationCover entity={song} />
 
                 <div className='song-preview__meta-text' >
-                    <div className="song-preview__title" style={{  cursor: 'pointer', zIndex: 10 }} onClick={navigateToSong} >{song.title}</div>
+                    <div className={`song-preview__title ${isCurrentSong ? 'playing-song' : ''}`} style={{  cursor: 'pointer', zIndex: 10 }} onClick={navigateToSong} >{song.title}</div>
                     <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
