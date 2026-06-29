@@ -9,6 +9,7 @@ import { EditModal } from '../cmps/globalCmps/EditModal'
 import { StationHeader } from '../cmps/globalCmps/StationHeader'
 import SongList from '../cmps/globalCmps/SongList'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
+import { IconComp } from '../cmps/globalCmps/IconComp'
 
 export function StationDetails() {
     const navigate = useNavigate()
@@ -20,6 +21,7 @@ export function StationDetails() {
     const loggedInUser = useSelector(storeState => storeState.userModule.user)
 
     const [isEditOpen, setIsEditOpen] = useState(false)
+    const [isSearchVisible,setIsSearchVisible] = useState(false)
 
     const likedStation = id === 'likedSongs'
     const likedSongs = songs.filter(song =>
@@ -113,6 +115,22 @@ console.log('user: ', user)
 
                     <SongList songs={likedSongs} />
                 }
+                <button className='station-details__find-more-btn' onClick={() => setIsSearchVisible(true)}>
+                    <span>Find more</span>
+                    </button>
+                {(station.length === 0 || isSearchVisible) && (
+                    <div className="station-details__search-container">
+                        
+                        <div>
+                        <h2>Let's find something for your playlist</h2>
+                        <div className='station-details__search-bar'>
+                            <span><IconComp name="search" /></span>
+                            <input type="text" placeholder="Search for songs..." />
+                        </div>
+                        </div>
+                        <button onClick={() => setIsSearchVisible(false)}><span><IconComp name="close"/></span></button>
+                        </div>
+                )}
             </section>
         </section>)
 }
