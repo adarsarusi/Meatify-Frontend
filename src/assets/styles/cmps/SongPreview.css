@@ -106,9 +106,34 @@
 
 .song-preview__btn--more {
     grid-column: 6;
+    position: relative;
 }
 
 .song-preview__duration {
     color: var(--text-muted);
     font-size: 0.9rem;
+}
+
+.song-preview__context-menu{
+    position: absolute;
+
+    min-width: 160px;
+    max-width: max-content;
+
+    inset: 0 auto auto 0;
+    
+    color: var(--text-main);
+    background-color: var(--decorative-subdued);
+    
+    span{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        color: var(--text-main);
+
+        font-size: var(--font-sm);
+        font-weight: 500;
+        border-radius: 2px;
+        /* padding: 12px 4px; */
+    }
 }

@@ -3,15 +3,15 @@ import { store } from '../store'
 
 import { SET_SONGS } from '../reducers/song.reducer'
 
-export async function loadSongs() {
+export async function loadSongs(filterBy = {}) {
     try {
-        const songs = await songService.query()
+        let songs = await songService.query(filterBy)
 
         store.dispatch({
             type: SET_SONGS,
             songs,
         })
-
+        
         return songs
     } catch (err) {
         console.error('Cannot load songs', err)
