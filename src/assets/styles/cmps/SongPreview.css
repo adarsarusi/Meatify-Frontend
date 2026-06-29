@@ -1,24 +1,18 @@
 :root {
-    --row-height: 56px;
-    --grid-template-columns:
-        auto
-        [first] minmax(var(--first-min-width), var(--first-max-width, 4fr))
-        [var1]  minmax(var(--var1-min-width), var(--var1-max-width, 2fr))
-        [var2]  minmax(var(--var2-min-width), var(--var2-max-width, 2fr))
-        [last]  minmax(var(--last-min-width), var(--last-max-width, 1fr));
-
-    --first-min-width: 180px;
+    --placeholder-image: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder.b256dae9.webp);
+    --placeholder-image-compact: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder-compact.c14407f1.webp);
+    --row-height: 3.5rem;
+    --grid-template-columns: [index] var(--index-column-width, 1rem) [first] minmax(var(--first-min-width), var(--first-max-width, 4fr)) [var1] minmax(var(--var1-min-width), var(--var1-max-width, 2fr)) [var2] minmax(var(--var2-min-width), var(--var2-max-width, 2fr)) [last] minmax(var(--last-min-width), var(--last-max-width, 1fr));
+    --first-min-width: 10rem;
     --var1-min-width: 120px;
-    --var2-min-width: 120px;
+    --var2-min-width: 5rem;
     --last-min-width: 120px;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1400px) {
     :root {
         --grid-template-columns:
-            auto
-            [first] minmax(var(--first-min-width), 1fr)
-            [last]  minmax(var(--last-min-width), var(--last-max-width, 1fr));
+            auto [first] minmax(var(--first-min-width), 1fr) [last] minmax(var(--last-min-width), var(--last-max-width, 1fr));
     }
 }
 
@@ -36,9 +30,7 @@
     color: var(--text-subdued);
     align-items: center;
 
-    padding-inline-start: 0.5rem;
-    padding-inline-end: 0.5rem;
-    margin-inline: -8px -16px;
+    padding-inline: 1rem;
 
     border: 1px solid #0000;
     border-radius: 4px;
@@ -73,6 +65,7 @@
     .song-preview__actions {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .song-preview__index {
@@ -112,6 +105,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    line-height: 1.2;
 }
 
 .song-preview__btn {
@@ -123,13 +124,30 @@
     color: var(--text-subdued);
 }
 
+.song-preview__date {
+    letter-spacing: 1px;
+}
+
 @media (max-width: 1280px) {
 
     .song-preview__album,
     .song-preview__date {
         display: none;
     }
-    .song-preview__actions{
+
+    .song-preview__actions {
+        gap: 1rem;
+        grid-column: -1 / -1;
+    }
+}
+
+@media (max-width: 1400px) {
+
+    .song-preview__date {
+        display: none;
+    }
+
+    .song-preview__actions {
         gap: 1rem;
         grid-column: -1 / -1;
     }

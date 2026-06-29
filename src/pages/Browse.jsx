@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import { TAGS_DATA } from '../services/station/station.service.local'
-
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 export function Browse() {
     return (
         <section className="browse-page">
+            <ScrollArea>
             <h1>Browse all</h1>
 
             <div className="browse-grid">
@@ -24,6 +25,7 @@ export function Browse() {
                     </Link>
                 ))}
             </div>
+            </ScrollArea>
         </section>
     )
 }

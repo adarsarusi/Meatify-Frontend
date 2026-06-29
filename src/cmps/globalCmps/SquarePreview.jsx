@@ -4,7 +4,7 @@ import { StationCover } from "./StationCover"
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
 
-export function SquarePreview({ entity }) {
+export function SquarePreview({ entity, hover = true }) {
 
   const type = entity.type
 

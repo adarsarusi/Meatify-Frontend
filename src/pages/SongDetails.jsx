@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
 import { songService } from "../services/song"
@@ -32,10 +33,12 @@ export function SongDetails() {
 
   if (isLoading || !song) return <div>loading...</div>
   console.log(song);
-  
+
   return (
     <section className="song-details dynamic-area">
-      <h1 className="song-name">{song?.title}</h1>
+      <ScrollArea>
+        <h1 className="song-name">{song?.title}</h1>
+      </ScrollArea>
     </section>
   )
 }

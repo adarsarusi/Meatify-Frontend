@@ -33,6 +33,7 @@
 @import "cmps/PlayBar.css";
 @import "cmps/QueuePreview.css";
 @import "cmps/QueueCmp.css";
+@import "cmps/ArtistInfoPreview.css";
 @import "cmps/Icons.css";
 
 /* Pages */
@@ -44,3 +45,4 @@
 
 
 /* General */
+@import "cmps/OverlayScrollbars.css"

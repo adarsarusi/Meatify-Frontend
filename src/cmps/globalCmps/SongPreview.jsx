@@ -39,8 +39,7 @@ export function PreviewSong({ song, index }) {
 
             <div className="song-preview__album">{song.album}</div>
 
-
-            <div className="song-preview__date">28/6/26</div>
+            <div className="song-preview__date">28/06/26</div>
 
             <div className="song-preview__actions">
                 <div className="song-preview__btn song-preview__btn--like">

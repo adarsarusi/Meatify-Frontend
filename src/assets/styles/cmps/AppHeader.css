@@ -41,6 +41,8 @@
 
   display: grid;
   grid-template-columns: 2rem 1fr 3rem;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
 
   height: 3rem;
