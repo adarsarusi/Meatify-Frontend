@@ -19,7 +19,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-areas: "l a i";
-    gap: 1rem;
+    gap: 0.5rem;
 
     min-height: 0;
     overflow: hidden;
@@ -36,16 +36,16 @@
     }
 
     >.artist-info {
+        position: relative;
         grid-area: i;
         min-height: 0;
-        overflow-y: auto;
     }
 
     .artist-info,
     .app-library {
-        padding: 1rem;
         border-radius: 0.5rem;
         background: var(--background-base);
+        overflow: hidden;
     }
 
     &.expanded {

@@ -58,11 +58,12 @@ export function StationFilter() {
             </button>
             {isVisible && (
                 <input
+                    className='library-search__input'
                     type="text"
                     name="txt"
                     value={filterByToEdit.txt}
                     onChange={handleChange}
-                    placeholder="Search stations..."
+                    placeholder="Search in Playlists"
                 />
             )}
         </div>
@@ -75,9 +76,7 @@ export function StationFilter() {
             <button onClick={onChangeView} className='btn hover-bg'>
                 <IconComp name="square-view" className='icon--muted' />
             </button>
-            // <button onClick={onChangeView} className='search-btn'>
-            //     <IconComp name="list" className="icon--md icon--white" />
-            // </button>
+
         }
     </ul>
 }

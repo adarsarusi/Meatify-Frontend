@@ -9,6 +9,7 @@
 
     border-radius: 5px;
     padding: 0.5rem;
+    margin-inline: -0.5rem -1rem;
 
     &:hover {
         background-color: var(--background-elevated-base);
@@ -44,4 +45,13 @@
     align-self: center;
     justify-self: center;
     place-items: center;
+}
+
+.station-preview__title,
+.station-preview__creator-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

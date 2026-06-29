@@ -16,6 +16,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
 
 import { shuffle } from "../services/util.service.js"
+import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
 
 export function PlayBar() {
   const currentSong = useSelector(
@@ -26,6 +27,8 @@ export function PlayBar() {
   )
   const queue = useSelector((storeState) => storeState.playerModule.queue)
   const audioRef = useRef(null)
+
+  const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened)
 
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
@@ -81,6 +84,10 @@ export function PlayBar() {
 
   function onToggleMute() {
     setIsMuted(!isMuted)
+  }
+
+  function onToggleQueue() {
+    store.dispatch({ type: TOGGLE_OPEN_QUEUE, isQueueOpened: !isQueueOpened })
   }
 
   function onRepeat() {
@@ -160,26 +167,41 @@ export function PlayBar() {
         </div>
       </div>
 
-      <div className="volume-container">
-        <button className="volume- playbar-btn" onClick={onToggleMute}>
-          {isMuted ? (
-            <IconComp name="volume-off" className="icon--muted" />
+      <div className="playbar-actions__container">
+
+        <button className="playbar-btn" onClick={onToggleQueue}>
+          {!isQueueOpened ? (
+            <IconComp name="queue" className="icon--muted" />
           ) : (
-            <IconComp name="volume" className="icon--muted" />
+            <IconComp name="queue" className="icon--active" />
           )}
         </button>
 
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          aria-valuetext="0:00"
-          value={isMuted ? 0 : volume}
-          onChange={handleVolumeChange}
-          className="volume-bar"
-        ></input>
+        <div className="volume-container">
+
+          <button className="volume- playbar-btn" onClick={onToggleMute}>
+            {isMuted ? (
+              <IconComp name="volume-off" className="icon--muted" />
+            ) : (
+              <IconComp name="volume" className="icon--muted" />
+            )}
+          </button>
+
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            aria-valuetext="0:00"
+            value={isMuted ? 0 : volume}
+            onChange={handleVolumeChange}
+            className="volume-bar"
+          ></input>
+        </div>
+
       </div>
+
+
 
       <div style={{ display: "none" }}>
         <ReactPlayer

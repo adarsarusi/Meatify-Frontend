@@ -3,11 +3,11 @@
     gap: 1rem;
     align-items: center;
     color: var(--text-main);
-    padding: 0.8rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
 
     overflow: hidden;
-    
+
 
     &:hover {
         background-color: var(--bg-hover);
@@ -20,6 +20,7 @@
         .entity-square-preview__index {
             visibility: hidden;
         }
+
         cursor: pointer;
     }
 
@@ -52,7 +53,7 @@
     }
 
     .entity-square-preview__title {
-        
+
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;

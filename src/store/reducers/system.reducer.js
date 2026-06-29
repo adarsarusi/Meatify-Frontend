@@ -2,11 +2,13 @@ export const LOADING_START = 'LOADING_START'
 export const LOADING_DONE = 'LOADING_DONE'
 export const TOGGLE_EXPAND_LIBRARY = 'TOGGLE_EXPAND_LIBRARY'
 export const TOGGLE_SQUARE_LIBRARY = 'TOGGLE_SQUARE_LIBRARY'
+export const TOGGLE_OPEN_QUEUE = 'TOGGLE_OPEN_QUEUE'
 
 const initialState = {
   isLoading: false,
   isExpanded: false,
   isSquare: false,
+  isQueueOpened: false,
 }
 
 export function systemReducer(state = initialState, action = {}) {
@@ -15,6 +17,8 @@ export function systemReducer(state = initialState, action = {}) {
       return { ...state, isLoading: true }
     case LOADING_DONE:
       return { ...state, isLoading: false }
+    case TOGGLE_OPEN_QUEUE:
+      return { ...state, isQueueOpened: action.isQueueOpened }
     case TOGGLE_EXPAND_LIBRARY:
       return { ...state, isExpanded: action.isExpanded }
     case TOGGLE_SQUARE_LIBRARY:

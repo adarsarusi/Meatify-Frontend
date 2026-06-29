@@ -1,10 +1,25 @@
 :root {
     --row-height: 56px;
-    --grid-template-columns: auto [first] minmax(var(--first-min-width), var(--first-max-width, 4fr)) [var1] minmax(var(--var1-min-width), var(--var1-max-width, 2fr)) [var2] minmax(var(--var2-min-width), var(--var2-max-width, 2fr)) [last] minmax(var(--last-min-width), var(--last-max-width, 1fr));
+    --grid-template-columns:
+        auto
+        [first] minmax(var(--first-min-width), var(--first-max-width, 4fr))
+        [var1]  minmax(var(--var1-min-width), var(--var1-max-width, 2fr))
+        [var2]  minmax(var(--var2-min-width), var(--var2-max-width, 2fr))
+        [last]  minmax(var(--last-min-width), var(--last-max-width, 1fr));
+
     --first-min-width: 180px;
     --var1-min-width: 120px;
     --var2-min-width: 120px;
     --last-min-width: 120px;
+}
+
+@media (max-width: 1280px) {
+    :root {
+        --grid-template-columns:
+            auto
+            [first] minmax(var(--first-min-width), 1fr)
+            [last]  minmax(var(--last-min-width), var(--last-max-width, 1fr));
+    }
 }
 
 
@@ -12,15 +27,18 @@
 
     position: relative;
     display: grid;
-    height: var(--row-height);
     grid-template-columns: var(--grid-template-columns);
     gap: 1rem;
+
+    width: 100%;
+    height: var(--row-height);
 
     color: var(--text-subdued);
     align-items: center;
 
-    padding-inline-start: 1rem;
-    padding-inline-end: 1rem;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
+    margin-inline: -8px -16px;
 
     border: 1px solid #0000;
     border-radius: 4px;
@@ -89,7 +107,8 @@
 }
 
 .song-preview__meta .song-preview__title,
-.song-preview__meta .song-preview__artists {
+.song-preview__meta .song-preview__artists,
+.song-preview__album {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -102,4 +121,16 @@
 .song-preview__duration,
 .song-preview__date {
     color: var(--text-subdued);
+}
+
+@media (max-width: 1280px) {
+
+    .song-preview__album,
+    .song-preview__date {
+        display: none;
+    }
+    .song-preview__actions{
+        gap: 1rem;
+        grid-column: -1 / -1;
+    }
 }

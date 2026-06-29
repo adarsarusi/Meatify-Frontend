@@ -9,6 +9,7 @@
 
     border-radius: 5px;
     padding: 0.5rem;
+    margin-inline: -0.5rem -1rem;
 
     &:hover {
         background-color: var(--background-elevated-base);
@@ -17,10 +18,18 @@
         .station-cover__hover,
         .queue-preview__btn {
             visibility: visible;
-            
         }
     }
+
+    text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
+
+
+
 
 .queue-preview__title {
     font-size: var(--font-base);
@@ -50,4 +59,13 @@
     align-self: center;
     justify-self: center;
     place-items: center;
+}
+
+.queue-preview__title,
+.queue-preview__creator-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
