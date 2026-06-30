@@ -1,0 +1,86 @@
+.station-options {
+    padding: 1rem 1rem 0 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.station-options__play-btn {
+    width: 3.5rem;
+    border-radius: 50%;
+    color: var(--bg-color);
+    background-color: var(--icon--green);
+    aspect-ratio: 1 / 1;
+    transition: 100ms ease-out;
+
+    &:hover {
+        scale: 1.05;
+    }
+}
+
+.station-options__like-btn {
+    >.like-btn svg {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    transition: 100ms ease-out;
+
+    &:hover {
+        scale: 1.05;
+    }
+
+}
+
+.station-options-container {
+    position: relative;
+}
+
+.station-options__more-btn {
+    >svg {
+        width: 2rem;
+        height: 2rem;
+    }
+
+
+    &:hover {
+        scale: 1.05;
+    }
+}
+
+.station-options__menu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    transform: translateX(150px);
+
+    min-width: 180px;
+
+    padding: 0.25rem;
+
+    background-color: #282828;
+    border-radius: 4px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+    z-index: 100;
+}
+
+.station-options__menu__item {
+    width: 100%;
+
+    padding: 0.75rem;
+
+    border: none;
+    background: transparent;
+
+    color: inherit;
+    text-align: left;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #3e3e3e;
+    }
+}

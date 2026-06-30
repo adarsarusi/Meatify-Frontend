@@ -7,6 +7,7 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 import { EditModal } from '../cmps/globalCmps/EditModal'
 import { StationHeader } from '../cmps/globalCmps/StationHeader'
+import { StationOptions } from '../cmps/globalCmps/StationOptions'
 import SongList from '../cmps/globalCmps/SongList'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
 import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
@@ -96,6 +97,16 @@ export function StationDetails() {
                     <StationHeader
                         likedStation={likedStation}
                         user={user}
+                        station={station}
+                        isOwner={isOwner}
+                        onRemoveStation={onRemoveStation}
+                        onEditStation={() => setIsEditOpen(true)}
+                    />
+                </section>
+
+                <section className="station-details__options">
+                    <StationOptions
+                        likedStation={likedStation}
                         station={station}
                         isOwner={isOwner}
                         onRemoveStation={onRemoveStation}

@@ -1,7 +1,6 @@
 .song-list {
     width: 100%;
     display: grid;
-    padding-block-start: 0.5rem;
 }
 
 .song-list--empty {
