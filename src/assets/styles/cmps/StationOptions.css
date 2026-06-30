@@ -20,9 +20,11 @@
 }
 
 .station-options__like-btn {
-    >.like-btn svg {
-        width: 2rem;
-        height: 2rem;
+    >button {
+        >.icon {
+            width: 2rem;
+            height: 2rem;
+        }
     }
 
     transition: 100ms ease-out;
