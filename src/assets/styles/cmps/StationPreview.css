@@ -46,12 +46,3 @@
     justify-self: center;
     place-items: center;
 }
-
-.station-preview__title,
-.station-preview__creator-name {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}

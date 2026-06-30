@@ -99,8 +99,8 @@ export function PlayBar() {
       <div className="song-info-placeholder">
         <StationCover entity={currentSong} />
         <div>
-          <a className="player-song-title">{currentSong?.title}</a>
-          <div className="player-song-artists">
+          <a className="player-song-title ellipsis-text">{currentSong?.title}</a>
+          <div className="player-song-artists ellipsis-text">
             {(currentSong?.artists || []).join(", ")}
           </div>
         </div>

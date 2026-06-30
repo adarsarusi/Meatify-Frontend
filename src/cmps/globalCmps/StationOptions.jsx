@@ -8,6 +8,8 @@ import { LikeBtn } from "../LikeBtn"
 export function StationOptions({ likedStation, station, isOwner, onEditStation, onRemoveStation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+    const isLikedStation = station._id === 'likedSongs'
+
     useEffect(() => {
         function closeMenu() {
             setIsMenuOpen(false)
@@ -23,32 +25,40 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
     return (
         <section className="station-options">
             {station?.songs?.length > 0 && <button
-                className="station-options__play-btn"
+                className="btn play-btn big-play-btn"
                 onClick={() => {
                     setQueue(station.songs)
                     setCurrentSong(station.songs[0])
                 }}
             >
-                <IconComp name="play" />
+                <IconComp name="play" className="icon--md" />
             </button>}
 
+            <button className="btn">
+                <IconComp name="shuffle" className="icon--lg" />
+            </button>
 
-            <div className="station-options__like-btn">
+            <button className="btn">
+                <IconComp name="download" className="icon--lg" />
+            </button>
+
+            {!isLikedStation && <div className="btn">
                 <LikeBtn
                     itemId={station._id}
                     userField="likedStationIds"
+                    iconSize="icon--lg"
                 />
-            </div>
+            </div>}
 
-            {isOwner && (
+            {(isOwner) && (
                 <div className="station-options-container">
 
-                    <button className="station-options__more-btn"
+                    <button className="btn"
                         onClick={(ev) => {
                             ev.stopPropagation()
                             setIsMenuOpen(prev => !prev)
                         }}>
-                        <IconComp name="more" className="icon--muted" />
+                        <IconComp name="more" className="icon--muted icon--lg" />
                     </button>
 
                     {isMenuOpen && (

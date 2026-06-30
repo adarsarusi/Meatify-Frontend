@@ -3,7 +3,9 @@
     grid-template-columns: auto 1fr;
     gap: 1rem;
     border-bottom: 1px solid var(--background-elevated-base);
+    align-items: end;
 
+    padding-block-start: 1.2rem;
     padding-block-end: 1rem;
 }
 
@@ -15,9 +17,15 @@
 
     gap: 0.5rem;
 
+    .station-header__private-txt {
+        font-size: var(--font-lg);
+        font-weight: 700;
+    }
+
     .station-name {
-        font-size: 2rem;
+        font-size: 6rem;
         font-weight: 800;
+        letter-spacing: -3px;
     }
 }
 
@@ -43,7 +51,8 @@
 
 
 .station-img-container {
-    width: 10rem;
+    max-width: 15rem;
+    height: fit-content;
     aspect-ratio: 1/1;
 }
 

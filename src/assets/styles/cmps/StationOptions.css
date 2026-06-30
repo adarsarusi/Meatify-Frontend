@@ -1,9 +1,14 @@
 .station-options {
-    padding: 1rem 1rem 0 1rem;
-
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+
+    width: 100%;
+    height: 8rem;
+
+    padding: 1rem;
+    padding-block: 2rem;
 }
 
 .station-options__play-btn {
@@ -26,13 +31,6 @@
             height: 2rem;
         }
     }
-
-    transition: 100ms ease-out;
-
-    &:hover {
-        scale: 1.05;
-    }
-
 }
 
 .station-options-container {

@@ -19,8 +19,8 @@ export function QueuePreview({ song }) {
         </div>
 
         <div className="queue-preview__info" onClick={() => navigate(`/song/${song._id}`)}>
-            <p className='queue-preview__title'>{song.title}</p>
-            <p className='queue-preview__creator-name'>{song.artists[0]}</p>
+            <p className='queue-preview__title ellipsis-text '>{song.title}</p>
+            <p className='queue-preview__creator-name ellipsis-text '>{song.artists[0]}</p>
         </div>
 
         <button className="queue-preview__btn queue-preview__btn--more">

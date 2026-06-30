@@ -39,14 +39,14 @@ export function SongPreview({ song, index }) {
             <div className="song-preview__meta">
                 <StationCover entity={song} />
                 <div className='song-preview__meta-text'>
-                    <div className="song-preview__title">{song.title}</div>
-                    <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
+                    <div className="song-preview__title ellipsis-text">{song.title}</div>
+                    <div className="song-preview__artists ellipsis-text">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
 
-            <div className="song-preview__album">{song.album}</div>
+            <div className="song-preview__album ellipsis-text">{song.album}</div>
 
-            <div className="song-preview__date">28/06/26</div>
+            <div className="song-preview__date ellipsis-text">28/06/26</div>
 
             <div className="song-preview__actions">
                 <div className="song-preview__btn song-preview__btn--like">

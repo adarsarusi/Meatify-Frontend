@@ -5,7 +5,7 @@ import { IconComp } from './globalCmps/IconComp'
 
 import { addSongToStation, removeSongFromStation } from '../store/actions/station.actions'
 
-export function LikeBtn({ itemId, userField }) {
+export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
 
     const stations = useSelector(storeState => storeState.stationModule.stations)
 
@@ -47,7 +47,7 @@ export function LikeBtn({ itemId, userField }) {
         >
             <IconComp
                 name={isLiked ? 'added' : 'like'}
-                className={`${isLiked ? 'icon--active' : ''} icon--muted`}
+                className={`${isLiked ? 'icon--active' : ''} icon--muted ${iconSize}`}
             />
         </button>
     )

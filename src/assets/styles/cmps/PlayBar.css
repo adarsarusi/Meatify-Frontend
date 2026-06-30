@@ -19,32 +19,17 @@
 .song-info-placeholder {
   display: grid;
   align-items: center;
-  grid-template-columns: 3.5rem auto auto;
+  grid-template-columns: 3.5rem auto 1rem;
   gap: 1rem;
   font-size: 0.9;
-
+  width: fit-content;
 
   .player-song-title {
-    font-size: 0.875rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
+    font-size: var(--font-base);
   }
 
   .player-song-artists {
-    font-size: 0.8rem;
-
-    color: var(--text-muted);
-
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
+    font-size: var(--font-sm);
   }
 
   >div {
