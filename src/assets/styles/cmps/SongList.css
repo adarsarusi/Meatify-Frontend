@@ -1,8 +1,7 @@
 .song-list {
+    width: 100%;
     display: grid;
-    gap: 0.5rem;
     padding-block-start: 0.5rem;
-    padding-right: 0.5rem;
 }
 
 .song-list--empty {

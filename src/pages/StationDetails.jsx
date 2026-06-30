@@ -9,6 +9,7 @@ import { EditModal } from '../cmps/globalCmps/EditModal'
 import { StationHeader } from '../cmps/globalCmps/StationHeader'
 import SongList from '../cmps/globalCmps/SongList'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 
 export function StationDetails() {
     const navigate = useNavigate()
@@ -19,13 +20,14 @@ export function StationDetails() {
     const songs = useSelector(storeState => storeState.songModule.songs)
     const loggedInUser = useSelector(storeState => storeState.userModule.user)
 
+
     const [isEditOpen, setIsEditOpen] = useState(false)
 
     const likedStation = id === 'likedSongs'
     const likedSongs = songs.filter(song =>
         user?.likedSongIds?.includes(song._id)
     )
-console.log('user: ', user)
+    console.log('user: ', user)
     useEffect(() => {
         if (!id) return
         loadStation(id)
@@ -74,11 +76,13 @@ console.log('user: ', user)
     if (!station) {
         return (
             <section className="station-details">
-                <div className="station-container">
-                    <div className="station-header">
-                        <p>Station not found</p>
+                <ScrollArea>
+                    <div className="station-container">
+                        <div className="station-header">
+                            <p>Station not found</p>
+                        </div>
                     </div>
-                </div>
+                </ScrollArea>
             </section>
         )
     }
@@ -87,33 +91,35 @@ console.log('user: ', user)
 
     return (
         <section className="station-details dynamic-area">
-            <section className="station-details__header">
-                <StationHeader
-                    likedStation={likedStation}
-                    user={user}
-                    station={station}
-                    isOwner={isOwner}
-                    onRemoveStation={onRemoveStation}
-                    onEditStation={() => setIsEditOpen(true)}
-                />
-            </section>
+            <ScrollArea>
+                <section className="station-details__header">
+                    <StationHeader
+                        likedStation={likedStation}
+                        user={user}
+                        station={station}
+                        isOwner={isOwner}
+                        onRemoveStation={onRemoveStation}
+                        onEditStation={() => setIsEditOpen(true)}
+                    />
+                </section>
 
-            {isEditOpen && (
-                <EditModal
-                    title="Edit playlist"
-                    entity={station}
-                    onClose={() => setIsEditOpen(false)}
-                    onSave={onSaveStation}
-                />
-            )}
+                {isEditOpen && (
+                    <EditModal
+                        title="Edit playlist"
+                        entity={station}
+                        onClose={() => setIsEditOpen(false)}
+                        onSave={onSaveStation}
+                    />
+                )}
 
-            <section className='station-details__song-list'>
-                {console.log('likedSongs: ', likedSongs)}
-                {!likedStation ? <SongList songs={station?.songs || []} /> :
+                <section className='station-details__song-list'>
+                    {console.log('likedSongs: ', likedSongs)}
+                    {!likedStation ? <SongList songs={station?.songs || []} /> :
 
-                    <SongList songs={likedSongs} />
-                }
-            </section>
+                        <SongList songs={likedSongs} />
+                    }
+                </section>
+            </ScrollArea>
         </section>)
 }
 

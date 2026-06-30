@@ -18,6 +18,7 @@
   transition: color 160ms ease, transform 160ms ease, opacity 160ms ease;
 }
 
+
 /* --- Sizes --- */
 .icon--sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
 .icon--md { width: var(--icon-size-md); height: var(--icon-size-md); }
@@ -29,3 +30,4 @@
 .icon--white   { color: var(--icon--white); }
 .icon--green   { color: var(--icon--green); }
 .icon--active  { color: var(--icon--active); }
+.icon--black  { color: var(--icon--black); }

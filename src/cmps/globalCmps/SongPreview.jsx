@@ -22,50 +22,48 @@ export function SongPreview({ song, index }) {
         return `${m}:${s.toString().padStart(2, '0')}`
     }
 
-    function navigateToSong(ev){
-        // Added z-index to song title because something sits above it and it prevents clicking on it
-        //  - need to fix and remove z-index.
-      navigate(`/song/${song._id}`)
+    function navigateToSong(ev) {
+        ev.preventDefault()
+        navigate(`/song/${song._id}`)
     }
 
     return (
-        <article className="song-preview__item">
-            <p className={`song-preview__index ${isCurrentSong ? 'playing-song' : ''}`}>{index}</p>
+        <section aria-label={song.title} className="song-preview__item" >
+            <div className='song-preview__play'>
+            <p className="song-preview__index">{index}</p>
+                <button className="song-preview__btn song-preview__btn--play" onClick={() => setCurrentSong(song)}>
+                    <IconComp name="play" className="icon--white icon-no-padding" />
+                </button>
+            </div>
 
             <div className="song-preview__meta">
                 <StationCover entity={song} />
-
-                <div className='song-preview__meta-text' >
-                    <div className={`song-preview__title ${isCurrentSong ? 'playing-song' : ''}`} style={{  cursor: 'pointer', zIndex: 10 }} onClick={navigateToSong} >{song.title}</div>
+                <div className='song-preview__meta-text'>
+                    <div className="song-preview__title">{song.title}</div>
                     <div className="song-preview__artists">{(song.artists || []).join(', ')}</div>
                 </div>
             </div>
-            <div className="song-preview__controls">
-                <button className="song-preview__btn song-preview__btn--play btn-reset"
-                 onClick={() => {
-                    if (isCurrentSong) {
-                        toggleIsPlaying()
-                    } else {
-                        setCurrentSong(song)
-                    }}}>
-                    {isCurrentSong && isPlaying ? (
-                        <IconComp name="pause" className="icon--white" />) 
-                        : 
-                        (<IconComp name="play" className="icon--white" />)}
-                    
-                </button>
+
+            <div className="song-preview__album">{song.album}</div>
+
+            <div className="song-preview__date">28/06/26</div>
+
+            <div className="song-preview__actions">
                 <div className="song-preview__btn song-preview__btn--like">
                     <LikeBtn
                         itemId={song._id}
                         userField="likedSongIds"
                     />
                 </div>
-                <button className="song-preview__btn song-preview__btn--more  btn-reset">
+
+                <div className="song-preview__duration">{formatTime(song.duration)}</div>
+
+                <button className="song-preview__btn song-preview__btn--more">
                     <IconComp name="more" className="icon--white" />
                 </button>
             </div>
-            <div className="song-preview__duration">{formatTime(song.duration)}</div>
-        </article>
+
+        </section>
     )
 }
 

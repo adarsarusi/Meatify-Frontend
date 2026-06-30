@@ -57,6 +57,7 @@
         grid-auto-flow: column;
         gap: 0.5rem;
 
+        font-size: var(--font-sm);
         font-weight: 600;
         color: var(--essential-base);
 

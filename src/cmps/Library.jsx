@@ -12,6 +12,7 @@ import { StationFilter } from './StationFilter.jsx'
 import { TOGGLE_EXPAND_LIBRARY } from '../store/reducers/system.reducer.js'
 import { store } from '../store/store.js'
 import { IconComp } from './globalCmps/IconComp.jsx'
+import { ScrollArea } from './globalCmps/ScrollArea.jsx'
 
 export function Library() {
 
@@ -50,6 +51,7 @@ export function Library() {
     }
 
     return <section className="app-library">
+
         <div className="library-header">
             <h3>Your Library</h3>
 
@@ -68,8 +70,10 @@ export function Library() {
             <StationFilter />
         </div>
 
-        <StationList
-            stations={stations} />
+        <ScrollArea>
+            <StationList stations={stations} />
+        </ScrollArea>
+
     </section >
 
 }

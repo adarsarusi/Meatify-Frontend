@@ -9,9 +9,9 @@
 
 
 .station-details__header {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
     padding-block-start: 2rem;
-    padding-block-end: 1.5rem;
+    padding-block-end: 1rem;
     background: var(--gradient1);
 }
 

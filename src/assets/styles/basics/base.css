@@ -1,3 +1,6 @@
+/* * {
+    outline: 1px solid red;
+} */
 
 body {
     margin: 0 auto;
@@ -5,12 +8,17 @@ body {
     font-family: "Montserrat", sans-serif;
     color: var(--text-main);
     background-color: var(--bg-color);
+    overflow-y: auto;
+    height: 100%;
 }
 
+html {
+  height: 100%;
+}
 
 /* Scroll bar re-design */
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     background: transparent;
     width: 0.625rem
 }
@@ -25,7 +33,7 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.09)
-}
+} */
 
 
 /* global */

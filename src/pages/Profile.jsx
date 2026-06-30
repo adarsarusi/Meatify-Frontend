@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
 import { SongList } from '../cmps/globalCmps/SongList'
 import { EditModal } from '../cmps/globalCmps/EditModal'
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 
 import { loadUser, updateUser } from '../store/actions/user.actions'
 import { store } from '../store/store'
@@ -87,67 +88,69 @@ export function Profile() {
 
   return (
     <section className="user-details dynamic-area">
-      {user && (
-        <>
-          <div className="profile-hero">
-            <label className="profile-avatar-upload">
-              <img
-                className="profile-avatar"
-                src={user.imgUrl}
-                alt={user.fullname}
-              />
+      <ScrollArea>
+        {user && (
+          <>
+            <div className="profile-hero">
+              <label className="profile-avatar-upload">
+                <img
+                  className="profile-avatar"
+                  src={user.imgUrl}
+                  alt={user.fullname}
+                />
 
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={changeProfileImg}
-              />
-            </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={changeProfileImg}
+                />
+              </label>
 
-            <div className="user-details-header">
-              <p className="profile-type">Profile</p>
+              <div className="user-details-header">
+                <p className="profile-type">Profile</p>
 
-              <h1 onClick={() => setIsEditOpen(true)}>
-                {user.fullname}
-              </h1>
+                <h1 onClick={() => setIsEditOpen(true)}>
+                  {user.fullname}
+                </h1>
 
-              <p className="profile-stats">
-                {user.likedStationIds?.length || 0} public playlists · 0 following
-              </p>
+                <p className="profile-stats">
+                  {user.likedStationIds?.length || 0} public playlists · 0 following
+                </p>
+              </div>
             </div>
-          </div>
 
-          {user.likedStationIds?.length > 0 && (
-            <section className="user-details-liked-stations">
-              <h2>Liked Playlists</h2>
-              <ul className='station-list demo-square-list'>
-                {likedStations.map(station =>
+            {user.likedStationIds?.length > 0 && (
+              <section className="user-details-liked-stations">
+                <h2>Liked Playlists</h2>
+                <ul className='station-list square-list'>
+                  {likedStations.map(station =>
 
-                  <li key={station._id} className="user-details-liked-stations-list">
-                    <SquarePreview entity={station} />
-                  </li>)}
-              </ul>
-            </section>
-          )}
+                    <li key={station._id} className="user-details-liked-stations-list">
+                      <SquarePreview entity={station} />
+                    </li>)}
+                </ul>
+              </section>
+            )}
 
-          {user.likedSongIds?.length > 0 && (
-            <section className="user-details-liked-songs">
-              <h2>Liked Songs</h2>
-              <SongList songs={likedSongs} />
-            </section>
-          )}
+            {user.likedSongIds?.length > 0 && (
+              <section className="user-details-liked-songs">
+                <h2>Liked Songs</h2>
+                <SongList songs={likedSongs} />
+              </section>
+            )}
 
-          {isEditOpen && (
-            <EditModal
-              title="Edit profile"
-              entity={user}
-              onClose={() => setIsEditOpen(false)}
-              onSave={updateUser}
-            />
-          )}
-        </>
-      )}
+            {isEditOpen && (
+              <EditModal
+                title="Edit profile"
+                entity={user}
+                onClose={() => setIsEditOpen(false)}
+                onSave={updateUser}
+              />
+            )}
+          </>
+        )}
+      </ScrollArea>
     </section>
   )
 }

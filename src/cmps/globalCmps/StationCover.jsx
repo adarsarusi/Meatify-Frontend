@@ -12,10 +12,11 @@ export function StationCover({ entity }) {
 
     return (
         <article className="station-cover-img">
+            <div className="station-cover__hover"></div>
             {entity?.uploadImgUrl ? (
                 <img src={entity?.uploadImgUrl} alt='' />
             ) : isMediaType ? (
-                <img src={entity.imgUrl} alt={entity.name || ''} className="station-img" />
+                <img src={entity.imgUrl} alt={entity.name || ''} />
             ) : (
                 <div className="station-cover-img__container">
 

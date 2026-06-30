@@ -25,12 +25,25 @@
 
   .player-song-title {
     font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
   }
 
   .player-song-artists {
     font-size: 0.8rem;
 
     color: var(--text-muted);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
   }
 
   >div {
@@ -131,4 +144,11 @@ input[type="range"]::-webkit-slider-runnable-track {
   .volume-bar {
     max-width: 100px;
   }
+}
+
+.playbar-actions__container {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: end;
+  gap: 1.5rem;
 }

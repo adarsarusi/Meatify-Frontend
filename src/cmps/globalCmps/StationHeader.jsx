@@ -2,6 +2,7 @@ import { StationCover } from "./StationCover"
 import { useState, useEffect } from "react"
 import { IconComp } from "./IconComp"
 
+
 export function StationHeader({
     likedStation,
     station,
@@ -87,15 +88,28 @@ export function StationHeader({
                     <div className="participants">
                         <div className="creator-img-container">
                             <div className="avatar-wrapper" style={{ "--index": 1 }}>
-                                <img src={station.createdBy?.imgUrl || ''} alt={station.createdBy?.fullname || ''} />
+                                <img
+                                    src={station.createdBy?.imgUrl || ''}
+                                    alt={station.createdBy?.fullname || ''}
+                                />
                             </div>
+
                             {!likedStation && station.participants?.map((participant, i) => (
-                                <div className="avatar-wrapper" key={participant._id} style={{ "--index": i + 2 }}>
-                                    <img src={participant.imgUrl} alt={participant.fullname} />
+                                <div
+                                    className="avatar-wrapper"
+                                    key={participant._id}
+                                    style={{ "--index": i + 2 }}
+                                >
+                                    <img
+                                        src={participant.imgUrl}
+                                        alt={participant.fullname}
+                                    />
                                 </div>
                             ))}
                         </div>
+
                         <p className="creator-name">{station.createdBy?.fullname || 'Unknown'}</p>
+
                         {station.participants?.length > 0 && (
                             <p>and {station.participants.length} others</p>
                         )}

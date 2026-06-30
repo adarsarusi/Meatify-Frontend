@@ -3,12 +3,14 @@
     gap: 1rem;
     align-items: center;
     color: var(--text-main);
-    padding: 0.8rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
+
+    overflow: hidden;
 
 
     &:hover {
-        background: var(--bg-hover);
+        background-color: var(--bg-hover);
 
         .entity-square-preview__btn {
             opacity: 1;
@@ -18,6 +20,8 @@
         .entity-square-preview__index {
             visibility: hidden;
         }
+
+        cursor: pointer;
     }
 
 }
@@ -49,12 +53,15 @@
     }
 
     .entity-square-preview__title {
+
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         word-break: break-all;
+
+        font-size: var(--font-base);
     }
 
     .entity-square-preview__artists {
@@ -64,10 +71,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         word-break: break-all;
-        font-size: 0.85rem;
         color: var(--text-muted);
         line-height: 1.2;
         min-height: 2.4em;
+        font-size: var(--font-sm);
     }
 }
 

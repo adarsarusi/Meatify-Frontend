@@ -4,9 +4,21 @@
     grid-template-rows: repeat(2, 1fr);
     border-radius: 0.3rem;
     overflow: hidden;
+    box-shadow: 0 4px 60px #00000080;
 }
 
 .station-cover-img {
+    position: relative;
     border-radius: 0.3rem;
     overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 60px #00000080;
+}
+
+.station-cover__hover {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: rgba(0, 0, 0, 0.607);
+    visibility: hidden;
 }

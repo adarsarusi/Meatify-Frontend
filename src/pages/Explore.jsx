@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux"
 import { SquarePreview } from "../cmps/globalCmps/SquarePreview"
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
+
 
 export function Explore() {
 
@@ -19,17 +21,19 @@ export function Explore() {
 
     return (
         <section className="explore dynamic-area">
-            <div className="explore-user-meta">
-                <p>Made For</p>
-                <h1>{user.fullname}</h1>
-            </div>
-            <ul className="demo-square-list">
-                {stations.map(station =>
-                    <li key={station._id} className="station-list-item">
-                        <SquarePreview entity={station || []} />
-                    </li>)
-                }
-            </ul>
+            <ScrollArea>
+                <div className="explore-user-meta">
+                    <p>Made For</p>
+                    <h1>{user.fullname}</h1>
+                </div>
+                <ul className="square-list">
+                    {stations.map(station =>
+                        <li key={station._id} className="station-list-item">
+                            <SquarePreview entity={station || []} />
+                        </li>)
+                    }
+                </ul>
+            </ScrollArea>
         </section >
     )
 }
