@@ -22,7 +22,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
 
     return (
         <section className="station-options">
-            {station?.length > 0 && <button
+            {station?.songs?.length > 0 && <button
                 className="station-options__play-btn"
                 onClick={() => {
                     setQueue(station.songs)
