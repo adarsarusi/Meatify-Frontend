@@ -17,4 +17,5 @@
 
 .station-details__song-list {
     padding: 1rem;
+    min-height: 200px;
 }

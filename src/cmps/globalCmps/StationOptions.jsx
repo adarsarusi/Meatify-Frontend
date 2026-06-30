@@ -22,7 +22,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
 
     return (
         <section className="station-options">
-            <button
+            {station?.length > 0 && <button
                 className="station-options__play-btn"
                 onClick={() => {
                     setQueue(station.songs)
@@ -30,7 +30,8 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
                 }}
             >
                 <IconComp name="play" />
-            </button>
+            </button>}
+
 
             <div className="station-options__like-btn">
                 <LikeBtn

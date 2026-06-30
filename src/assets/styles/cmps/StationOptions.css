@@ -52,8 +52,7 @@
 .station-options__menu {
     position: absolute;
     top: calc(100% + 0.25rem);
-    right: 0;
-    transform: translateX(150px);
+    left: 0px;
 
     min-width: 180px;
 
