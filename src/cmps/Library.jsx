@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { addStation, loadStations } from '../store/actions/station.actions'
+import { updateUser } from '../store/actions/user.actions.js'
 import { loadSongs } from '../store/actions/song.actions.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
@@ -19,6 +20,7 @@ export function Library() {
     const navigate = useNavigate()
     const stations = useSelector(storeState => storeState.stationModule.stations)
     const filterBy = useSelector(storeState => storeState.stationModule.filterBy)
+    const loggedinUser = useSelector(storeState => storeState.userModule.user  )
     const isExpanded = useSelector(
         storeState => storeState.systemModule.isExpanded
     )
@@ -40,6 +42,14 @@ export function Library() {
 
         try {
             const savedStation = await addStation(station)
+
+            await updateUser({
+                ...loggedinUser,
+                likedStationIds: [
+                    ...(loggedinUser.likedStationIds || []),
+                    savedStation._id
+                ]
+            })
 
             showSuccessMsg('Station added!')
             navigate(`/station/${savedStation._id}`)

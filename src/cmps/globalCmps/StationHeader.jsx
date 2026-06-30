@@ -1,5 +1,4 @@
 import { StationCover } from "./StationCover"
-import { useState, useEffect } from "react"
 import { IconComp } from "./IconComp"
 
 
@@ -7,22 +6,7 @@ export function StationHeader({
     likedStation,
     station,
     isOwner,
-    onRemoveStation,
-    onEditStation,
     user, }) {
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-    useEffect(() => {
-        function closeMenu() {
-            setIsMenuOpen(false)
-        }
-
-        window.addEventListener('click', closeMenu)
-
-        return () => {
-            window.removeEventListener('click', closeMenu)
-        }
-    }, [])
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -44,43 +28,6 @@ export function StationHeader({
                 <StationCover entity={station} />
             </div>
             <div className="station-header__info ">
-
-                {isOwner && (
-                    <div className="station-menu-container">
-
-                        <button className=""
-                            onClick={(ev) => {
-                                ev.stopPropagation()
-                                setIsMenuOpen(prev => !prev)
-                            }}>
-                            <IconComp name="more" className="icon--md icon--muted" />
-                        </button>
-
-                        {isMenuOpen && (
-                            <div className="station-menu">
-
-                                <button className="station-menu__item"
-                                    onClick={() => {
-                                        setIsMenuOpen(false)
-                                        onEditStation()
-                                    }}
-                                >
-                                    Edit details
-                                </button>
-
-                                <button className="station-menu__item"
-                                    onClick={() => {
-                                        setIsMenuOpen(false)
-                                        onRemoveStation()
-                                    }}
-                                >
-                                    Delete playlist
-                                </button>
-
-                            </div>
-                        )}
-                    </div>
-                )}
 
                 <p>{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>
                 <h1 className="station-name">{station?.name}</h1>

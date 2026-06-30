@@ -30,7 +30,9 @@ export function LikeBtn({ itemId, userField }) {
                     : [...likedIds, itemId]
             }
 
-            isLiked ? await removeSongFromStation(station._id, itemId) : await addSongToStation(station._id, itemId)
+            if (userField === 'likedSongIds')
+                isLiked ? await removeSongFromStation(station._id, itemId) : await addSongToStation(station._id, itemId)
+
             await updateUser(updatedUser)
 
         } catch (err) {
