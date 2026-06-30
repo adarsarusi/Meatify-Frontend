@@ -1,31 +1,37 @@
-.browse-page {
-    padding: 1.5rem;
+:root {
+    --min-column-width: 15.875rem;
+}
+
+.browse-page__content {
+    padding-inline: 1.5rem;
+    margin: 5rem;
 
     h1 {
         margin-bottom: 1.5rem;
-        font-size: 1.5em;
+        font-size: var(--font-2xl);
         font-weight: 750;
     }
 }
 
-.browse-grid {
+.browse-page__grid {
+    width: 100%;
+
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
+    grid-gap: 1.5rem;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
+    grid-auto-rows: min-content;
 }
 
 .browse-card {
     position: relative;
     overflow: hidden;
     border-radius: 8px;
-    height: 180px;
+    height: 10rem;
     padding: 1rem;
     cursor: pointer;
     transition: transform 0.2s;
-
-    &:hover {
-        transform: scale(1.03);
-    }
 
     h2 {
         margin: 0;
@@ -37,16 +43,12 @@
     }
 
     img {
+        bottom: 0;
+        border-radius: 4px;
+        width: 40%;
         position: absolute;
-        width: 110px;
-        height: 110px;
-        object-fit: cover;
-        border-radius: 6px;
-        right: -15px;
-        bottom: -15px;
-        transform: rotate(25deg);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-        user-select: none;
-        pointer-events: none;
+        inset-inline-end: 0;
+        box-shadow: 0 2px 4px #0003;
+        transform: rotate(25deg) translate(18%, -2%);
     }
 }

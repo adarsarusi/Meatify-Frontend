@@ -44,17 +44,8 @@ export function TagDetails() {
             <ScrollArea>
 
                 <header className="tag-details__header">
-                    <img
-                        src={`/tags/${tag
-                            .toLowerCase()
-                            .replace(/\s+/g, '-')}.webp`}
-                        alt={tag}
-                    />
-
                     <div>
-                        <p>Genre</p>
                         <h1>{tag}</h1>
-                        <p>{filteredStations.length} stations · {filteredSongs.length} songs</p>
                     </div>
                 </header>
 

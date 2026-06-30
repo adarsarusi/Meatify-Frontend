@@ -61,7 +61,11 @@ export function Library() {
                     Create
                 </button>
                 <button onClick={onExpand} className="btn hover-bg">
-                    <IconComp name="expend" className="icon--sm icon--muted" />
+                    {isExpanded ?
+                        <IconComp name="un-expend" className="icon--sm icon--muted" />
+                        :
+                        <IconComp name="expend" className="icon--sm icon--white" />
+                    }
                 </button>
             </section>
         </div >

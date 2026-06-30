@@ -1,6 +1,6 @@
 .main-container {
     display: grid;
-    grid-template-columns: 1rem 1fr 1rem;
+    grid-template-columns: 0.5rem 1fr 0.5rem;
     grid-template-rows: auto 1fr;
 
     height: 100vh;
@@ -17,19 +17,23 @@
 
 .app-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     grid-template-areas: "l a i";
     gap: 0.5rem;
 
     overflow: hidden;
-    align-content: start;
     height: 100%;
+    width: 100%;
 
     >.app-library {
         grid-area: l;
     }
 
     >.dynamic-area {
+
+        height: 100%;
+        width: 100%;
+
         grid-area: a;
         border-radius: 0.5rem;
         background: var(--background-base);
@@ -44,6 +48,8 @@
 
     .artist-info,
     .app-library {
+        height: 100%;
+        width: 100%;
         border-radius: 0.5rem;
         background: var(--background-base);
         overflow: hidden;

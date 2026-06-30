@@ -110,7 +110,7 @@ export function PlayBar() {
       <div className="center-control">
         <div className="main-buttons">
           <button
-            className="shuffle-song-btn playbar-btn btn"
+            className={`btn ${isShuffle ? 'no-hover' : ''} `}
             onClick={() => handleShuffle(queue)}
             title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
           >
@@ -121,12 +121,12 @@ export function PlayBar() {
           </button>
 
           <button
-            className="previous-song-btn playbar-btn btn"
+            className="btn"
             onClick={() => handleNextPrev("prev")}
           >
             <IconComp name="previous-song" className="icon--muted" />
           </button>
-          <button className="playpause-btn btn" onClick={onTogglePlay}>
+          <button className="btn play-btn" onClick={onTogglePlay}>
             {isPlaying ? (
               <IconComp name="pause" className="icon--black" />
             ) : (
@@ -134,14 +134,14 @@ export function PlayBar() {
             )}
           </button>
           <button
-            className="next-song-btn playbar-btn "
+            className="btn"
             onClick={() => handleNextPrev("next")}
           >
             <IconComp name="next-song" className="icon--muted" />
           </button>
 
           <button
-            className="repeat-song-btn playbar-btn"
+            className={`btn ${isRepeat ? 'no-hover' : ''} `}
             onClick={onRepeat}
             title={isRepeat ? "Disable repeat" : "Enable repeat"}
           >
@@ -169,17 +169,17 @@ export function PlayBar() {
 
       <div className="playbar-actions__container">
 
-        <button className="playbar-btn" onClick={onToggleQueue}>
-          {!isQueueOpened ? (
-            <IconComp name="queue" className="icon--muted" />
-          ) : (
+        <button className={`btn ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
+          {isQueueOpened ? (
             <IconComp name="queue" className="icon--active" />
+          ) : (
+            <IconComp name="queue" className="icon--muted" />
           )}
         </button>
 
         <div className="volume-container">
 
-          <button className="volume- playbar-btn" onClick={onToggleMute}>
+          <button className="volume- " onClick={onToggleMute}>
             {isMuted ? (
               <IconComp name="volume-off" className="icon--muted" />
             ) : (

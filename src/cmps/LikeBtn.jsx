@@ -41,7 +41,7 @@ export function LikeBtn({ itemId, userField }) {
     return (
         <button
             onClick={toggleLike}
-            className={` like-btn ${isLiked ? 'no-hover' : ''} `}
+            className={`btn ${isLiked ? 'no-hover' : ''} `}
         >
             <IconComp
                 name={isLiked ? 'added' : 'like'}

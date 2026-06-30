@@ -23,8 +23,8 @@ export function Explore() {
         <section className="explore dynamic-area">
             <ScrollArea>
                 <div className="explore-user-meta">
-                    <p>Made For</p>
-                    <h1>{user.fullname}</h1>
+                    <p className="explore-user-meta__title">Made For</p>
+                    <h1 className="explore-user-meta__name">{user.fullname}</h1>
                 </div>
                 <ul className="square-list">
                     {stations.map(station =>

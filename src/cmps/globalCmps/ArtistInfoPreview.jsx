@@ -8,10 +8,11 @@ import { SquarePreview } from "./SquarePreview"
 import SongList from "./SongList"
 
 
+export function ArtistInfoPreview({ currentSong }) {
 
-export function ArtistInfoPreview({ entity }) {
+  if (!currentSong) return
 
-  const type = entity.type
+  const type = currentSong.type
 
   const navigate = useNavigate()
 
@@ -20,14 +21,14 @@ export function ArtistInfoPreview({ entity }) {
   )
 
   const filteredSongs = songs.filter(song =>
-    song.artists[0].toLowerCase() === entity.artists[0].toLowerCase()
+    song.artists[0].toLowerCase() === currentSong.artists[0].toLowerCase()
   )
 
 
   const rawArtists =
     type === "station"
-      ? [...new Set(entity.songs.flatMap((song) => song.artists))]
-      : entity.artists || []
+      ? [...new Set(currentSong.songs.flatMap((song) => song.artists))]
+      : currentSong.artists || []
 
   const displayArtists =
     rawArtists.length > 3
@@ -35,24 +36,26 @@ export function ArtistInfoPreview({ entity }) {
       : rawArtists.join(", ")
 
 
+
+
   return (
-    <section className="entity-artist-preview__item" onClick={() => navigate(`/${type}/${entity._id}`)} >
+    <section className="entity-artist-preview__item">
       <div className="entity-artist-preview__meta">
         <div className="entity-artist-preview__artist">
-          {entity.artists[0] || entity.name}
+          {currentSong.artists[0] || currentSong.name}
         </div>
 
         <div className="entity-artist-preview__img">
-          <StationCover entity={entity} />
+          <StationCover entity={currentSong} />
         </div>
         <div className="entity-artist-preview__meta-text">
           <div className="entity-artist-preview__title">
-            {entity.title || entity.name}
+            {currentSong.title || currentSong.name}
           </div>
           <div className="entity-artist-preview__artists">{displayArtists}</div>
         </div>
-          <h2>More Songs:</h2>
-          {/* <SongList songs={filteredSongs} /> */}
+        <h2>More Songs:</h2>
+        {/* <SongList songs={filteredSongs} /> */}
       </div>
     </ section>
   )

@@ -18,6 +18,7 @@
 
 .song-info-placeholder {
   display: grid;
+  align-items: center;
   grid-template-columns: 3.5rem auto auto;
   gap: 1rem;
   font-size: 0.9;
@@ -61,41 +62,6 @@
   width: 100%;
 }
 
-.playbar-btn {
-  background-color: transparent;
-  border: none;
-  /* width: 32px; */
-  cursor: pointer;
-  color: var(--text-muted);
-
-  :hover {
-    color: var(--text-main);
-  }
-}
-
-.playpause-btn {
-  background-color: var(--text-main);
-  border: none;
-  border-radius: 50%;
-
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(var(--button-hover-scale));
-  }
-}
-
-.playbar-svg-sizes {
-  height: 16px;
-  width: 16px;
-}
 
 .progress-bar {
   display: flex;
@@ -111,7 +77,6 @@ input[type="range"] {
   width: 100%;
   background: transparent;
   -webkit-appearance: none;
-  /* Remove the default css */
 }
 
 input[type="range"]::-webkit-slider-thumb {

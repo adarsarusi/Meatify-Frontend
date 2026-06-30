@@ -9,13 +9,10 @@ export function ArtistInfo() {
 
     const currentSong = useSelector(storeState => storeState.playerModule.currentSong)
 
-    if (!currentSong) return
-
     return (
         <section className="artist-info">
-
             <ScrollArea>
-                <ArtistInfoPreview entity={currentSong} />
+                <ArtistInfoPreview currentSong={currentSong} />
                 <QueueCmp />
             </ScrollArea>
         </section >

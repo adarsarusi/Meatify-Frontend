@@ -16,19 +16,16 @@
 
 .explore-user-meta {
     display: grid;
+    grid-auto-flow: row;
+    align-content: space-between;
+    padding: 2rem 2.5rem;
 
-    min-height: 3rem;
-
-    height: 4rem;
-    width: 100%;
-    padding: 1rem 2.5rem;
-
-    p{
+    .explore-user-meta__title {
         font-size: var(--font-sm);
         color: var(--text-subdued);
     }
 
-    h1 {
+    .explore-user-meta__name {
         font-size: var(--font-3xl);
         font-weight: 700;
     }

@@ -22,8 +22,8 @@ export function QueueCmp() {
 
         <div className="queue-cmp__header">
           <h1>Queue</h1>
-          <button className="btn" onClick={onToggleQueue}>
-            <IconComp name="close" className="icon--muted" />
+          <button className="btn hover-bg" onClick={onToggleQueue}>
+            <IconComp name="close" className="icon--sm icon--muted" />
           </button>
         </div>
         <ScrollArea>
