@@ -10,10 +10,9 @@ import {
   setCurrentSong,
   toggleIsPlaying,
 } from "../../store/actions/player.actions"
-
 import {
-  addSongToPlaylist,
-  removeSongFromPlaylist,
+  addSongToStation,
+  removeSongFromStation,
 } from "../../store/actions/station.actions"
 
 export function SongPreview({ song, index }) {
@@ -32,8 +31,6 @@ export function SongPreview({ song, index }) {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  console.log(isMenuOpen)
-
   const navigate = useNavigate()
 
   function formatTime(seconds = 0) {
@@ -43,38 +40,20 @@ export function SongPreview({ song, index }) {
   }
 
   function navigateToSong(ev) {
-    // Added z-index to song title because something sits above it and it prevents clicking on it
-    //  - need to fix and remove z-index.
+    ev.preventDefault()
     navigate(`/song/${song._id}`)
   }
 
   return (
-    <article className="song-preview__item">
-      <p
-        className={`song-preview__index ${isCurrentSong ? "playing-song" : ""}`}
-      >
-        {index}
-      </p>
-
-      <div className="song-preview__meta">
-        <StationCover entity={song} />
-
-        <div className="song-preview__meta-text">
-          <div
-            className={`song-preview__title ${isCurrentSong ? "playing-song" : ""}`}
-            style={{ cursor: "pointer", zIndex: 10 }}
-            onClick={navigateToSong}
-          >
-            {song.title}
-          </div>
-          <div className="song-preview__artists">
-            {(song.artists || []).join(", ")}
-          </div>
-        </div>
-      </div>
-      <div className="song-preview__controls">
+    <section aria-label={song.title} className="song-preview__item">
+      <div className="song-preview__play">
+        <p
+          className={`song-preview__index ${isCurrentSong ? "playing-song" : ""}`}
+        >
+          {index}
+        </p>
         <button
-          className="song-preview__btn song-preview__btn--play btn-reset"
+          className="song-preview__btn song-preview__btn--play"
           onClick={() => {
             if (isCurrentSong) {
               toggleIsPlaying()
@@ -84,16 +63,43 @@ export function SongPreview({ song, index }) {
           }}
         >
           {isCurrentSong && isPlaying ? (
-            <IconComp name="pause" className="icon--white" />
+            <IconComp name="pause" className="icon--white icon-no-padding" />
           ) : (
-            <IconComp name="play" className="icon--white" />
+            <IconComp name="play" className="icon--white icon-no-padding" />
           )}
         </button>
+      </div>
+
+      <div className="song-preview__meta">
+        <StationCover entity={song} />
+        <div className="song-preview__meta-text">
+          <div
+            className={`song-preview__title ellipsis-text ${isCurrentSong ? "playing-song" : ""}`}
+            onClick={navigateToSong}
+          >
+            {song.title}
+          </div>
+          <div className="song-preview__artists ellipsis-text">
+            {(song.artists || []).join(", ")}
+          </div>
+        </div>
+      </div>
+
+      <div className="song-preview__album ellipsis-text">{song.album}</div>
+
+      <div className="song-preview__date ellipsis-text">28/06/26</div>
+
+      <div className="song-preview__actions">
         <div className="song-preview__btn song-preview__btn--like">
           <LikeBtn itemId={song._id} userField="likedSongIds" />
         </div>
+
+        <div className="song-preview__duration">
+          {formatTime(song.duration)}
+        </div>
+
         <button
-          className="song-preview__btn song-preview__btn--more  btn-reset"
+          className="song-preview__btn song-preview__btn--more"
           onClick={() => setIsMenuOpen(true)}
           onBlur={() => setIsMenuOpen(false)}
         >
@@ -101,13 +107,11 @@ export function SongPreview({ song, index }) {
           {isMenuOpen && (
             <div className="song-preview__context-menu">
               {isSongInStation ? (
-                <span
-                  onMouseDown={() => removeSongFromPlaylist(station, song)}
-                >
+                <span onMouseDown={() => removeSongFromStation(station._id, song._id)}>
                   Remove from playlist
                 </span>
               ) : (
-                <span onMouseDown={() => addSongToPlaylist(station, song)}>
+                <span onMouseDown={() => addSongToStation(station._id, song._id)}>
                   Add to playlist
                 </span>
               )}
@@ -115,8 +119,7 @@ export function SongPreview({ song, index }) {
           )}
         </button>
       </div>
-      <div className="song-preview__duration">{formatTime(song.duration)}</div>
-    </article>
+    </section>
   )
 }
 

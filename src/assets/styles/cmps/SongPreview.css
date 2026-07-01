@@ -1,3 +1,5 @@
+
+
 :root {
     --placeholder-image: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder.b256dae9.webp);
     --placeholder-image-compact: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder-compact.c14407f1.webp);
@@ -85,7 +87,7 @@
 
     .song-preview__title {
         font-size: var(--font-base);
-        color: var(--text-base);
+        /* color: var(--text-base); */ 
     }
 
     .song-preview__artists {
@@ -132,18 +134,10 @@
         display: none;
     }
 
-.song-preview__btn--like {
-    grid-column: 3;
-}
-
-.song-preview__btn--more {
-    grid-column: 6;
-    position: relative;
-}
-
-.song-preview__duration {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    .song-preview__actions {
+        gap: 1rem;
+        grid-column: -1 / -1;
+    }
 }
 
 .song-preview__context-menu{

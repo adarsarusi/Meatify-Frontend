@@ -9,31 +9,74 @@ import {
 } from "../store/actions/station.actions"
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
 
-import { EditModal } from '../cmps/globalCmps/EditModal'
-import { StationHeader } from '../cmps/globalCmps/StationHeader'
-import SongList from '../cmps/globalCmps/SongList'
-import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
+import { EditModal } from "../cmps/globalCmps/EditModal"
+import { StationHeader } from "../cmps/globalCmps/StationHeader"
+import SongList from "../cmps/globalCmps/SongList"
+import { IconComp } from "../cmps/globalCmps/IconComp"
+
+import { debounce } from "../services/util.service"
+import { loadSongs } from "../store/actions/song.actions"
+
+import { SongPreview } from "../cmps/globalCmps/SongPreview"
+
+import { StationOptions } from "../cmps/globalCmps/StationOptions"
+import { SquarePreview } from "../cmps/globalCmps/SquarePreview"
+import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 
 export function StationDetails() {
-    const navigate = useNavigate()
-    const { id } = useParams()
-    const user = useSelector(storeState => storeState.userModule.user)
-    const station = useSelector(storeState => storeState.stationModule.selectedStation)
-    const isLoading = useSelector(storeState => storeState.stationModule.isLoading)
-    const songs = useSelector(storeState => storeState.songModule.songs)
-    const loggedInUser = useSelector(storeState => storeState.userModule.user)
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const user = useSelector((storeState) => storeState.userModule.user)
+  
+  const station = useSelector(
+    (storeState) => storeState.stationModule.selectedStation,
+  )
+  const isLoading = useSelector(
+    (storeState) => storeState.stationModule.isLoading,
+  )
+  const songs = useSelector((storeState) => storeState.songModule.songs)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
-    const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isSearchVisible, setIsSearchVisible] = useState(false)
 
-    const likedStation = id === 'likedSongs'
-    const likedSongs = songs.filter(song =>
-        user?.likedSongIds?.includes(song._id)
-    )
-console.log('user: ', user)
-    useEffect(() => {
-        if (!id) return
-        loadStation(id)
-    }, [id])
+  const [searchedSong, setSearchedSong] = useState("")
+  const debouncedSearch = useRef(
+    debounce((txt) => {
+      loadSongs({ txt })
+    }),
+  ).current
+
+  const likedStation = id === "likedSongs"
+  const likedSongs = songs.filter((song) =>
+    user?.likedSongIds?.includes(song._id),
+  )
+
+  useEffect(() => {
+    if (!id) return
+    loadStation(id)
+  }, [id])
+
+  useEffect(() => {
+    if (!station) return
+    console.log(station)
+
+    if (station.songs?.length === 0) {
+      setIsSearchVisible(true)
+    } else {
+      setIsSearchVisible(false)
+    }
+  }, [station])
+
+  useEffect(() => {
+    debouncedSearch(searchedSong)
+    console.log(isSearchVisible)
+  }, [searchedSong])
+
+  function handleSearchChange({ target }) {
+    const { value } = target
+    setSearchedSong(value)
+  }
 
   async function onSaveStation(updatedStation) {
     try {
@@ -72,49 +115,106 @@ console.log('user: ', user)
         </div>
       </section>
     )
-
-    if (!station) {
+      if (!station) {
         return (
             <section className="station-details">
-                <div className="station-container">
-                    <div className="station-header">
-                        <p>Station not found</p>
+                <ScrollArea>
+                    <div className="station-container">
+                        <div className="station-header">
+                            <p>Station not found</p>
+                        </div>
                     </div>
-                </div>
+                </ScrollArea>
             </section>
         )
     }
+    console.log(station);
+    const isOwner = loggedInUser?._id === station.createdBy?._id
 
-  const isOwner = loggedInUser?._id === station.createdBy?._id
+    
+    
+return (
+  <section className="station-details dynamic-area">
+    <ScrollArea>
+      <section className="station-details__header">
+        <StationHeader
+          likedStation={likedStation}
+          user={user}
+          station={station}
+          isOwner={isOwner}
+          onRemoveStation={onRemoveStation}
+          onEditStation={() => setIsEditOpen(true)}
+        />
+      </section>
+      <section className="station-details__options">
+        <StationOptions
+          likedStation={likedStation}
+          station={station}
+          isOwner={isOwner}
+          onRemoveStation={onRemoveStation}
+          onEditStation={() => setIsEditOpen(true)}
+        />
+      </section>
 
-    return (
-        <section className="station-details dynamic-area">
-            <section className="station-details__header">
-                <StationHeader
-                    likedStation={likedStation}
-                    user={user}
-                    station={station}
-                    isOwner={isOwner}
-                    onRemoveStation={onRemoveStation}
-                    onEditStation={() => setIsEditOpen(true)}
+      {isEditOpen && (
+        <EditModal
+          title="Edit playlist"
+          entity={station}
+          onClose={() => setIsEditOpen(false)}
+          onSave={onSaveStation}
+        />
+      )}
+
+      <section className="station-details__song-list">
+        {!likedStation ? (
+          <SongList songs={station?.songs || []} />
+        ) : (
+          <SongList songs={likedSongs} />
+        )}
+
+        {station.songs?.length > 0 && !isSearchVisible && (
+          <button
+            className="station-details__find-more-btn"
+            onClick={() => setIsSearchVisible(true)}
+          >
+            <span>Find more</span>
+          </button>
+        )}
+
+        {(station.songs?.length === 0 || isSearchVisible) && (
+          <div className="station-details__search-container">
+            <div>
+              <h2>Let's find something for your playlist</h2>
+              <div className="station-details__search-bar">
+                <span>
+                  <IconComp name="search" />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search for songs..."
+                  value={searchedSong}
+                  onChange={handleSearchChange}
                 />
-            </section>
-
-            {isEditOpen && (
-                <EditModal
-                    title="Edit playlist"
-                    entity={station}
-                    onClose={() => setIsEditOpen(false)}
-                    onSave={onSaveStation}
-                />
+              </div>
+            </div>
+            {station.songs?.length > 0 && (
+              <button onClick={() => setIsSearchVisible(false)}>
+                <span>
+                  <IconComp name="close" />
+                </span>
+              </button>
             )}
+          </div>
+        )}
+        {isSearchVisible && searchedSong && (
+          <div className="station-details__search-results">
+            <SongList songs={songs} isSearchResult={true} />
+          </div>
+        )}
+      </section>
+    </ScrollArea>
+  </section>
+)
 
-            <section className='station-details__song-list'>
-                {console.log('likedSongs: ', likedSongs)}
-                {!likedStation ? <SongList songs={station?.songs || []} /> :
-
-                    <SongList songs={likedSongs} />
-                }
-            </section>
-        </section>)
 }
+

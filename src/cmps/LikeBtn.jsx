@@ -20,7 +20,6 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
     const isLiked = likedIds.includes(itemId)
 
     async function toggleLike() {
-        const station = stations[0]
 
         try {
             const updatedUser = {
@@ -30,8 +29,6 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
                     : [...likedIds, itemId]
             }
 
-            if (userField === 'likedSongIds')
-                isLiked ? await removeSongFromStation(station._id, itemId) : await addSongToStation(station._id, itemId)
 
             await updateUser(updatedUser)
 
