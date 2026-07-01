@@ -11,42 +11,12 @@
     padding-block: 2rem;
 }
 
-.station-options__play-btn {
-    width: 3.5rem;
-    border-radius: 50%;
-    color: var(--bg-color);
-    background-color: var(--icon--green);
-    aspect-ratio: 1 / 1;
-    transition: 100ms ease-out;
-
-    &:hover {
-        scale: 1.05;
-    }
-}
-
-.station-options__like-btn {
-    >button {
-        >.icon {
-            width: 2rem;
-            height: 2rem;
-        }
-    }
-}
-
 .station-options-container {
     position: relative;
 }
 
-.station-options__more-btn {
-    >svg {
-        width: 2rem;
-        height: 2rem;
-    }
-
-
-    &:hover {
-        scale: 1.05;
-    }
+.station-options__play-btn{
+    height: 100%;
 }
 
 .station-options__menu {

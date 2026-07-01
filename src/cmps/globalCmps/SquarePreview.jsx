@@ -26,20 +26,20 @@ export function SquarePreview({ entity, hover = true }) {
         <div className="entity-square-preview__img">
           <StationCover entity={entity} />
           <button
-            className="entity-square-preview__btn entity-square-preview__btn--play"
+            className="btn play-btn green-btn entity-square-preview__btn"
             onClick={() => {
               setQueue(entity.songs)
               setCurrentSong(entity.songs[0])
             }}
           >
-            <IconComp name="play" />
+            <IconComp name="play" className="icon--resizable" />
           </button>
         </div>
-        <div className="entity-square-preview__meta-text">
-          <div className="entity-square-preview__title">
+        <div className="entity-square-preview__meta-text ">
+          <div className="entity-square-preview__title ellipsis-text ">
             {entity.title || entity.name}
           </div>
-          <div className="entity-square-preview__artists">{displayArtists}</div>
+          <div className="entity-square-preview__artists ellipsis-text ">{displayArtists}</div>
         </div>
       </div>
     </ article>

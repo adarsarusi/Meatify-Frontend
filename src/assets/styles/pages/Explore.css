@@ -1,15 +1,13 @@
 .explore__stations-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    gap: 1rem;
 
     >.explore__stations-list {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 1rem;
         padding: 0 2rem;
         margin-bottom: 1rem;
-
-        >.station-list-item {
-            /* width: 150px; */
-        }
     }
 }
 
@@ -30,7 +28,7 @@
     }
 }
 
-.surprise-btn {
+/* .surprise-btn {
     background-color: var(--icon--green);
     width: 100%;
     padding: 1rem;
@@ -39,4 +37,4 @@
     cursor: pointer;
     font-size: 1rem;
     font-weight: 700;
-}
+} */

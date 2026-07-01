@@ -68,13 +68,10 @@
             }
         }
 
-        &.big-play-btn {
-            height: 100%;
+        &.green-btn {
             background-color: var(--essential-positive);
-
             &:hover {
                 filter: brightness(1.4);
-
             }
         }
     }
@@ -135,4 +132,15 @@
 
 .playing-song {
     color: var(--icon--active);
+}
+
+.ellipsis-text {
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    white-space: unset;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
 }

@@ -13,10 +13,10 @@
     justify-content: space-between;
     align-items: center;
 
-    
+
     min-height: 3rem;
     height: 4rem;
-    
+
     font-weight: 700;
 
     padding: 1rem 1.5rem 0.5rem;
@@ -28,4 +28,14 @@
 
 .library-controls {
     gap: 0.5rem;
+}
+
+@media (max-width: 1400px) {
+    .btn.bg-button {
+        padding: 0;
+    }
+
+    .btn-text {
+        display: none;
+    }
 }

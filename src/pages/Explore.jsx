@@ -106,7 +106,7 @@ export function Explore() {
 
                 </div>
 
-                <div className="explore__stations-grid">
+                {/* <div className="explore__stations-grid">
                     <div className="explore-sub-header">
                         <h1 className="explore-sub-header__title">
                             Surprise Me!
@@ -125,11 +125,10 @@ export function Explore() {
 
                                 }
                             >
-                                🎁 Play a Random Playlist
                             </button>
                         </li>
                     </ul>
-                </div>
+                </div> */}
 
                 {/* <div className="explore-sub-header">
                     <p className="explore-sub-header__sub-title">Made For</p>

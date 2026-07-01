@@ -15,15 +15,13 @@
     align-self: end;
     display: grid;
 
-    gap: 0.5rem;
-
     .station-header__private-txt {
         font-size: var(--font-lg);
         font-weight: 700;
     }
 
     .station-name {
-        font-size: 6rem;
+        font-size: 5vw;
         font-weight: 800;
         letter-spacing: -3px;
     }
@@ -37,6 +35,8 @@
     width: 100%;
 
     color: var(--text-muted);
+
+    margin-block-start: 1rem;
 
     .participants {
         display: flex;

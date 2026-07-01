@@ -25,7 +25,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
     return (
         <section className="station-options">
             {station?.songs?.length > 0 && <button
-                className="btn play-btn big-play-btn"
+                className="btn play-btn green-btn station-options__play-btn"
                 onClick={() => {
                     setQueue(station.songs)
                     setCurrentSong(station.songs[0])
@@ -35,11 +35,11 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
             </button>}
 
             <button className="btn">
-                <IconComp name="shuffle" className="icon--lg" />
+                <IconComp name="shuffle" className="icon--muted  icon--lg" />
             </button>
 
             <button className="btn">
-                <IconComp name="download" className="icon--lg" />
+                <IconComp name="download" className="icon--muted icon--lg" />
             </button>
 
             {!isLikedStation && <div className="btn">

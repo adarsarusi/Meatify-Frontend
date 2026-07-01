@@ -20,7 +20,7 @@ export function Library() {
     const navigate = useNavigate()
     const stations = useSelector(storeState => storeState.stationModule.stations)
     const filterBy = useSelector(storeState => storeState.stationModule.filterBy)
-    const loggedinUser = useSelector(storeState => storeState.userModule.user  )
+    const loggedinUser = useSelector(storeState => storeState.userModule.user)
     const isExpanded = useSelector(
         storeState => storeState.systemModule.isExpanded
     )
@@ -68,7 +68,9 @@ export function Library() {
             <section className="library-controls">
                 <button onClick={onCreateStation} className="btn bg-button">
                     <IconComp name="create" className="icon--sm icon--muted" />
-                    Create
+                    <span className="btn-text">
+                        Create
+                    </span>
                 </button>
                 <button onClick={onExpand} className="btn hover-bg">
                     {isExpanded ?

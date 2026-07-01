@@ -16,18 +16,6 @@ html {
     height: 100%;
 }
 
-.ellipsis-text {
-    -webkit-line-clamp: 1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    white-space: unset;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
-}
-
-
 /* global */
 input:focus-visible {
     outline: none;
