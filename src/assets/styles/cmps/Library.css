@@ -26,6 +26,33 @@
     }
 }
 
+.library-content {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    margin: 0;
+
+    list-style: none;
+
+}
+
+.library-content--expanded {
+    .square-list {
+
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+
+    }
+
+}
+
 .library-controls {
     gap: 0.5rem;
 }

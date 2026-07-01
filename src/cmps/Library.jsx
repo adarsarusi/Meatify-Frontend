@@ -14,6 +14,7 @@ import { TOGGLE_EXPAND_LIBRARY } from "../store/reducers/system.reducer.js"
 import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
+import { SquareList } from "./globalCmps/SquareList.jsx"
 
 export function Library() {
   const navigate = useNavigate()
@@ -24,6 +25,8 @@ export function Library() {
     (storeState) => storeState.stationModule.filterBy,
   )
   const songs = useSelector((storeState) => storeState.songModule.songs)
+  const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
+
 
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
   const isExpanded = useSelector(
@@ -39,15 +42,15 @@ export function Library() {
   )
 
   const likedStations = stations.filter((station) =>
-    loggedinUser?.likedStationIds?.includes(station._id) ,
+    loggedinUser?.likedStationIds?.includes(station._id),
   )
 
-  
+
   likedStation.songs = likedSongs
   likedStations.unshift(likedStation)
 
 
-  useEffect(() => {}, [likedSongs])
+  useEffect(() => { }, [likedSongs])
 
   function onExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
@@ -95,7 +98,7 @@ export function Library() {
           </button>
           <button onClick={onExpand} className="btn hover-bg">
             {isExpanded ? (
-              <IconComp name="un-expend" className="icon--sm icon--muted" />
+              <IconComp name="unexpend" className="icon--sm icon--muted" />
             ) : (
               <IconComp name="expend" className="icon--sm icon--white" />
             )}
@@ -108,7 +111,13 @@ export function Library() {
       </div>
 
       <ScrollArea>
-        <StationList stations={likedStations} />
+        <div className={isExpanded || isSquare ? 'library-content library-content--expanded' : 'library-content'}>
+          {isSquare ? (
+            <SquareList entities={likedStations} isOwner={true} />
+          ) : (
+            <StationList stations={likedStations} />
+          )}
+        </div>
       </ScrollArea>
     </section>
   )

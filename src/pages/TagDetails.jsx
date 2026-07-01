@@ -4,6 +4,7 @@ import { SongList } from '../cmps/globalCmps/SongList'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
 import { TAGS_DATA } from '../services/station/station.service.local'
 import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
+import { SquareList } from '../cmps/globalCmps/SquareList'
 
 
 export function TagDetails() {
@@ -53,13 +54,7 @@ export function TagDetails() {
                     {filteredStations.length > 0 && (
                         <div className="tag-details__station-list">
                             <h2>Stations</h2>
-                            <ul className='square-list'>
-                                {filteredStations.map(station =>
-
-                                    <li key={station._id}>
-                                        <SquarePreview entity={station} />
-                                    </li>)}
-                            </ul>
+                            <SquareList entities={filteredStations} />
                         </div>
                     )}
                     <div className="tag-details__song-list">

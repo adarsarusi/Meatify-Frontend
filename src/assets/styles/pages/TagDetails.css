@@ -63,10 +63,11 @@
 
 .tag-details__station-list,
 .tag-details__song-list {
+
     padding: 2rem;
     flex-shrink: 0;
 
-    ul{
+    ul {
         list-style: none;
     }
 

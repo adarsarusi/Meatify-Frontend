@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { SquareList } from "../cmps/globalCmps/SquareList"
 import { SquarePreview } from "../cmps/globalCmps/SquarePreview"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 import { setQueue, setCurrentSong } from "../store/actions/player.actions"
@@ -66,7 +67,7 @@ export function Explore() {
   // surprise me btn - plays a random station
   const randomStation =
     discoverableStations[
-      Math.floor(Math.random() * discoverableStations.length)
+    Math.floor(Math.random() * discoverableStations.length)
     ]
 
   return (
@@ -81,13 +82,25 @@ export function Explore() {
           </div>
 
           <ul className="explore__stations-list">
-            {recommendations.map((station) => (
-              <li key={station._id} className="station-list-item">
-                <SquarePreview entity={station || []} />
-              </li>
-            ))}
+            <SquareList entities={likedStation} />
+
           </ul>
         </div>
+
+        {recommendations.length > 0 && (
+          <div className="explore__stations-grid">
+            <div className="explore-sub-header">
+              <h1 className="explore-sub-header__title">Recommended For You</h1>
+              <p className="explore-sub-header__sub-title">
+                Based on your liked songs
+              </p>
+            </div>
+
+            <ul className="explore__stations-list">
+              <SquareList entities={recommendations} />
+            </ul>
+          </div>
+        )}
 
         <div className="explore__stations-grid">
           <div className="explore-sub-header">
@@ -96,11 +109,7 @@ export function Explore() {
           </div>
 
           <ul className="explore__stations-list">
-            {popularStations.map((station) => (
-              <li key={station._id} className="station-list-item">
-                <SquarePreview entity={station || []} />
-              </li>
-            ))}
+            <SquareList entities={popularStations} />
           </ul>
         </div>
 
@@ -110,50 +119,12 @@ export function Explore() {
           </div>
 
           <ul className="explore__stations-list">
-            {newStations.map((station) => (
-              <li key={station._id} className="station-list-item">
-                <SquarePreview entity={station || []} />
-              </li>
-            ))}
+            <SquareList entities={newStations} />
           </ul>
         </div>
 
-        {/* <div className="explore__stations-grid">
-                    <div className="explore-sub-header">
-                        <h1 className="explore-sub-header__title">
-                            Surprise Me!
-                        </h1>
-                    </div>
 
-                    <ul className="explore__stations-list">
-                        <li className="station-list-item">
-                            <button
-                                className="surprise-btn"
-                                onClick={() => {
-                                    setQueue(randomStation.songs)
-                                    setCurrentSong(randomStation.songs[0])
-                                    navigate(`/station/${randomStation._id}`)
-                                }
-
-                                }
-                            >
-                            </button>
-                        </li>
-                    </ul>
-                </div> */}
-
-        {/* <div className="explore-sub-header">
-                    <p className="explore-sub-header__sub-title">Made For</p>
-                    <h1 className="explore-sub-header__title">{loggedinUser.fullname}</h1>
-                </div>
-                <ul className="square-list">
-                    {stations.map(station =>
-                        <li key={station._id} className="station-list-item">
-                            <SquarePreview entity={station || []} />
-                        </li>)
-                    }
-                </ul> */}
       </ScrollArea>
-    </section>
+    </section >
   )
 }
