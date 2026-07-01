@@ -4,6 +4,7 @@
   --icon-size-md:   1.5rem;    /* 24px */
   --icon-size-lg:   2rem;      /* 32px */
   --icon-size-xl:   3rem;      /* 48px */
+  --icon-resizable: clamp(0.9rem, 18cqi, 2rem); /* 100% of the parent container */
 }
 
 /* --- Base --- */
@@ -18,14 +19,17 @@
   transition: color 160ms ease, transform 160ms ease, opacity 160ms ease;
 }
 
+
 /* --- Sizes --- */
 .icon--sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
 .icon--md { width: var(--icon-size-md); height: var(--icon-size-md); }
 .icon--lg { width: var(--icon-size-lg); height: var(--icon-size-lg); }
 .icon--xl { width: var(--icon-size-xl); height: var(--icon-size-xl); }
+.icon--resizable { width: var(--icon-resizable); height: var(--icon-resizable); }
 
 /* --- Colors --- */
 .icon--muted   { color: var(--icon--muted); }
 .icon--white   { color: var(--icon--white); }
 .icon--green   { color: var(--icon--green); }
 .icon--active  { color: var(--icon--active); }
+.icon--black  { color: var(--icon--black); }

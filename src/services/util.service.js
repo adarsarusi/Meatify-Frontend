@@ -8,16 +8,15 @@ export const utilService = {
 
 window.cs = utilService
 
-export function makeId(prefix = '') {
-    let length = 6
-    var txt = ''
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+export function makeId(prefix = '', length = 6) {
+    let txt = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
+    for (let i = 0; i < length; i++) {
+        txt += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 
-    return `${prefix} + ${txt}`
+    return `${prefix}${txt}`;
 }
 
 export function makeLorem(size = 100) {
@@ -72,13 +71,30 @@ export function formatTime(seconds = 0) {
     const s = Math.floor(seconds % 60)
     const m = Math.floor(seconds / 60)
     return `${m}:${s.toString().padStart(2, "0")}`
-  }
+}
 
- export function shuffle(array) {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
+export function shuffle(array) {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+            ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+}
+
+export function getMostCommonTags(songs, limit = 3) {
+    if (!songs?.length) return []
+
+    const tagCountMap = {}
+
+    songs.forEach(song => {
+        song.tags?.forEach(tag => {
+            tagCountMap[tag] = (tagCountMap[tag] || 0) + 1
+        })
+    })
+
+    return Object.entries(tagCountMap)
+        .sort(([, countA], [, countB]) => countB - countA)
+        .slice(0, limit)
+        .map(([tag]) => tag)
 }

@@ -41,7 +41,7 @@
   /* Base text */
   --font-xs: 0.75rem;   /* 12px */
   --font-sm: 0.875rem;  /* 14px */
-  --font-md: 1rem;      /* 16px */
+  --font-base: 1rem;      /* 16px */
   --font-lg: 1.125rem;  /* 18px */
   
   /* Headings */

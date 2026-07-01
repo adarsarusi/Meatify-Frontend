@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { addStation, loadStations } from '../store/actions/station.actions'
+import { updateUser } from '../store/actions/user.actions.js'
 import { loadSongs } from '../store/actions/song.actions.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
@@ -12,12 +13,14 @@ import { StationFilter } from './StationFilter.jsx'
 import { TOGGLE_EXPAND_LIBRARY } from '../store/reducers/system.reducer.js'
 import { store } from '../store/store.js'
 import { IconComp } from './globalCmps/IconComp.jsx'
+import { ScrollArea } from './globalCmps/ScrollArea.jsx'
 
 export function Library() {
 
     const navigate = useNavigate()
     const stations = useSelector(storeState => storeState.stationModule.stations)
     const filterBy = useSelector(storeState => storeState.stationModule.filterBy)
+    const loggedinUser = useSelector(storeState => storeState.userModule.user)
     const isExpanded = useSelector(
         storeState => storeState.systemModule.isExpanded
     )
@@ -40,6 +43,14 @@ export function Library() {
         try {
             const savedStation = await addStation(station)
 
+            await updateUser({
+                ...loggedinUser,
+                likedStationIds: [
+                    ...(loggedinUser.likedStationIds || []),
+                    savedStation._id
+                ]
+            })
+
             showSuccessMsg('Station added!')
             navigate(`/station/${savedStation._id}`)
 
@@ -50,16 +61,23 @@ export function Library() {
     }
 
     return <section className="app-library">
+
         <div className="library-header">
             <h3>Your Library</h3>
 
             <section className="library-controls">
                 <button onClick={onCreateStation} className="btn bg-button">
                     <IconComp name="create" className="icon--sm icon--muted" />
-                    Create
+                    <span className="btn-text">
+                        Create
+                    </span>
                 </button>
                 <button onClick={onExpand} className="btn hover-bg">
-                    <IconComp name="expend" className="icon--sm icon--muted" />
+                    {isExpanded ?
+                        <IconComp name="un-expend" className="icon--sm icon--muted" />
+                        :
+                        <IconComp name="expend" className="icon--sm icon--white" />
+                    }
                 </button>
             </section>
         </div >
@@ -68,8 +86,10 @@ export function Library() {
             <StationFilter />
         </div>
 
-        <StationList
-            stations={stations} />
+        <ScrollArea>
+            <StationList stations={stations} />
+        </ScrollArea>
+
     </section >
 
 }

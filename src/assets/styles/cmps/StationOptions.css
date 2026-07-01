@@ -1,0 +1,55 @@
+.station-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+
+    width: 100%;
+    height: 8rem;
+
+    padding: 1rem;
+    padding-block: 2rem;
+}
+
+.station-options-container {
+    position: relative;
+}
+
+.station-options__play-btn{
+    height: 100%;
+}
+
+.station-options__menu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0px;
+
+    min-width: 180px;
+
+    padding: 0.25rem;
+
+    background-color: #282828;
+    border-radius: 4px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+    z-index: 100;
+}
+
+.station-options__menu__item {
+    width: 100%;
+
+    padding: 0.75rem;
+
+    border: none;
+    background: transparent;
+
+    color: inherit;
+    text-align: left;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #3e3e3e;
+    }
+}

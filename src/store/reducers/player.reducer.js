@@ -1,3 +1,5 @@
+import { songService } from "../../services/song"
+
 export const SET_CURRENT_SONG = "SET_CURRENT_SONG"
 
 export const SET_QUEUE = "SET_QUEUE"
@@ -8,7 +10,7 @@ export const TOGGLE_IS_PLAYING = "TOGGLE_IS_PLAYING"
 export const SET_IS_PLAYING = "SET_IS_PLAYING"
 
 const initialState = {
-  currentSong: null,
+  currentSong: songService.firstDemoSong(),
   queue: [],
   isPlaying: false,
 }

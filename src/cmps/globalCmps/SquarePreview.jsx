@@ -2,9 +2,16 @@ import { IconComp } from "./IconComp"
 import { StationCover } from "./StationCover"
 
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
-export function SquarePreview({ entity }) {
+import { useNavigate } from "react-router-dom"
+
+export function SquarePreview({ entity, hover = true }) {
+
+  const type = entity.type
+
+  const navigate = useNavigate()
+
   const rawArtists =
-    entity.type === "station"
+    type === "station"
       ? [...new Set(entity.songs.flatMap((song) => song.artists))]
       : entity.artists || []
 
@@ -14,27 +21,27 @@ export function SquarePreview({ entity }) {
       : rawArtists.join(", ")
 
   return (
-    <article className="entity-square-preview__item">
+    <article className="entity-square-preview__item" onClick={() => navigate(`/${type}/${entity._id}`)} >
       <div className="entity-square-preview__meta">
         <div className="entity-square-preview__img">
           <StationCover entity={entity} />
           <button
-            className="entity-square-preview__btn entity-square-preview__btn--play btn-reset"
+            className="btn play-btn green-btn entity-square-preview__btn"
             onClick={() => {
               setQueue(entity.songs)
               setCurrentSong(entity.songs[0])
             }}
           >
-            <IconComp name="play" />
+            <IconComp name="play" className="icon--resizable" />
           </button>
         </div>
-        <div className="entity-square-preview__meta-text">
-          <div className="entity-square-preview__title">
+        <div className="entity-square-preview__meta-text ">
+          <div className="entity-square-preview__title ellipsis-text ">
             {entity.title || entity.name}
           </div>
-          <div className="entity-square-preview__artists">{displayArtists}</div>
+          <div className="entity-square-preview__artists ellipsis-text ">{displayArtists}</div>
         </div>
       </div>
-    </article>
+    </ article>
   )
 }

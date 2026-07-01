@@ -1,4 +1,4 @@
-import { songService } from '../../services/song/song.service.local'
+import { songService } from '../../services/song'
 import { store } from '../store'
 
 import { SET_SONGS } from '../reducers/song.reducer'

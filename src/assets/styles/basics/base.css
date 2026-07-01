@@ -1,3 +1,6 @@
+/* * {
+    outline: 1px solid red;
+} */
 
 body {
     margin: 0 auto;
@@ -5,28 +8,13 @@ body {
     font-family: "Montserrat", sans-serif;
     color: var(--text-main);
     background-color: var(--bg-color);
+    overflow-y: auto;
+    height: 100%;
 }
 
-
-/* Scroll bar re-design */
-
-::-webkit-scrollbar {
-    background: transparent;
-    width: 0.625rem
+html {
+    height: 100%;
 }
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.06);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.09)
-}
-
 
 /* global */
 input:focus-visible {

@@ -1,27 +1,12 @@
 import { StationCover } from "./StationCover"
-import { useState, useEffect } from "react"
 import { IconComp } from "./IconComp"
+
 
 export function StationHeader({
     likedStation,
     station,
     isOwner,
-    onRemoveStation,
-    onEditStation,
     user, }) {
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-    useEffect(() => {
-        function closeMenu() {
-            setIsMenuOpen(false)
-        }
-
-        window.addEventListener('click', closeMenu)
-
-        return () => {
-            window.removeEventListener('click', closeMenu)
-        }
-    }, [])
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -44,58 +29,34 @@ export function StationHeader({
             </div>
             <div className="station-header__info ">
 
-                {isOwner && (
-                    <div className="station-menu-container">
-
-                        <button className=""
-                            onClick={(ev) => {
-                                ev.stopPropagation()
-                                setIsMenuOpen(prev => !prev)
-                            }}>
-                            <IconComp name="more" className="icon--md icon--muted" />
-                        </button>
-
-                        {isMenuOpen && (
-                            <div className="station-menu">
-
-                                <button className="station-menu__item"
-                                    onClick={() => {
-                                        setIsMenuOpen(false)
-                                        onEditStation()
-                                    }}
-                                >
-                                    Edit details
-                                </button>
-
-                                <button className="station-menu__item"
-                                    onClick={() => {
-                                        setIsMenuOpen(false)
-                                        onRemoveStation()
-                                    }}
-                                >
-                                    Delete playlist
-                                </button>
-
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                <p>{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>
+                <p className="station-header__private-txt" >{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>
                 <h1 className="station-name">{station?.name}</h1>
                 <div className="station-meta">
                     <div className="participants">
                         <div className="creator-img-container">
                             <div className="avatar-wrapper" style={{ "--index": 1 }}>
-                                <img src={station.createdBy?.imgUrl || ''} alt={station.createdBy?.fullname || ''} />
+                                <img
+                                    src={station.createdBy?.imgUrl || ''}
+                                    alt={station.createdBy?.fullname || ''}
+                                />
                             </div>
+
                             {!likedStation && station.participants?.map((participant, i) => (
-                                <div className="avatar-wrapper" key={participant._id} style={{ "--index": i + 2 }}>
-                                    <img src={participant.imgUrl} alt={participant.fullname} />
+                                <div
+                                    className="avatar-wrapper"
+                                    key={participant._id}
+                                    style={{ "--index": i + 2 }}
+                                >
+                                    <img
+                                        src={participant.imgUrl}
+                                        alt={participant.fullname}
+                                    />
                                 </div>
                             ))}
                         </div>
+
                         <p className="creator-name">{station.createdBy?.fullname || 'Unknown'}</p>
+
                         {station.participants?.length > 0 && (
                             <p>and {station.participants.length} others</p>
                         )}

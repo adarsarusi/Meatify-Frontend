@@ -2,11 +2,23 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    border-radius: 0.3rem;
+    border-radius: clamp(4px, calc(100% * 0.05), 8px);
     overflow: hidden;
+    box-shadow: 0 4px 60px #00000080;
 }
 
 .station-cover-img {
-    border-radius: 0.3rem;
+    position: relative;
+    border-radius: clamp(4px, calc(100% * 0.05), 8px);
     overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 60px #00000080;
+}
+
+.station-cover__hover {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: rgba(0, 0, 0, 0.607);
+    visibility: hidden;
 }

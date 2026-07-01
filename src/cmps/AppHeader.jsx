@@ -67,13 +67,13 @@ export function AppHeader() {
         <div className="search-bar-container">
           <div className="app-header__btn">
             <button
-              className="search-bar__btn img-btn"
+              className="btn"
               onClick={() => navigate("/")}>
               <IconComp name="home" className="icon--white" />
             </button>
           </div>
           <div className="search-bar">
-            <button className="search-bar__btn img-btn">
+            <button className="btn">
               <IconComp name="search" className="icon--muted" />
             </button>
 
@@ -91,7 +91,7 @@ export function AppHeader() {
 
             <div className="search-browse-container">
               <button
-                className="browse-search-btn search-bar__btn img-btn"
+                className="btn"
                 onClick={() => navigate("/browse")}
               >
                 <IconComp name="browse" className="icon--muted" />
@@ -100,19 +100,28 @@ export function AppHeader() {
             {isOpen && <SerachResultsDropdown stations={stations} />}
           </div>
         </div>
+        <div className="app-header__user-actions">
+          {!user && (
+            <NavLink to="auth/login" className="login-link">
+              Login
+            </NavLink>
+          )}
+          {user && <>
+            <button className="btn">
+              <IconComp name="friends" className="icon--sm icon--muted" />
+            </button>
+            <button className="btn">
+              <IconComp name="notification" className="icon--sm icon--muted" />
+            </button>
 
-        {!user && (
-          <NavLink to="auth/login" className="login-link">
-            Login
-          </NavLink>
-        )}
-        {user && (
-          <div className="user-info app-header__btn">
-            <Link to={`user/${user._id}`}>
-              {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
-            </Link>
-          </div>
-        )}
+            <div className="user-info app-header__btn">
+              <Link to={`user/${user._id}`}>
+                {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
+              </Link>
+            </div>
+          </>
+          }
+        </div>
       </nav>
     </header >
   )

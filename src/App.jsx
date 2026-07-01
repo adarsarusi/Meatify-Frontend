@@ -14,9 +14,8 @@ import { StationDetails } from "./pages/StationDetails.jsx"
 import { Profile } from "./pages/Profile.jsx"
 import { SongDetails } from "./pages/SongDetails.jsx"
 import { TagDetails } from "./pages/TagDetails.jsx"
-
-
 import { PlayBar } from "./cmps/PlayBar.jsx"
+
 function App() {
 
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)

@@ -16,6 +16,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
 
 import { shuffle } from "../services/util.service.js"
+import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
 
 export function PlayBar() {
   const currentSong = useSelector(
@@ -26,6 +27,8 @@ export function PlayBar() {
   )
   const queue = useSelector((storeState) => storeState.playerModule.queue)
   const audioRef = useRef(null)
+
+  const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened)
 
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
@@ -83,6 +86,10 @@ export function PlayBar() {
     setIsMuted(!isMuted)
   }
 
+  function onToggleQueue() {
+    store.dispatch({ type: TOGGLE_OPEN_QUEUE, isQueueOpened: !isQueueOpened })
+  }
+
   function onRepeat() {
     setIsRepeat(!isRepeat)
   }
@@ -92,8 +99,8 @@ export function PlayBar() {
       <div className="song-info-placeholder">
         <StationCover entity={currentSong} />
         <div>
-          <a className="player-song-title">{currentSong?.title}</a>
-          <div className="player-song-artists">
+          <a className="player-song-title ellipsis-text">{currentSong?.title}</a>
+          <div className="player-song-artists ellipsis-text">
             {(currentSong?.artists || []).join(", ")}
           </div>
         </div>
@@ -103,7 +110,7 @@ export function PlayBar() {
       <div className="center-control">
         <div className="main-buttons">
           <button
-            className="shuffle-song-btn playbar-btn btn"
+            className={`btn ${isShuffle ? 'no-hover' : ''} `}
             onClick={() => handleShuffle(queue)}
             title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
           >
@@ -114,12 +121,12 @@ export function PlayBar() {
           </button>
 
           <button
-            className="previous-song-btn playbar-btn btn"
+            className="btn"
             onClick={() => handleNextPrev("prev")}
           >
             <IconComp name="previous-song" className="icon--muted" />
           </button>
-          <button className="playpause-btn btn " onClick={onTogglePlay}>
+          <button className="btn play-btn" onClick={onTogglePlay}>
             {isPlaying ? (
               <IconComp name="pause" className="icon--black" />
             ) : (
@@ -127,14 +134,14 @@ export function PlayBar() {
             )}
           </button>
           <button
-            className="next-song-btn playbar-btn "
+            className="btn"
             onClick={() => handleNextPrev("next")}
           >
             <IconComp name="next-song" className="icon--muted" />
           </button>
 
           <button
-            className="repeat-song-btn playbar-btn"
+            className={`btn ${isRepeat ? 'no-hover' : ''} `}
             onClick={onRepeat}
             title={isRepeat ? "Disable repeat" : "Enable repeat"}
           >
@@ -160,26 +167,41 @@ export function PlayBar() {
         </div>
       </div>
 
-      <div className="volume-container">
-        <button className="volume- playbar-btn" onClick={onToggleMute}>
-          {isMuted ? (
-            <IconComp name="volume-off" className="icon--muted" />
+      <div className="playbar-actions__container">
+
+        <button className={`btn ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
+          {isQueueOpened ? (
+            <IconComp name="queue" className="icon--active" />
           ) : (
-            <IconComp name="volume" className="icon--muted" />
+            <IconComp name="queue" className="icon--muted" />
           )}
         </button>
 
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          aria-valuetext="0:00"
-          value={isMuted ? 0 : volume}
-          onChange={handleVolumeChange}
-          className="volume-bar"
-        ></input>
+        <div className="volume-container">
+
+          <button className="volume- " onClick={onToggleMute}>
+            {isMuted ? (
+              <IconComp name="volume-off" className="icon--muted" />
+            ) : (
+              <IconComp name="volume" className="icon--muted" />
+            )}
+          </button>
+
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            aria-valuetext="0:00"
+            value={isMuted ? 0 : volume}
+            onChange={handleVolumeChange}
+            className="volume-bar"
+          ></input>
+        </div>
+
       </div>
+
+
 
       <div style={{ display: "none" }}>
         <ReactPlayer

@@ -1,30 +1,40 @@
-.explore {
+.explore__stations-grid {
     display: grid;
-    grid-template-rows: auto 1fr;
-    
-    padding: 1rem;
-
-    overflow-y: auto;
-}
-
-.demo-square-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(auto, 1fr));
     gap: 1rem;
 
-    width: 100%;
+    >.explore__stations-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 1rem;
+        padding: 0 2rem;
+        margin-bottom: 1rem;
+    }
 }
 
-.explore-user-meta {
+.explore-sub-header {
     display: grid;
+    grid-auto-flow: row;
+    align-content: space-between;
+    padding: 1rem 2.5rem;
 
-    p {
-        font-size: 0.875rem;
-        margin: 0;
+    .explore-sub-header__sub-title {
+        font-size: var(--font-sm);
+        color: var(--text-subdued);
     }
 
-    h1 {
-        font-size: 1.5rem;
+    .explore-sub-header__title {
+        font-size: var(--font-3xl);
+        font-weight: 700;
     }
 }
+
+/* .surprise-btn {
+    background-color: var(--icon--green);
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+} */

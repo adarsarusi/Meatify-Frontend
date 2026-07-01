@@ -52,7 +52,12 @@ canvas {
 
 /* === TYPOGRAPHY === */
 p,
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
@@ -61,8 +66,16 @@ p {
 }
 
 /* Headings: strip browser size/weight, tighten line-height, balance wrapping */
-h1, h2, h3, h4, h5, h6,
-article h1, section h1, nav h1, aside h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+article h1,
+section h1,
+nav h1,
+aside h1 {
   font-size: inherit;
   font-weight: inherit;
   line-height: 1.1;
@@ -81,8 +94,9 @@ a:not([class]) {
 }
 
 /* === LISTS === */
-ul[role="list"],
-ol[role="list"] {
+ul,
+ol,
+li {
   list-style: none;
 }
 

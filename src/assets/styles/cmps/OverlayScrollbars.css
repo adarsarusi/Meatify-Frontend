@@ -1,0 +1,37 @@
+@import "overlayscrollbars/overlayscrollbars.css";
+
+.os-theme-spotify.os-scrollbar {
+
+  --os-size: 0.8rem;
+  /* total scrollbar width */
+  --os-padding-perpendicular: 0px;
+  /* gap from panel edge */
+  --os-padding-axis: 20px;
+  /* gap from top/bottom */
+
+  --os-handle-border-radius: 0;
+  /* thumb roundness */
+  --os-handle-min-size: 0.8rem;
+  /* minimum thumb height */
+
+  --os-handle-perpendicular-size: 0.8rem;
+  /* thumb width */
+  --os-handle-perpendicular-size-active: 0.8rem;
+  /* thumb width on click */
+  --os-handle-perpendicular-size-hover: 0.8rem;
+  /* thumb width on hover */
+
+  --os-handle-bg: rgba(255, 255, 255, 0.3);
+  /* thumb color */
+  --os-handle-bg-hover: rgba(255, 255, 255, 0.6);
+  /* thumb color on hover */
+  --os-handle-bg-active: rgba(255, 255, 255, 0.9);
+  /* thumb color on drag */
+
+  --os-track-bg: transparent;
+  /* track background */
+  --os-track-bg-hover: transparent;
+  /* track on hover */
+
+  --os-padding-axis: 0px;
+}

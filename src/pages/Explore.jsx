@@ -1,11 +1,19 @@
 import { useSelector } from "react-redux"
+import { useNavigate } from 'react-router-dom'
 import { SquarePreview } from "../cmps/globalCmps/SquarePreview"
+import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
+import { setQueue, setCurrentSong } from "../store/actions/player.actions"
+
+import { getMostCommonTags } from '../services/util.service'
+
 
 export function Explore() {
 
+    const navigate = useNavigate()
     const stations = useSelector(storeState => storeState.stationModule.stations)
+    const songs = useSelector(storeState => storeState.songModule.songs)
     const isLoading = useSelector(storeState => storeState.stationModule.isLoading)
-    const user = useSelector(storeState => storeState.userModule.user)
+    const loggedinUser = useSelector(storeState => storeState.userModule.user)
 
     if (isLoading && !stations) return (
         <section className="station-details">
@@ -17,19 +25,123 @@ export function Explore() {
         </section>
     )
 
+    const discoverableStations = stations.filter(
+        station =>
+            station._id !== 'likedSongs' &&
+            station.createdBy?._id !== loggedinUser?._id
+    )
+
+    // recommended for you - based on common tags in user's liked songs
+    const likedSongs = songs.filter(song =>
+        loggedinUser?.likedSongIds?.includes(song._id)
+    )
+
+    const favoriteTags = getMostCommonTags(likedSongs)
+
+    const recommendations = stations.filter(station => station.tags?.some(tag => favoriteTags.includes(tag)))
+        .slice(0, 6)
+
+    // popular stations, sorted by savedCount
+    const popularStations = [...discoverableStations]
+        .sort((a, b) => (b.savedCount ?? 0) - (a.savedCount ?? 0))
+        .slice(0, 6)
+
+    // new releases sorted by created at
+    const newStations = [...discoverableStations]
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .slice(0, 6)
+
+    // surprise me btn - plays a random station 
+    const randomStation =
+        discoverableStations[Math.floor(Math.random() * discoverableStations.length)]
+
     return (
         <section className="explore dynamic-area">
-            <div className="explore-user-meta">
-                <p>Made For</p>
-                <h1>{user.fullname}</h1>
-            </div>
-            <ul className="demo-square-list">
-                {stations.map(station =>
-                    <li key={station._id} className="station-list-item">
-                        <SquarePreview entity={station || []} />
-                    </li>)
-                }
-            </ul>
+            <ScrollArea>
+
+                <div className="explore__stations-grid">
+                    <div className="explore-sub-header">
+                        <p className="explore-sub-header__sub-title">Made For</p>
+                        <h1 className="explore-sub-header__title">{loggedinUser.fullname}</h1>
+                    </div>
+
+                    <ul className="explore__stations-list">
+                        {recommendations.map(station =>
+                            <li key={station._id} className="station-list-item">
+                                <SquarePreview entity={station || []} />
+                            </li>)
+                        }
+                    </ul>
+
+                </div>
+
+                <div className="explore__stations-grid">
+                    <div className="explore-sub-header">
+                        <h1 className="explore-sub-header__title">Popular Stations</h1>
+                        <p className="explore-sub-header__sub-title">Most saved</p>
+                    </div>
+
+                    <ul className="explore__stations-list">
+                        {popularStations.map(station =>
+                            <li key={station._id} className="station-list-item">
+                                <SquarePreview entity={station || []} />
+                            </li>)
+                        }
+                    </ul>
+
+                </div>
+
+                <div className="explore__stations-grid">
+                    <div className="explore-sub-header">
+                        <h1 className="explore-sub-header__title">New Releases</h1>
+                    </div>
+
+                    <ul className="explore__stations-list">
+                        {newStations.map(station =>
+                            <li key={station._id} className="station-list-item">
+                                <SquarePreview entity={station || []} />
+                            </li>)
+                        }
+                    </ul>
+
+                </div>
+
+                {/* <div className="explore__stations-grid">
+                    <div className="explore-sub-header">
+                        <h1 className="explore-sub-header__title">
+                            Surprise Me!
+                        </h1>
+                    </div>
+
+                    <ul className="explore__stations-list">
+                        <li className="station-list-item">
+                            <button
+                                className="surprise-btn"
+                                onClick={() => {
+                                    setQueue(randomStation.songs)
+                                    setCurrentSong(randomStation.songs[0])
+                                    navigate(`/station/${randomStation._id}`)
+                                }
+
+                                }
+                            >
+                            </button>
+                        </li>
+                    </ul>
+                </div> */}
+
+                {/* <div className="explore-sub-header">
+                    <p className="explore-sub-header__sub-title">Made For</p>
+                    <h1 className="explore-sub-header__title">{loggedinUser.fullname}</h1>
+                </div>
+                <ul className="square-list">
+                    {stations.map(station =>
+                        <li key={station._id} className="station-list-item">
+                            <SquarePreview entity={station || []} />
+                        </li>)
+                    }
+                </ul> */}
+            </ScrollArea>
         </section >
     )
 }

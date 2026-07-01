@@ -1,26 +1,24 @@
 .station-filter {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-auto-flow: column;
     justify-content: space-between;
+
+    padding: 1rem 1.5rem 0.5rem 1rem;
+
 }
 
 .station-filter-search {
-    display: flex;
-    gap: 10px;
-}
+    position: relative;
 
-/* .station-filter__search-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
 
-    opacity: 0.5;
-    transition: 0.2s;
 
-    &:hover {
-        opacity: 1;
+    button {
+        z-index: 2;
     }
-} */
+}
 
 .grid-toggle-btn {
     cursor: pointer;
@@ -31,4 +29,17 @@
     &:hover {
         opacity: 1;
     }
+}
+
+.library-search__input {
+    position: absolute;
+    height: 100%;
+
+    width: 12rem;
+
+    font-size: var(--font-sm);
+    padding-inline-start: 2.5rem;
+
+    background-color: var(--background-elevated-base);
+    border-radius: 0.2rem;
 }

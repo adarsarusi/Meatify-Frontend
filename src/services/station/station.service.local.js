@@ -1,6 +1,7 @@
 import fetchJsonp from 'fetch-jsonp'
 import { storageService } from '../async-storage.service'
 import { userService } from '../user'
+import { songService } from '../song'
 import { generateDemoUsers } from '../user/user.service.local'
 import { saveToStorage, loadFromStorage, makeId, getRandomIntInclusive, utilService, getRandomFromArr } from '../util.service'
 
@@ -15,7 +16,9 @@ export const stationService = {
     save,
     remove,
     addStationMsg,
-    generateSpotifyData
+    addSongToStation,
+    removeSongFromStation,
+    generateSpotifyData,
 }
 
 window.cs = stationService
@@ -74,7 +77,7 @@ async function query(filterBy = {}) {
 
     return stations
 }
-
+getById
 async function getById(stationId) {
     return await storageService.get(STATION_STORAGE_KEY, stationId)
 }
@@ -106,6 +109,26 @@ async function save(station) {
         savedStation = await storageService.post(STATION_STORAGE_KEY, stationToSave)
     }
     return savedStation
+}
+
+
+async function addSongToStation(stationId, songId) {
+    const station = await getById(stationId)
+    const song = await songService.getById(songId)
+    if (!station.songs) station.songs = []
+    station.songs.push(song)
+    await save(station)
+    return station
+}
+
+async function removeSongFromStation(stationId, songId) {
+    const station = await getById(stationId)
+    const song = await songService.getById(songId)
+    const songIdx = station.songs.findIndex(song => { song._id === songId })
+    station.songs.splice(songIdx, 1)
+
+    await save(station)
+    return station
 }
 
 async function addStationMsg(stationId, txt) {

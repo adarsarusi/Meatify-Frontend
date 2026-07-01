@@ -32,14 +32,11 @@
     align-content: center;
     justify-content: center;
 
-    height: 2.1875rem;
+    height: 2rem;
     aspect-ratio: 1/1;
-
-    padding: 0.5rem;
 
     cursor: pointer;
     text-align: center;
-    border-radius: 9999px;
     border: none;
 
     background-color: transparent;
@@ -47,8 +44,35 @@
 
     &.hover-bg {
         &:hover {
+            border-radius: 9999px;
             background-color: var(--background-highlight);
-            color: var(--essential-base);
+        }
+    }
+
+    &.play-btn {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+
+        background-color: var(--decorative-base);
+        border: none;
+        border-radius: 9999px;
+
+        .icon {
+            color: var(--icon--black);
+        }
+
+        &:hover {
+            .icon {
+                color: var(--icon--black);
+            }
+        }
+
+        &.green-btn {
+            background-color: var(--essential-positive);
+            &:hover {
+                filter: brightness(1.4);
+            }
         }
     }
 
@@ -57,19 +81,28 @@
         grid-auto-flow: column;
         gap: 0.5rem;
 
+        font-size: var(--font-sm);
         font-weight: 600;
         color: var(--essential-base);
 
         padding: 0.5rem 1rem;
+        border-radius: 9999px;
 
         background-color: var(--background-elevated-base);
         transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
 
         &:hover {
             background-color: var(--background-elevated-highlight);
+
             .icon {
                 color: var(--icon--white);
             }
+        }
+    }
+
+    &:hover {
+        .icon {
+            color: var(--icon--white);
         }
     }
 
@@ -85,8 +118,29 @@
     &.active {
         color: var(--icon--active);
     }
+
+    &.no-hover {
+        &:hover {
+            filter: brightness(1.4);
+
+            .icon {
+                color: var(--icon--active)
+            }
+        }
+    }
 }
 
-.playing-song{
-    color : var(--icon--active);
+.playing-song {
+    color: var(--icon--active);
+}
+
+.ellipsis-text {
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    white-space: unset;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
 }
