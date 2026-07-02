@@ -1,4 +1,10 @@
 .station-options {
+    width: 100%;
+    padding-block-start: 1rem;
+    padding-inline: 1rem;
+}
+
+.station-options__btn-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -7,15 +13,15 @@
     width: 100%;
     height: 8rem;
 
-    padding: 1rem;
+    padding-inline: 1rem;
     padding-block: 2rem;
 }
 
-.station-options-container {
+.station-options__user-btns {
     position: relative;
 }
 
-.station-options__play-btn{
+.station-options__play-btn {
     height: 100%;
 }
 

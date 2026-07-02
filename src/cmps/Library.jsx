@@ -47,8 +47,6 @@ export function Library() {
 
 
   likedStation.songs = likedSongs
-  likedStations.unshift(likedStation)
-
 
   useEffect(() => { }, [likedSongs])
 

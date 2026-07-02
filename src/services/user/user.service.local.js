@@ -1,8 +1,11 @@
 import { storageService } from '../async-storage.service'
-import { saveToStorage, loadFromStorage, makeId } from '../util.service'
+import { saveToStorage, loadFromStorage, makeId, getRandomFromArr } from '../util.service'
+import { stationService } from '../station/station.service.local'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 const USER_STORAGE_KEY = 'userDB'
+const SONG_STORAGE_KEY = 'songDB'
+const STATION_STORAGE_KEY = 'stationDB'
 
 export const userService = {
     login,
@@ -77,8 +80,10 @@ function saveLoggedinUser(user) {
         _id: user._id,
         fullname: user.fullname,
         imgUrl: user.imgUrl,
+        likedStationIds: user.likedStationIds || [],
+        likedSongIds: user.likedSongIds || [],
     }
-    
+
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
     return user
 }
@@ -102,13 +107,48 @@ export async function setDemoLoggedinUser() {
         users = await generateDemoUsers(50)
     }
 
+    const demoUser = users[0]
+
+    const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
+    const allStations = await loadFromStorage(STATION_STORAGE_KEY) || []
+    const otherStations = allStations.filter(station => station._id !== 'likedSongs')
+    const likedSongsStation = allStations.filter(station => station._id === 'likedSongs')
+
+    const likedSongIds = allSongs.length
+        ? getRandomFromArr(allSongs, Math.min(15, allSongs.length)).map(song => song._id)
+        : (demoUser.likedSongIds || [])
+
+    const likedStationIds = otherStations.length
+        ? getRandomFromArr(otherStations, Math.min(10, otherStations.length)).map(station => station._id)
+        : (demoUser.likedStationIds || [])
+
+    if (!likedStationIds.includes('likedSongs')) {
+        likedStationIds.unshift('likedSongs')
+    }
+
+    demoUser.likedSongIds = likedSongIds
+    demoUser.likedStationIds = likedStationIds
+
+
+    if (likedSongsStation[0]) {
+        likedSongsStation[0].songs = allSongs.filter(song => likedSongIds.includes(song._id))
+        console.log('likedSongsStation[0]', likedSongsStation[0])
+        stationService.save(likedSongsStation[0])
+    }
+
+    const userIdx = users.findIndex(u => u._id === demoUser._id)
+    if (userIdx !== -1) {
+        users[userIdx] = demoUser
+        saveToStorage(USER_STORAGE_KEY, users)
+    }
+
     const user = {
-        _id: users[0]._id,
-        fullname: users[0].fullname,
-        username: users[0].username,
-        imgUrl: users[0].imgUrl,
-        likedStationIds: users[0].likedStationIds || [],
-        likedSongIds: users[0].likedSongIds || [],
+        _id: demoUser._id,
+        fullname: demoUser.fullname,
+        username: demoUser.username,
+        imgUrl: demoUser.imgUrl,
+        likedStationIds: demoUser.likedStationIds,
+        likedSongIds: demoUser.likedSongIds,
     }
 
     sessionStorage.setItem(

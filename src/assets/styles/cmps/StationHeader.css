@@ -1,12 +1,25 @@
+:root {
+    --main-view-grid-width: 100cqw;
+    --fluid-height: clamp(186px, 186px +(var(--main-view-grid-width) - 600px) / 424* 150, 336px);
+    --min-fluid-height: clamp(186px, 186px +(var(--main-view-grid-width) - 600px) / 424* 90, 276px);
+    --min-fluid-height-large-header: clamp(216px, 216px +(var(--main-view-grid-width) - 600px) / 424* 60, 276px);
+    --min-fluid-height-xlarge-header: clamp(286px, 286px +(var(--main-view-grid-width) - 600px) / 424* 50, 336px);
+}
+
+
 .station-header {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1rem;
-    border-bottom: 1px solid var(--background-elevated-base);
     align-items: end;
 
-    padding-block-start: 1.2rem;
-    padding-block-end: 1rem;
+    min-height: var(--min-fluid-height);
+    height: min(30vh, var(--fluid-height));
+    max-height: 336px;
+
+    padding-inline: 2rem;
+    padding-block-start: 3rem;
+
 }
 
 .station-header__info {
@@ -87,7 +100,6 @@
     margin-left: -12px;
     border-radius: 50%;
 
-    border: 3px solid #ffffff00;
 
     overflow: hidden;
 }
