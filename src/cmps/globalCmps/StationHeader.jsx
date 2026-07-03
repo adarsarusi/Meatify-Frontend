@@ -23,7 +23,7 @@ export function StationHeader({
     }
 
     return (
-        <section className="station-header">
+        <section className="station-header dynamic-max-width">
             <div className="station-img-container">
                 <StationCover entity={station} />
             </div>

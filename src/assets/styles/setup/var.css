@@ -19,40 +19,51 @@
   --icon--active: #1DB954;
 
   --circle-bg-hover: #1f1f1f;
-  
+
   --gradient1: linear-gradient(180deg, var(--accent) 0%, var(--bg-base) 80%);
-  
+
   --gray1: #ddd;
   --gray2: #aaa;
   --gray3: #777;
   --gray4: #333;
-  
+
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
-  
+
   --button-hover-scale: 1.04;
 
+  /* global sizes */
+  --content-max-width: 1955px;
 
-    /* Sizes */
+
+  /* Sizes */
   --creatorIndex: 1;
-  
+
   /* Text-sizes */
 
   /* Base text */
-  --font-xs: 0.75rem;   /* 12px */
-  --font-sm: 0.875rem;  /* 14px */
-  --font-base: 1rem;      /* 16px */
-  --font-lg: 1.125rem;  /* 18px */
-  
-  /* Headings */
-  --font-xl: 1.25rem;   /* 20px */
-  --font-2xl: 1.5rem;   /* 24px */
-  --font-3xl: 2rem;     /* 32px */
-  --font-4xl: 2.5rem;   /* 40px */
-  
- 
+  --font-xs: 0.75rem;
+  /* 12px */
+  --font-sm: 0.875rem;
+  /* 14px */
+  --font-base: 1rem;
+  /* 16px */
+  --font-lg: 1.125rem;
+  /* 18px */
 
-/* Spotify-colors vars  */
+  /* Headings */
+  --font-xl: 1.25rem;
+  /* 20px */
+  --font-2xl: 1.5rem;
+  /* 24px */
+  --font-3xl: 2rem;
+  /* 32px */
+  --font-4xl: 2.5rem;
+  /* 40px */
+
+
+
+  /* Spotify-colors vars  */
 
   --background-base: #121212;
   --background-highlight: #1f1f1f;
@@ -65,7 +76,7 @@
   --background-tinted-press: #ffffff36;
 
   --text-base: #fff;
-  --text-subdued: #b3b3b3;
+  --text-subdued: rgba(255, 255, 255, 0.7);
   --text-bright-accent: #1ed760;
   --text-negative: #f3727f;
   --text-warning: #ffa42b;
@@ -88,28 +99,27 @@
 
 
   /* Other vars */
-    --encore-shortest-1: 50ms;
-    --encore-shortest-2: .1s;
-    --encore-shortest-3: .15s;
-    --encore-shortest-4: .2s;
-    --encore-short-1: .25s;
-    --encore-short-2: .3s;
-    --encore-productive: cubic-bezier(.3, 0, 0, 1);
-    --encore-productive-decelerate: cubic-bezier(0, 0, .2, 1);
-    --encore-productive-accelerate: cubic-bezier(.8, 0, 1, 1);
-    --encore-productive-exit-duration: var(--encore-shortest-4);
-    --encore-opacity-disabled: .3;
-    --encore-opacity-active: .7;
-    --encore-border-radius-rounded: 9999px;
-    --encore-overlay-box-shadow: 0 4px 12px 0 #0000004d;
-    --encore-overlay-drop-shadow: 0 4px 6px #0000004d;
-    --encore-focus-box-shadow: 0 3px 0 0;
-    --encore-sidebar-base-width: 200px;
-    --encore-z-index-popover: 1060;
-    --encore-z-index-skiplink: 9999;
-    --encore-z-index-dialog: 1050;
-    --encore-button-hover-scale: 1.04;
-    --encore-productive-enter: var(--encore-short-1) var(--encore-productive-decelerate);
-    --encore-productive-exit: var(--encore-shortest-4) var(--encore-productive-accelerate);
-  }
-  
+  --encore-shortest-1: 50ms;
+  --encore-shortest-2: .1s;
+  --encore-shortest-3: .15s;
+  --encore-shortest-4: .2s;
+  --encore-short-1: .25s;
+  --encore-short-2: .3s;
+  --encore-productive: cubic-bezier(.3, 0, 0, 1);
+  --encore-productive-decelerate: cubic-bezier(0, 0, .2, 1);
+  --encore-productive-accelerate: cubic-bezier(.8, 0, 1, 1);
+  --encore-productive-exit-duration: var(--encore-shortest-4);
+  --encore-opacity-disabled: .3;
+  --encore-opacity-active: .7;
+  --encore-border-radius-rounded: 9999px;
+  --encore-overlay-box-shadow: 0 4px 12px 0 #0000004d;
+  --encore-overlay-drop-shadow: 0 4px 6px #0000004d;
+  --encore-focus-box-shadow: 0 3px 0 0;
+  --encore-sidebar-base-width: 200px;
+  --encore-z-index-popover: 1060;
+  --encore-z-index-skiplink: 9999;
+  --encore-z-index-dialog: 1050;
+  --encore-button-hover-scale: 1.04;
+  --encore-productive-enter: var(--encore-short-1) var(--encore-productive-decelerate);
+  --encore-productive-exit: var(--encore-shortest-4) var(--encore-productive-accelerate);
+}

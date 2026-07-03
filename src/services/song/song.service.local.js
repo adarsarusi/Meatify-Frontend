@@ -19,7 +19,6 @@ async function query(filterBy = {}) {
   }
 
   return songs
-
 }
 
 function firstDemoSong() {

@@ -15,6 +15,7 @@ const initialStationState = {
         _id: 'likedSongs',
         name: 'Liked Songs',
         type: 'station',
+         tags: ['Liked'],
         createdBy: {
             _id: '',
             fullname: '',

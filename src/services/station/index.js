@@ -11,7 +11,8 @@ function getEmptyStation() {
         songs: [],
         createdBy: null,
         savedCount: 0,
-        uploadImgUrl: '/placeholder-image.png',
+        songsImagesUrls: [],
+        uploadImgUrl: '',
         songsImagesUrls: [],
         isPrivate: false,
         type: 'station'

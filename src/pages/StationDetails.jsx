@@ -8,6 +8,7 @@ import {
   removeStation,
 } from "../store/actions/station.actions"
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
+import { TAGS_DATA } from '../services/station/station.service.local'
 
 import { EditModal } from "../cmps/globalCmps/EditModal"
 import { StationHeader } from "../cmps/globalCmps/StationHeader"
@@ -125,89 +126,98 @@ export function StationDetails() {
       </section>
     )
   }
-  console.log(station);
+
   const isOwner = loggedInUser?._id === station.createdBy?._id
 
-
+  const tagData = TAGS_DATA.find(
+    currTag => currTag.title === station.tags[0]
+  )
 
   return (
-    <section className="station-details dynamic-area">
+    <section className="station-details dynamic-area"
+      style={{
+        '--tag-color': tagData?.color || '#509BF5',
+      }}>
       <ScrollArea>
-        <section className="station-details__header">
-          <StationHeader
-            likedStation={likedStation}
-            user={user}
-            station={station}
-            isOwner={isOwner}
-            onRemoveStation={onRemoveStation}
-            onEditStation={() => setIsEditOpen(true)}
-          />
-        </section>
-        <section className="station-details__options">
-          <StationOptions
-            likedStation={likedStation}
-            station={station}
-            isOwner={isOwner}
-            onRemoveStation={onRemoveStation}
-            onEditStation={() => setIsEditOpen(true)}
-          />
-        </section>
+        <section className="station-details__container">
+          <section className="station-details__header">
+            <StationHeader
+              likedStation={likedStation}
+              user={user}
+              station={station}
+              isOwner={isOwner}
+              onRemoveStation={onRemoveStation}
+              onEditStation={() => setIsEditOpen(true)}
+            />
+          </section>
+          <div className="station-details__content">
+            <section className="station-details__options dynamic-max-width">
+              <StationOptions
+                likedStation={likedStation}
+                station={station}
+                isOwner={isOwner}
+                onRemoveStation={onRemoveStation}
+                onEditStation={() => setIsEditOpen(true)}
+              />
+            </section>
 
-        {isEditOpen && (
-          <EditModal
-            title="Edit playlist"
-            entity={station}
-            onClose={() => setIsEditOpen(false)}
-            onSave={onSaveStation}
-          />
-        )}
+            {isEditOpen && (
+              <EditModal
+                title="Edit playlist"
+                entity={station}
+                onClose={() => setIsEditOpen(false)}
+                onSave={onSaveStation}
+              />
+            )}
 
-        <section className="station-details__song-list">
-          {!likedStation ? (
-            <SongList songs={station?.songs || []} />
-          ) : (
-            <SongList songs={likedSongs} />
-          )}
+            <section className="station-details__song-list dynamic-max-width">
+              {!likedStation ? (
+                <SongList songs={station?.songs || []} />
+              ) : (
+                <SongList songs={likedSongs} />
+              )}
 
-          {station.songs?.length > 0 && !isSearchVisible && (
-            <button
-              className="station-details__find-more-btn"
-              onClick={() => setIsSearchVisible(true)}
-            >
-              <span>Find more</span>
-            </button>
-          )}
-
-          {(station.songs?.length === 0 || isSearchVisible) && (
-            <div className="station-details__search-container">
-              <div>
-                <h2>Let's find something for your playlist</h2>
-                <div className="station-details__search-bar">
-                  <span>
-                    <IconComp name="search" />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search for songs..."
-                    value={searchedSong}
-                    onChange={handleSearchChange}
-                  />
-                </div>
-              </div>
-              {station.songs?.length > 0 && (
-                <button onClick={() => setIsSearchVisible(false)}>
-                  <span>
-                    <IconComp name="close" />
-                  </span>
+              {station.songs?.length > 0 && !isSearchVisible && (
+                <button
+                  className="station-details__find-more-btn"
+                  onClick={() => setIsSearchVisible(true)}
+                >
+                  <span>Find more</span>
                 </button>
               )}
-            </div>
-          )}
-          {isSearchVisible && searchedSong && (
-            <div className="station-details__search-results">
-              <SongList songs={songs} isSearchResult={true} />
-            </div>
-          )}
+
+              {(station.songs?.length === 0 || isSearchVisible) && (
+                <div className="station-details__search-container">
+                  <div>
+                    <h2>Let's find something for your playlist</h2>
+                    <div className="station-details__search-bar">
+                      <span>
+                        <IconComp name="search" />
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Search for songs..."
+                        value={searchedSong}
+                        onChange={handleSearchChange}
+                      />
+                    </div>
+                  </div>
+                  {station.songs?.length > 0 && (
+                    <button onClick={() => setIsSearchVisible(false)}>
+                      <span>
+                        <IconComp name="close" />
+                      </span>
+                    </button>
+                  )}
+                </div>
+              )}
+              {isSearchVisible && searchedSong && (
+                <div className="station-details__search-results">
+                  <SongList songs={songs} isSearchResult={true} />
+                </div>
+              )}
+            </section>
+          </div>
         </section>
       </ScrollArea>
     </section>

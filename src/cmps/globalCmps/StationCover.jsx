@@ -14,33 +14,27 @@ export function StationCover({ entity }) {
         <article className="station-cover-img">
             <div className="station-cover__hover"></div>
             {entity?.uploadImgUrl ? (
-                <img src={entity?.uploadImgUrl} alt='' />
+                <img src={entity.uploadImgUrl} alt='' />
             ) : isMediaType ? (
                 <img src={entity.imgUrl} alt={entity.name || ''} />
-            ) : (
+            ) : entity.songsImagesUrls?.length ? (
                 <div className="station-cover-img__container">
-
-                    {entity.songsImagesUrls?.length ? (
-                        entity.songsImagesUrls.map(url => (
-                            <img
-                                key={makeId('img')}
-                                src={url}
-                                alt={entity.name || ''}
-                                className="station-img"
-                            />
-                        ))
-                    ) : (
-                        <div className="playlist-placeholder">
-                            <IconComp
-                                name="playlist"
-                                className="icon--xl icon--muted"
-                            />
-                        </div>
-                    )}
-
+                    {entity.songsImagesUrls.map((url, index) => (
+                        <img key={index}
+                            src={url}
+                            alt={entity.name || ''}
+                            className="station-img"
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="playlist-placeholder">
+                    <IconComp
+                        name="music"
+                        className="icon--xl icon--muted"
+                    />
                 </div>
             )}
-
         </article>
     )
 }

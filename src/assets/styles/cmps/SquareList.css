@@ -1,6 +1,7 @@
 .square-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    margin-inline-start: -0.8rem;
 }
 
 .square-list--empty {

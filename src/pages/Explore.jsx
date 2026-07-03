@@ -52,17 +52,17 @@ export function Explore() {
     .filter((station) =>
       station.tags?.some((tag) => favoriteTags.includes(tag)),
     )
-    .slice(0, 6)
+    .slice(0, 12)
 
   // popular stations, sorted by savedCount
   const popularStations = [...discoverableStations]
     .sort((a, b) => (b.savedCount ?? 0) - (a.savedCount ?? 0))
-    .slice(0, 6)
+    .slice(0, 12)
 
   // new releases sorted by created at
   const newStations = [...discoverableStations]
     .sort((a, b) => b.createdAt - a.createdAt)
-    .slice(0, 6)
+    .slice(0, 12)
 
   // surprise me btn - plays a random station
   const randomStation =
@@ -73,54 +73,58 @@ export function Explore() {
   return (
     <section className="explore dynamic-area">
       <ScrollArea>
-        <div className="explore__stations-grid">
-          <div className="explore-sub-header">
-            <p className="explore-sub-header__sub-title">Made For</p>
-            <h1 className="explore-sub-header__title">
-              {loggedinUser.fullname}
-            </h1>
-          </div>
 
-          <ul className="explore__stations-list">
-            <SquareList entities={likedStation} />
+        <div className="explore--container dynamic-max-width">
 
-          </ul>
-        </div>
-
-        {recommendations.length > 0 && (
-          <div className="explore__stations-grid">
+          <div className="explore__stations-grid ">
             <div className="explore-sub-header">
-              <h1 className="explore-sub-header__title">Recommended For You</h1>
-              <p className="explore-sub-header__sub-title">
-                Based on your liked songs
-              </p>
+              <p className="explore-sub-header__sub-title">Made For</p>
+              <h1 className="explore-sub-header__title">
+                {loggedinUser.fullname}
+              </h1>
             </div>
 
             <ul className="explore__stations-list">
-              <SquareList entities={recommendations} />
+              <SquareList entities={likedStation} />
+
             </ul>
           </div>
-        )}
 
-        <div className="explore__stations-grid">
-          <div className="explore-sub-header">
-            <h1 className="explore-sub-header__title">Popular Stations</h1>
-            <p className="explore-sub-header__sub-title">Most saved</p>
+          {recommendations.length > 0 && (
+            <div className="explore__stations-grid">
+              <div className="explore-sub-header">
+                <h1 className="explore-sub-header__title">Recommended For You</h1>
+                <p className="explore-sub-header__sub-title">
+                  Based on your liked songs
+                </p>
+              </div>
+
+              <ul className="explore__stations-list">
+                <SquareList entities={recommendations} />
+              </ul>
+            </div>
+          )}
+
+          <div className="explore__stations-grid">
+            <div className="explore-sub-header">
+              <h1 className="explore-sub-header__title">Popular Stations</h1>
+              <p className="explore-sub-header__sub-title">Most saved</p>
+            </div>
+
+            <ul className="explore__stations-list">
+              <SquareList entities={popularStations} />
+            </ul>
           </div>
 
-          <ul className="explore__stations-list">
-            <SquareList entities={popularStations} />
-          </ul>
-        </div>
+          <div className="explore__stations-grid">
+            <div className="explore-sub-header">
+              <h1 className="explore-sub-header__title">New Releases</h1>
+            </div>
 
-        <div className="explore__stations-grid">
-          <div className="explore-sub-header">
-            <h1 className="explore-sub-header__title">New Releases</h1>
+            <ul className="explore__stations-list">
+              <SquareList entities={newStations} />
+            </ul>
           </div>
-
-          <ul className="explore__stations-list">
-            <SquareList entities={newStations} />
-          </ul>
         </div>
 
 

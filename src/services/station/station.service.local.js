@@ -132,6 +132,7 @@ async function _ensureLikedStation(stations = null) {
         type: 'station',
         createdBy: userService.getLoggedinUser() || { _id: 'guest', fullname: 'You', imgUrl: '' },
         songs: [],
+        tags: ['Liked'],
         uploadImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.png',
         isPrivate: true,
         savedCount: 0,
@@ -437,48 +438,51 @@ const ALL_TAGS = [...new Set(Object.values(GENRE_PROFILES).flatMap(profile => pr
 const SONG_TAGS_MAP = Object.fromEntries(SEARCH_TERMS.map(term => [term, GENRE_PROFILES[term].tags]))
 const STATION_NAMES = Object.values(GENRE_PROFILES).flatMap(profile => profile.stationNames)
 
-const TAG_METADATA = {
-    Pop: { color: '#f16cd5', imgUrl: '/tags/pop.webp' },
-    'Hip Hop': { color: '#b74aff', imgUrl: '/tags/hip-hop.webp' },
-    Rock: { color: '#E8115B', imgUrl: '/tags/rock.webp' },
-    Electronic: { color: '#3edd3e', imgUrl: '/tags/electronic.webp' },
-    Latin: { color: '#E13300', imgUrl: '/tags/latin.webp' },
-    'K-Pop': { color: '#af2896', imgUrl: '/tags/k-pop.webp' },
-    Chill: { color: '#477D95', imgUrl: '/tags/chill.webp' },
-    Workout: { color: '#f7b968', imgUrl: '/tags/workout.webp' },
-    Party: { color: '#c268f7', imgUrl: '/tags/party.webp' },
-    Focus: { color: '#dd9e6a', imgUrl: '/tags/focus.webp' },
-    Sleep: { color: '#2D46B9', imgUrl: '/tags/sleep.webp' },
-    Gaming: { color: '#27856A', imgUrl: '/tags/gaming.webp' },
-    Driving: { color: '#8f8e8d', imgUrl: '/tags/driving.webp' },
-    Mood: { color: '#509BF5', imgUrl: '/tags/mood.webp' },
-    Trending: { color: '#ee632c', imgUrl: '/tags/trending.webp' },
-    Jazz: { color: '#6C5B7B', imgUrl: 'https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=260&fit=crop' },
-    'R&B': { color: '#9B5DE5', imgUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&h=260&fit=crop' },
-    Indie: { color: '#2A9D8F', imgUrl: 'https://images.unsplash.com/photo-1516280440614-37882060ae69?w=400&h=260&fit=crop' },
-    Reggae: { color: '#2F9E44', imgUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400&h=260&fit=crop' },
-    Metal: { color: '#4a4a4a', imgUrl: 'https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=400&h=260&fit=crop' },
-    Classical: { color: '#8B5E3C', imgUrl: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=400&h=260&fit=crop' },
-    Country: { color: '#C97B3D', imgUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400&h=260&fit=crop' },
-    Blues: { color: '#1E4E8C', imgUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&h=260&fit=crop' },
-    Folk: { color: '#6B8E4E', imgUrl: 'https://images.unsplash.com/photo-1499364615650-ec38552f4f34?w=400&h=260&fit=crop' },
-    Funk: { color: '#D9822B', imgUrl: 'https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?w=400&h=260&fit=crop' },
-    Soul: { color: '#A63A50', imgUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=260&fit=crop' },
-    Punk: { color: '#D6001C', imgUrl: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=260&fit=crop' },
-    Ambient: { color: '#3C6E71', imgUrl: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&h=260&fit=crop' },
-    Disco: { color: '#B23AEE', imgUrl: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=260&fit=crop' },
-    Romance: { color: '#E85D75', imgUrl: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=260&fit=crop' },
-    Study: { color: '#5B7C99', imgUrl: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400&h=260&fit=crop' },
-    Roadtrip: { color: '#F2A65A', imgUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400&h=260&fit=crop' },
-    Motivation: { color: '#E8590C', imgUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=260&fit=crop' },
-    Throwback: { color: '#9C6644', imgUrl: 'https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?w=400&h=260&fit=crop' }
+export let TAGS_DATA = []
+
+const TAG_COLORS = {
+    Pop: '#f16cd5', 'Hip Hop': '#b74aff', Rock: '#E8115B', Electronic: '#3edd3e',
+    Latin: '#E13300', 'K-Pop': '#af2896', Chill: '#477D95', Workout: '#f7b968',
+    Party: '#c268f7', Focus: '#dd9e6a', Sleep: '#2D46B9', Gaming: '#27856A',
+    Driving: '#8f8e8d', Mood: '#509BF5', Trending: '#ee632c', Jazz: '#6C5B7B',
+    'R&B': '#9B5DE5', Indie: '#2A9D8F', Reggae: '#2F9E44', Metal: '#4a4a4a',
+    Classical: '#8B5E3C', Country: '#C97B3D', Blues: '#1E4E8C', Folk: '#6B8E4E',
+    Funk: '#D9822B', Soul: '#A63A50', Punk: '#D6001C', Ambient: '#3C6E71',
+    Disco: '#B23AEE', Romance: '#E85D75', Study: '#5B7C99', Roadtrip: '#F2A65A',
+    Motivation: '#E8590C', Throwback: '#9C6644', Liked: '#5038a0'
 }
 
-export const TAGS_DATA = ALL_TAGS.map(title => ({
-    title,
-    color: TAG_METADATA[title]?.color || '#535353',
-    imgUrl: TAG_METADATA[title]?.imgUrl || FALLBACK_IMG_URLS[0]
-}))
+const TAG_SEARCH_QUERIES = {
+    Pop: 'pop concert stage', 'Hip Hop': 'hip hop street', Rock: 'rock band guitar',
+    Electronic: 'electronic music neon', Latin: 'latin dance music',
+    'K-Pop': 'kpop stage lights', Chill: 'chill lounge relax', Workout: 'gym workout fitness',
+    Party: 'party crowd dance', Focus: 'focus desk work', Sleep: 'sleep night dark',
+    Gaming: 'gaming setup neon', Driving: 'driving night road', Mood: 'mood aesthetic vibe',
+    Trending: 'trending viral colorful', Jazz: 'jazz saxophone club',
+    'R&B': 'neon microphone stage red', Indie: 'indie bedroom aesthetic', Reggae: 'reggae beach sunset',
+    Metal: 'metal concert dark', Classical: 'classical piano orchestra', Country: 'country road field',
+    Blues: 'blues guitar smoky', Folk: 'folk acoustic cabin', Funk: 'funk disco groove',
+    Soul: 'vinyl record player warm light', Punk: 'punk mosh pit crowd', Ambient: 'foggy misty landscape minimal',
+    Disco: 'disco ball party', Romance: 'romance candles couple', Study: 'study library books',
+    Roadtrip: 'roadtrip highway sunset', Motivation: 'motivation sunrise mountain', Throwback: 'retro vintage 80s',
+    Liked: 'roadtrip highway sunset'
+}
+
+async function buildTagsData() {
+    const entries = await Promise.all(
+        Object.keys(TAG_COLORS).map(async (title) => {
+            const imgUrl = await fetchTagImageFromUnsplash(TAG_SEARCH_QUERIES[title] || title)
+            return { title, color: TAG_COLORS[title], imgUrl }
+        })
+    )
+    return entries
+}
+
+export async function initTagsData() {
+    if (TAGS_DATA.length) return TAGS_DATA
+    TAGS_DATA = await buildTagsData()
+    return TAGS_DATA
+}
 
 function upscaleImageUrl(url, size) {
     if (!url) return url
@@ -492,6 +496,31 @@ const STATION_COVER_URLS = FALLBACK_IMG_URLS.map(url => upscaleImageUrl(url, 500
 // + Jamendo (full-length playable audio, no login required)
 // Register a free Jamendo client_id at https://developer.jamendo.com/
 // ------------------------------------------------------------------
+
+const UNSPLASH_ACCESS_KEY = '0NmFdVz_ARctvjTEja7Z_TVqqyZXldYAGGg_21lHWQ0'
+
+const tagImageCache = {}
+
+async function fetchTagImageFromUnsplash(tag) {
+    if (tagImageCache[tag]) return tagImageCache[tag]
+
+    const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(tag)}&per_page=1&orientation=squarish&client_id=${UNSPLASH_ACCESS_KEY}`
+    try {
+        const res = await fetch(url)
+        if (!res.ok) throw new Error(`Unsplash fetch failed: ${res.status}`)
+        const json = await res.json()
+        const photo = json?.results?.[0]
+        if (!photo) throw new Error('No results')
+
+        const imgUrl = `${photo.urls.raw}&w=400&h=400&fit=crop&crop=faces,entropy&q=80`
+        tagImageCache[tag] = imgUrl
+        return imgUrl
+    } catch (err) {
+        console.warn(`Unsplash fetch failed for tag "${tag}"`, err)
+        return FALLBACK_IMG_URLS[0]
+    }
+}
+
 let combinedPoolPromise = null
 let stationCoverPoolPromise = null
 
@@ -643,6 +672,8 @@ async function buildCombinedPool() {
 }
 
 export async function generateSpotifyData(songsCount = 800, stationsCount = 250) {
+    await initTagsData()
+
     const existingSongs = await loadFromStorage(SONG_STORAGE_KEY)
     const existingStations = await loadFromStorage(STATION_STORAGE_KEY)
 

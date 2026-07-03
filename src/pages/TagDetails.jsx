@@ -43,25 +43,28 @@ export function TagDetails() {
                 '--tag-color': tagData?.color || '#509BF5',
             }}>
             <ScrollArea>
-
-                <header className="tag-details__header">
-                    <div>
-                        <h1>{tag}</h1>
-                    </div>
-                </header>
-
-                <div className="tag-details__lists">
-                    {filteredStations.length > 0 && (
-                        <div className="tag-details__station-list">
-                            <h2>Stations</h2>
-                            <SquareList entities={filteredStations} />
+                <section className="tag-details__container">
+                    <header className="tag-details__header">
+                        <div className="tag-details__header-content dynamic-max-width">
+                            <h1>{tag}</h1>
                         </div>
-                    )}
-                    <div className="tag-details__song-list">
-                        <h2>Songs</h2>
-                        <SongList songs={filteredSongs} />
+                    </header>
+
+                    <div className="tag-details__lists">
+                        <div className="tag-details__lists-container dynamic-max-width">
+                            {filteredStations.length > 0 && (
+                                <div className="tag-details__station-list">
+                                    <h2>Stations</h2>
+                                    <SquareList entities={filteredStations} />
+                                </div>
+                            )}
+                            <div className="tag-details__song-list">
+                                <h2>Songs</h2>
+                                <SongList songs={filteredSongs} />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
             </ScrollArea>
         </section>
     )

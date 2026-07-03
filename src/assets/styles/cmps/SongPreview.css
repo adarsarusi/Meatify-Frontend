@@ -1,13 +1,9 @@
-
-
 :root {
-    --placeholder-image: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder.b256dae9.webp);
-    --placeholder-image-compact: url(https://open.spotifycdn.com/cdn/images/tracklist-placeholder-compact.c14407f1.webp);
     --row-height: 3.5rem;
-    --grid-template-columns: [index] var(--index-column-width, 1rem) [first] minmax(var(--first-min-width), var(--first-max-width, 4fr)) [var1] minmax(var(--var1-min-width), var(--var1-max-width, 2fr)) [var2] minmax(var(--var2-min-width), var(--var2-max-width, 2fr)) [last] minmax(var(--last-min-width), var(--last-max-width, 1fr));
-    --first-min-width: 10rem;
+    --grid-template-columns: [index] var(--index-column-width, 16px) [first] minmax(var(--first-min-width), var(--first-max-width, 4fr)) [var1] minmax(var(--var1-min-width), var(--var1-max-width, 2fr)) [var2] minmax(var(--var2-min-width), var(--var2-max-width, 2fr)) [last] minmax(var(--last-min-width), var(--last-max-width, 1fr));
+    --first-min-width: 180px;
     --var1-min-width: 120px;
-    --var2-min-width: 5rem;
+    --var2-min-width: 120px;
     --last-min-width: 120px;
 }
 
@@ -20,7 +16,6 @@
 
 
 .song-preview__item {
-
     position: relative;
     display: grid;
     grid-template-columns: var(--grid-template-columns);
@@ -82,13 +77,13 @@
 .song-preview__meta {
     display: grid;
     align-items: center;
-    grid-template-columns: 2.5rem 1fr;
+    grid-template-columns: 3rem 1fr;
     gap: 1rem;
     min-width: 0;
 
     .song-preview__title {
         font-size: var(--font-base);
-        /* color: var(--text-base); */ 
+        color: var(--text-base);
     }
 
     .song-preview__artists {
@@ -141,7 +136,7 @@
     }
 }
 
-.song-preview__context-menu{
+.song-preview__context-menu {
     position: absolute;
 
     display: flex;
@@ -154,15 +149,15 @@
     max-width: max-content;
 
     inset: 0 auto auto 0;
-    
+
     color: var(--text-main);
     background-color: var(--decorative-subdued);
 
     border-radius: 4px;
     padding: 0.5rem 0.5rem;
     z-index: 1000;
-    
-    span{
+
+    span {
         display: flex;
         align-items: center;
         width: 100%;

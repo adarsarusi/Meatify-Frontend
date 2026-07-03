@@ -1,7 +1,6 @@
 .station-options {
     width: 100%;
     padding-block-start: 1rem;
-    padding-inline: 1rem;
 }
 
 .station-options__btn-container {
@@ -13,7 +12,6 @@
     width: 100%;
     height: 8rem;
 
-    padding-inline: 1rem;
     padding-block: 2rem;
 }
 

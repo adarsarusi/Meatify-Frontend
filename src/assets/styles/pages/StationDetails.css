@@ -5,15 +5,21 @@
   overflow-y: auto;
 
   font-size: 0.875rem;
+  background-color: var(--tag-color);
 
-  background: linear-gradient(to bottom,
-      rgba(80, 155, 245, 0.4) 0,
-      var(--bg-base) 350px) !important;
 }
 
-.station-details__song-list {
-  padding: 1rem;
+.station-details__header {
+  background-color: var(--tag-color);
 }
+
+.station-details__content {
+  background:
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--tag-color) 35%, transparent),
+      transparent 250px);
+}
+
 
 .station-details__find-more-btn {
   display: block;
