@@ -65,7 +65,6 @@ p {
   text-wrap: pretty;
 }
 
-/* Headings: strip browser size/weight, tighten line-height, balance wrapping */
 h1,
 h2,
 h3,
@@ -109,7 +108,6 @@ select {
   letter-spacing: inherit;
 }
 
-/* Color inherit only on inputs — buttons manage their own color */
 input,
 textarea,
 select {
@@ -213,8 +211,6 @@ sub {
   scroll-margin-block: 5ex;
 }
 
-/* === ACCESSIBILITY: REDUCED MOTION === */
-/* Note: !important intentionally suppresses .icon transitions — correct behavior */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -225,7 +221,6 @@ sub {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

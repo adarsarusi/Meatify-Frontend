@@ -13,21 +13,17 @@
 
     &:hover {
         background-color: var(--bg-hover);
+        cursor: pointer;
 
         .entity-square-preview__btn {
             opacity: 1;
             pointer-events: auto;
+            transform: translateY(0);
         }
 
         .entity-square-preview__index {
             visibility: hidden;
         }
-
-        .btn {
-            transform: translateX(0);
-        }
-
-        cursor: pointer;
     }
 
 }
@@ -74,16 +70,13 @@
     place-items: center;
 
     opacity: 0;
-    transition: all 250ms ease;
+    pointer-events: none;
+    transition: opacity 250ms ease, transform 250ms ease, scale 250ms ease;
     box-shadow: 0 4px 60px #00000080;
     transform: translateY(100%);
-    
-    .icon{
+
+    .icon {
         width: 80%;
         aspect-ratio: 1/1;
-    }
-
-    &:hover {
-        transform: scale(var(--button-hover-scale));
     }
 }
