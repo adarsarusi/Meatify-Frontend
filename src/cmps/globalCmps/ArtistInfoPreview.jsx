@@ -5,7 +5,7 @@ import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { SquarePreview } from "./SquarePreview"
-import SongList from "./SongList"
+import { QueuePreview } from "../QueuePreview"
 
 
 export function ArtistInfoPreview({ currentSong }) {
@@ -54,8 +54,18 @@ export function ArtistInfoPreview({ currentSong }) {
           </div>
           <div className="entity-artist-preview__artists">{displayArtists}</div>
         </div>
-        <h2>More Songs:</h2>
-        {/* <SongList songs={filteredSongs} /> */}
+        <div className="entity-artist-preview__description">
+          <p classNam="entity-artist-preview__description-txt">{currentSong.description}</p>
+        </div>
+        <div className="entity-artist-preview__song-list">
+          <h2>More Songs:</h2>
+          <ul>
+            {filteredSongs.map(song => (
+              <QueuePreview key={song._id} song={song} />
+            ))}
+          </ul>
+        </div>
+
       </div>
     </ section>
   )

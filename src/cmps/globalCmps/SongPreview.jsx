@@ -74,7 +74,7 @@ export function SongPreview({ song, index }) {
         <StationCover entity={song} />
         <div className="song-preview__meta-text">
           <div
-            className={`song-preview__title ellipsis-text ${isCurrentSong ? "playing-song" : ""}`}
+            className={`song-preview__title ${(isCurrentSong && isPlaying) ? "playing-song" : ""} ellipsis-text `}
           >
             {song.title}
           </div>

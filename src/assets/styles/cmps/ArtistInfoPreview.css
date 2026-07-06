@@ -51,3 +51,40 @@
         min-height: 2.4em;
     }
 }
+
+.entity-artist-preview__song-list {
+    display: grid;
+    gap: 0.75rem;
+
+    width: 100%;
+    background-color: var(--background-elevated-base);
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .queue-preview:hover {
+        background-color: var(--background-tinted-press);
+    }
+
+}
+
+.entity-artist-preview__description {
+    display: grid;
+    gap: 0.75rem;
+
+    width: 100%;
+    background-color: var(--background-elevated-base);
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .queue-preview:hover {
+        background-color: var(--background-tinted-press);
+    }
+
+    .entity-artist-preview__artist-name {
+        font-size: var(--font-lg);
+    }
+
+    .entity-artist-preview__description-txt {
+        font-size: var(--font-2xlrem);
+    }
+}

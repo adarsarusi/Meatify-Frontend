@@ -671,7 +671,7 @@ async function buildCombinedPool() {
     return combinedPoolPromise
 }
 
-export async function generateSpotifyData(songsCount = 800, stationsCount = 250) {
+export async function generateSpotifyData(songsCount = 200, stationsCount = 100) {
     await initTagsData()
 
     const existingSongs = await loadFromStorage(SONG_STORAGE_KEY)

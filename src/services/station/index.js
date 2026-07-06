@@ -33,7 +33,7 @@ const isLocal = VITE_LOCAL === 'true'
 const service = isLocal ? local : remote
 
 if (isLocal) {
-    service.generateSpotifyData(100, 30)
+    service.generateSpotifyData(200, 100)
 }
 export const stationService = { getEmptyStation, getDefaultFilter, ...service }
 
