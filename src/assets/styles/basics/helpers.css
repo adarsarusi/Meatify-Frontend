@@ -70,6 +70,7 @@
 
         &.green-btn {
             background-color: var(--essential-positive);
+
             &:hover {
                 filter: brightness(1.4);
             }
@@ -131,7 +132,7 @@
 }
 
 .playing-song {
-    color: var(--icon--active);
+    color: var(--essential-positive) !important;
 }
 
 .ellipsis-text {

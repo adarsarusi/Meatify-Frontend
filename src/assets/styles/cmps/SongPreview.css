@@ -42,7 +42,8 @@
             pointer-events: auto;
         }
 
-        .song-preview__index {
+        .song-preview__index,
+        .eq-icon {
             visibility: hidden;
         }
 
@@ -67,7 +68,6 @@
     }
 
     .song-preview__index {
-        right: 0.5rem;
         visibility: visible;
         position: absolute;
     }

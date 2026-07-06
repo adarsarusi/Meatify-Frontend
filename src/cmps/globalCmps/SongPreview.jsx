@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 
 import { IconComp } from "./IconComp"
+import { EqPlayIconAnimation } from "./EqPlayIconAnimation"
 
 import { LikeBtn } from "../LikeBtn"
 import { StationCover } from "./StationCover"
@@ -47,12 +48,11 @@ export function SongPreview({ song, index }) {
   return (
     <section aria-label={song.title} className="song-preview__item">
       <div className="song-preview__play">
-        <p
-          className={`song-preview__index ${isCurrentSong ? "playing-song" : ""}`}
-        >
-          {index}
-        </p>
+
+        {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
+          <p className="song-preview__index">{index}</p>}
         <button
+
           className="song-preview__btn song-preview__btn--play"
           onClick={() => {
             if (isCurrentSong) {
@@ -75,7 +75,6 @@ export function SongPreview({ song, index }) {
         <div className="song-preview__meta-text">
           <div
             className={`song-preview__title ellipsis-text ${isCurrentSong ? "playing-song" : ""}`}
-            onClick={navigateToSong}
           >
             {song.title}
           </div>
@@ -119,7 +118,7 @@ export function SongPreview({ song, index }) {
           )}
         </button>
       </div>
-    </section>
+    </section >
   )
 }
 

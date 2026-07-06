@@ -1,0 +1,41 @@
+.eq-icon {
+    position: absolute;
+    font-size: 24px; 
+    
+    width: 1em;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-content: center; 
+    overflow: hidden;
+}
+
+.eq-icon__container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.100em; 
+    height: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.eq-icon__bar {
+    width: 0.0750em; 
+    height: 100%;
+    background-color: var(--essential-positive, #000);
+    transform-origin: bottom;
+    animation: bounce ease-in-out infinite alternate;
+    will-change: transform; /* Added for smoother animation performance */
+}
+
+/* Animations remain identical */
+.eq-icon__bar--1 { animation-duration: 1.8s; animation-delay: -2.2s; }
+.eq-icon__bar--2 { animation-duration: 2.1s; animation-delay: -3.7s; }
+.eq-icon__bar--3 { animation-duration: 1.5s; animation-delay: -1.5s; }
+.eq-icon__bar--4 { animation-duration: 1.9s; animation-delay: -3.0s; }
+
+@keyframes bounce {
+    0% { transform: scaleY(0.1); }
+    25% { transform: scaleY(1); }
+    50% { transform: scaleY(0.3); }
+    75% { transform: scaleY(0.85); }
+    100% { transform: scaleY(0.5); }
+}

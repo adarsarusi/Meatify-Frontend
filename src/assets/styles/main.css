@@ -36,6 +36,8 @@
 @import "cmps/QueueCmp.css";
 @import "cmps/ArtistInfoPreview.css";
 @import "cmps/Icons.css";
+@import "cmps/EqPlayIconAnimation.css";
+
 
 /* Pages */
 @import "pages/StationDetails.css";
