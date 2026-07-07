@@ -1,4 +1,7 @@
 import { useNavigate } from 'react-router-dom'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
 import { IconComp } from './globalCmps/IconComp'
 
 import { StationCover } from './globalCmps/StationCover'
@@ -8,7 +11,19 @@ export function QueuePreview({ song }) {
 
     const navigate = useNavigate()
 
-    return <article className="queue-preview">
+    const { setNodeRef, transform, transition, attributes, listeners, } = useSortable({ id: song._id, })
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    }
+
+    return <article
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="queue-preview">
 
         <div className='queue-preview__cover-container'>
             <StationCover entity={song} />

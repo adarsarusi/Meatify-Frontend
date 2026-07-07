@@ -57,7 +57,6 @@ export function StationDetails() {
 
   useEffect(() => {
     if (!station) return
-    console.log(station)
 
     if (station.songs?.length === 0) {
       setIsSearchVisible(true)
@@ -68,7 +67,6 @@ export function StationDetails() {
 
   useEffect(() => {
     debouncedSearch(searchedSong)
-    console.log(isSearchVisible)
   }, [searchedSong])
 
   function handleSearchChange({ target }) {
@@ -101,6 +99,15 @@ export function StationDetails() {
       console.log("Cannot remove station", err)
       showErrorMsg("Couldn't remove station")
     }
+  }
+
+  function handleReorderSongs(updatedSongs) {
+    const updatedStation = {
+      ...station,
+      songs: updatedSongs,
+    }
+
+    updateStation(updatedStation)
   }
 
   if (isLoading && !station)
@@ -171,11 +178,11 @@ export function StationDetails() {
             )}
 
             <section className="station-details__song-list dynamic-max-width">
-              {!likedStation ? (
-                <SongList songs={station?.songs || []} />
-              ) : (
-                <SongList songs={likedSongs} />
-              )}
+              <SongList
+                songs={station?.songs || []}
+                isSortable
+                onReorder={handleReorderSongs}
+              />
 
               {station.songs?.length > 0 && !isSearchVisible && (
                 <button

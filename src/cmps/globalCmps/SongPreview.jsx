@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 import { IconComp } from "./IconComp"
 import { EqPlayIconAnimation } from "./EqPlayIconAnimation"
@@ -28,6 +30,13 @@ export function SongPreview({ song, index }) {
     (storeState) => storeState.stationModule.selectedStation,
   )
 
+  const { setNodeRef, transform, transition, attributes, listeners, } = useSortable({ id: song._id, })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
   const isCurrentSong = currentSong?._id === song._id
   const isSongInStation = station?.songs?.some((s) => s._id === song._id)
 
@@ -49,7 +58,8 @@ export function SongPreview({ song, index }) {
   
 
   return (
-    <section aria-label={song.title} className="song-preview__item">
+    <section aria-label={song.title} className="song-preview__item"
+      ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <div className="song-preview__play">
 
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
