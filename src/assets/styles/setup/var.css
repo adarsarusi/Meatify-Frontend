@@ -34,6 +34,10 @@
 
   /* global sizes */
   --content-max-width: 1955px;
+  --main-view-grid-width: 100cqw;
+
+  --encore-text-size: 6rem;
+  --encore-text-size-base: 1rem;
 
 
   /* Sizes */
@@ -50,6 +54,9 @@
   /* 16px */
   --font-lg: 1.125rem;
   /* 18px */
+
+  /* Station Header Title */
+  --font-station-heading: 5vw;
 
   /* Headings */
   --font-xl: 1.25rem;
@@ -93,8 +100,6 @@
 
   --decorative-base: #fff;
   --decorative-subdued: #292929;
-
-
 
 
 

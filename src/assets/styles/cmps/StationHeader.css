@@ -9,17 +9,22 @@
 
 .station-header__info {
     position: relative;
+    width: 100%;
 
     align-self: end;
     display: grid;
+    container-type: inline-size;
 
     .station-header__private-txt {
         font-size: var(--font-lg);
         font-weight: 700;
     }
 
+
     .station-name {
-        font-size: 5vw;
+        visibility: visible;
+        font-size: clamp(var(--font-base), 12cqw, var(--font-station-heading));
+        white-space: nowrap;
         font-weight: 800;
         letter-spacing: -3px;
     }
@@ -50,8 +55,8 @@
 
 
 .station-img-container {
-    width: 15rem;
-    height: 15rem;
+    width: clamp(128px, 128px + (var(--main-view-grid-width) - 600px) / 424 * 104, 232px);
+    height: clamp(128px, 128px + (var(--main-view-grid-width) - 600px) / 424 * 104, 232px);
 }
 
 

@@ -145,3 +145,9 @@
     display: -webkit-box;
     overflow: hidden;
 }
+
+
+.remove-first-letter-space {
+  /* Pulls the very first letter perfectly to the left container edge */
+  text-indent: -0.06em; 
+}

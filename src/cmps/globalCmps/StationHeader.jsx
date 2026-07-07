@@ -30,7 +30,7 @@ export function StationHeader({
             <div className="station-header__info ">
 
                 <p className="station-header__private-txt" >{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>
-                <h1 className="station-name">{station?.name}</h1>
+                <h1 className="station-name remove-first-letter-space">{station?.name}</h1>
                 <div className="station-meta">
                     <div className="participants">
                         <div className="creator-img-container">
