@@ -55,7 +55,7 @@ export function ArtistInfoPreview({ currentSong }) {
           <div className="entity-artist-preview__artists">{displayArtists}</div>
         </div>
         <div className="entity-artist-preview__description">
-          <p classNam="entity-artist-preview__description-txt">{currentSong.description}</p>
+          <p className="entity-artist-preview__description-txt">{currentSong.description}</p>
         </div>
         <div className="entity-artist-preview__song-list">
           <h2>More Songs:</h2>
