@@ -8,6 +8,8 @@ export function StationHeader({
     isOwner,
     user, }) {
 
+    const isLikedStation = station._id === 'likedSongs'
+
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
         const totalSeconds = songs.reduce((total, song) => total + song.duration, 0)
@@ -29,7 +31,7 @@ export function StationHeader({
             </div>
             <div className="station-header__info ">
 
-                <p className="station-header__private-txt" >{`${station?.isPrivate ? 'Private' : 'Public'} Playlist`}</p>
+                <p className="station-header__private-txt">{!isLikedStation ? (station?.isPrivate ? 'Private Playlist' : 'Public Playlist') : 'Playlist'}</p>
                 <h1 className="station-name remove-first-letter-space">{station?.name}</h1>
                 <div className="station-meta">
                     <div className="participants">

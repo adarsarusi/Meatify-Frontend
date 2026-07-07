@@ -21,7 +21,7 @@
     background-color: #3e3e3e;
     color: var(--text-main);
 
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--encore-overlay-box-shadow);
 
     h2 {
         margin: 0 0 1rem;
@@ -78,7 +78,7 @@
 .modal-actions button {
     padding: 0.5rem 1rem;
 
-    color: var( --gray4);
+    color: var(--gray4);
     background-color: var(--gray1);
 
     border-radius: 100vw;

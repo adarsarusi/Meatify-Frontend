@@ -14,7 +14,6 @@ export function StationPreview({ station }) {
             <StationCover entity={station} />
             <button className="station-preview__btn "
                 onClick={() => {
-                    console.log('station: ', station)
                     setQueue(station.songs)
                     setCurrentSong(station.songs[0])
                 }}>

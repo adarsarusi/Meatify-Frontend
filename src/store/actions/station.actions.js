@@ -1,4 +1,5 @@
 import { stationService } from "../../services/station"
+import { songService } from "../../services/song"
 import { store } from "../store"
 import {
   ADD_STATION,
@@ -7,6 +8,8 @@ import {
   SET_STATION,
   UPDATE_STATION,
 } from "../reducers/station.reducer"
+
+import { UPDATE_SONGS } from "../reducers/song.reducer"
 
 export async function loadStations(filterBy) {
   store.dispatch({ type: "SET_STATION_LOADING", isLoading: true })
@@ -79,8 +82,10 @@ export async function addStationMsg(stationId, txt) {
 
 export async function addSongToStation(stationId, songId) {
   try {
+    const updatedSong = await songService.addSongStationId(songId)
     const addedSong = await stationService.addSongToStation(stationId, songId)
     await updateStation(addedSong)
+    await updateSong(updatedSong)
   } catch (err) {
     console.log("Cannot add song to station", err)
     throw err
@@ -89,8 +94,10 @@ export async function addSongToStation(stationId, songId) {
 
 export async function removeSongFromStation(stationId, songId) {
   try {
+    const updatedSong = await songService.addSongStationId(songId)
     const removedSong = await stationService.removeSongFromStation(stationId, songId)
     await updateStation(removedSong)
+    await updateSong(updatedSong)
   } catch (err) {
     console.log("Cannot remove song from station", err)
     throw err
@@ -129,5 +136,12 @@ function getCmdUpdateStation(station) {
   return {
     type: UPDATE_STATION,
     station,
+  }
+}
+
+function getCmdUpdateSong(song) {
+  return {
+    type: UPDATE_SONGS,
+    song,
   }
 }

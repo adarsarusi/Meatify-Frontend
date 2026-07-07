@@ -72,7 +72,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 250ms ease, transform 250ms ease, scale 250ms ease;
-    box-shadow: 0 4px 60px #00000080;
+    box-shadow: var(--encore-overlay-box-shadow);
     transform: translateY(100%);
 
     .icon {

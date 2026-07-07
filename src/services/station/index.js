@@ -30,6 +30,7 @@ function getDefaultFilter() {
 }
 
 const isLocal = VITE_LOCAL === 'true'
+console.log('isLocal: ', isLocal)
 const service = isLocal ? local : remote
 
 if (isLocal) {

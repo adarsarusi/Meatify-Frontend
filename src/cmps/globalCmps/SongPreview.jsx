@@ -79,7 +79,7 @@ export function SongPreview({ song, index }) {
             {song.title}
           </div>
           <div className="song-preview__artists ellipsis-text">
-            {(song.artists || []).join(", ")}
+            {(song.artists || []).map(artist => artist.name).join(", ")}
           </div>
         </div>
       </div>

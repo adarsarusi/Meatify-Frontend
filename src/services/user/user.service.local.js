@@ -132,7 +132,6 @@ export async function setDemoLoggedinUser() {
 
     if (likedSongsStation[0]) {
         likedSongsStation[0].songs = allSongs.filter(song => likedSongIds.includes(song._id))
-        console.log('likedSongsStation[0]', likedSongsStation[0])
         stationService.save(likedSongsStation[0])
     }
 

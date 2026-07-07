@@ -35,8 +35,7 @@
     background-color: #282828;
     border-radius: 4px;
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-
+    box-shadow: var(--encore-overlay-box-shadow);
     z-index: 100;
 }
 

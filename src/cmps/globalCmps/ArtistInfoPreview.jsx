@@ -1,48 +1,43 @@
 import { IconComp } from "./IconComp"
 import { StationCover } from "./StationCover"
+import { stationService } from "../../services/station"
 
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { SquarePreview } from "./SquarePreview"
 import { QueuePreview } from "../QueuePreview"
-
+import { useEffect, useState } from "react"
 
 export function ArtistInfoPreview({ currentSong }) {
-
-  if (!currentSong) return
-
-  const type = currentSong.type
-
+  const [artistInfo, setArtistInfo] = useState(null)
   const navigate = useNavigate()
+  const songs = useSelector(storeState => storeState.songModule.songs)
 
-  const songs = useSelector(
-    storeState => storeState.songModule.songs
-  )
+  useEffect(() => {
+    if (currentSong?.artists?.[0]?.name) {
+      stationService.getArtistInfo(currentSong.artists[0].name).then(setArtistInfo)
+    }
+  }, [currentSong])
+
+  if (!currentSong) return null
+  if (!artistInfo) return null
+
+  const { name, bio, monthlyListeners, imgUrl, fans } = artistInfo
+
+  const shortBio = `${bio.slice(0, 100)} ...`
+
+  console.log('shortBio: ', shortBio)
 
   const filteredSongs = songs.filter(song =>
-    song.artists[0].toLowerCase() === currentSong.artists[0].toLowerCase()
+    song.artists?.[0]?.name?.toLowerCase() === name.toLowerCase()
   )
-
-
-  const rawArtists =
-    type === "station"
-      ? [...new Set(currentSong.songs.flatMap((song) => song.artists))]
-      : currentSong.artists || []
-
-  const displayArtists =
-    rawArtists.length > 3
-      ? [...rawArtists.slice(0, 3), "and More"].join(", ")
-      : rawArtists.join(", ")
-
-
-
 
   return (
     <section className="entity-artist-preview__item">
       <div className="entity-artist-preview__meta">
         <div className="entity-artist-preview__artist">
-          {currentSong.artists[0] || currentSong.name}
+          {name}
         </div>
 
         <div className="entity-artist-preview__img">
@@ -50,12 +45,18 @@ export function ArtistInfoPreview({ currentSong }) {
         </div>
         <div className="entity-artist-preview__meta-text">
           <div className="entity-artist-preview__title">
-            {currentSong.title || currentSong.name}
+            {name}
           </div>
-          <div className="entity-artist-preview__artists">{displayArtists}</div>
+          <div className="entity-artist-preview__artists">{name}</div>
         </div>
         <div className="entity-artist-preview__description">
-          <p classNam="entity-artist-preview__description-txt">{currentSong.description}</p>
+
+          <img src={imgUrl} />
+          <div className="entity-artist-description__name">
+            {name}
+          </div>
+          <p>{new Intl.NumberFormat('en-US').format(monthlyListeners)} Monthly Listeners </p>
+          <p className="entity-artist-description__bio">{shortBio}</p>
         </div>
         <div className="entity-artist-preview__song-list">
           <h2>More Songs:</h2>
@@ -67,6 +68,6 @@ export function ArtistInfoPreview({ currentSong }) {
         </div>
 
       </div>
-    </ section>
+    </section>
   )
 }

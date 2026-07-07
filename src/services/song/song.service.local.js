@@ -5,6 +5,8 @@ const SONG_STORAGE_KEY = "songDB"
 export const songService = {
   query,
   getById,
+  addSongStationId,
+  removeSongStationId,
   firstDemoSong,
 }
 
@@ -45,7 +47,21 @@ function firstDemoSong() {
   }
 }
 
-
 async function getById(songId) {
   return await storageService.get(SONG_STORAGE_KEY, songId)
+}
+
+async function addSongStationId(songId, stationId) {
+  const song = await getById(songId)
+  const exists = song.stationIds.includes(stationId)
+  if (!exists) song.stationIds = [...song.stationIds, stationId]
+  return song
+}
+
+async function removeSongStationId(songId, stationId) {
+  const song = await getById(songId)
+  song.stationIds = song.stationIds.filter(currStationId =>
+    currStationId !== stationId
+  )
+  return song
 }

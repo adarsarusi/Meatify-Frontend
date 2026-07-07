@@ -17,6 +17,8 @@ export const stationService = {
     addSongToStation,
     removeSongFromStation,
     generateSpotifyData,
+    initTagsData,
+    getArtistInfo,
 }
 
 window.cs = stationService
@@ -36,7 +38,7 @@ async function query(filterBy = {}) {
             regex.test(station.genres?.join(' ') || '') ||
             station.songs?.some(song =>
                 regex.test(song.title) ||
-                (song.artists && song.artists.some(artist => regex.test(artist)))
+                (song.artists && song.artists.some(artist => regex.test(artist.name || artist)))
             )
         )
     }
@@ -50,7 +52,7 @@ async function query(filterBy = {}) {
     if (artists && artists.length && !artists.includes('')) {
         stations = stations.filter(station =>
             (station.songs || []).some(song =>
-                (song.artists || []).some(artist => artists.includes(artist))
+                (song.artists || []).some(artist => artists.includes(artist.name || artist))
             )
         )
     }
@@ -95,7 +97,6 @@ async function save(station) {
     return savedStation
 }
 
-
 async function addSongToStation(stationId, songId) {
     const station = await getById(stationId)
     const song = await songService.getById(songId)
@@ -104,6 +105,17 @@ async function addSongToStation(stationId, songId) {
 
     station.songs.push(song)
     await save(station)
+
+    const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
+    const targetSong = allSongs.find(s => s._id === songId)
+    if (targetSong) {
+        if (!targetSong.stationIds) targetSong.stationIds = []
+        if (!targetSong.stationIds.includes(stationId)) {
+            targetSong.stationIds.push(stationId)
+            await saveToStorage(SONG_STORAGE_KEY, allSongs)
+        }
+    }
+
     return station
 }
 
@@ -113,8 +125,15 @@ async function removeSongFromStation(stationId, songId) {
     if (songIdx === -1) return station
 
     station.songs.splice(songIdx, 1)
-
     await save(station)
+
+    const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
+    const targetSong = allSongs.find(s => s._id === songId)
+    if (targetSong && targetSong.stationIds) {
+        targetSong.stationIds = targetSong.stationIds.filter(id => id !== stationId)
+        await saveToStorage(SONG_STORAGE_KEY, allSongs)
+    }
+
     return station
 }
 
@@ -198,31 +217,6 @@ const FALLBACK_ALBUMS = [
     'Settle', 'Actual Life', '99.9%', 'Drunk', 'Mordechai', 'Maggot Brain'
 ]
 
-const TITLE_VARIANTS = [
-    'Night Drive', 'Sunset Edit', 'Studio Cut', 'Live Room', 'Afterglow Mix',
-    'City Lights', 'Velvet Version', 'Festival Take', 'Deep Focus', 'Morning Run',
-    'Acoustic Glow', 'Basement Tape'
-]
-
-const PLAYABLE_AUDIO_URLS = [
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3'
-]
-
 const FALLBACK_IMG_URLS = [
     'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=600&fit=crop',
     'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=600&fit=crop',
@@ -254,182 +248,128 @@ const GENRE_PROFILES = {
     pop: {
         label: 'Pop',
         deezerQuery: 'pop hits',
-        jamendoTag: 'pop',
         tags: ['Pop', 'Trending', 'Party'],
         stationNames: ['Pop Prism', 'Fresh Pop Glow', 'Big Hook Energy', 'Viral Pop Room'],
-        descriptors: ['polished hooks', 'bright choruses', 'radio-ready shine'],
-        coverOffset: 0
     },
     hiphop: {
         label: 'Hip Hop',
         deezerQuery: 'hip hop',
-        jamendoTag: 'hiphop',
         tags: ['Hip Hop', 'Workout', 'Party'],
         stationNames: ['Midnight Cypher', '808 Boulevard', 'Rap Rotation', 'Heavy Bars'],
-        descriptors: ['sharp drums', 'confident verses', 'low-end bounce'],
-        coverOffset: 1
     },
     rock: {
         label: 'Rock',
         deezerQuery: 'rock',
-        jamendoTag: 'rock',
         tags: ['Rock', 'Driving', 'Motivation'],
         stationNames: ['Guitar Weather', 'Amp Room', 'Roadhouse Rock', 'Indie Amplified'],
-        descriptors: ['live-wire guitars', 'anthemic builds', 'garage energy'],
-        coverOffset: 2
     },
     electronic: {
         label: 'Electronic',
         deezerQuery: 'electronic',
-        jamendoTag: 'electronic',
         tags: ['Electronic', 'Party', 'Gaming'],
         stationNames: ['Neon Pulse', 'Afterhours Circuit', 'Synth Current', 'Warehouse Glow'],
-        descriptors: ['clean synth lines', 'club momentum', 'kinetic textures'],
-        coverOffset: 3
     },
     latin: {
         label: 'Latin',
         deezerQuery: 'latin hits',
-        jamendoTag: 'latin',
         tags: ['Latin', 'Party', 'Mood'],
         stationNames: ['Latin Heatwave', 'Baila Central', 'Sunset Urbano', 'Reggaeton Gold'],
-        descriptors: ['sunlit rhythm', 'dance-floor swing', 'warm percussion'],
-        coverOffset: 4
     },
     kpop: {
         label: 'K-Pop',
         deezerQuery: 'k-pop',
-        jamendoTag: 'pop',
         tags: ['K-Pop', 'Trending', 'Party'],
         stationNames: ['Seoul Spark', 'Idol Rush', 'K-Pop Chrome', 'Candy Stage'],
-        descriptors: ['glossy production', 'laser-cut hooks', 'maximal pop color'],
-        coverOffset: 5
     },
     jazz: {
         label: 'Jazz',
         deezerQuery: 'jazz',
-        jamendoTag: 'jazz',
         tags: ['Jazz', 'Focus', 'Sleep'],
         stationNames: ['Blue Hour Jazz', 'Late Set', 'Smoke Room Standards', 'Piano Club'],
-        descriptors: ['loose swing', 'warm improvisation', 'late-night calm'],
-        coverOffset: 6
     },
     rnb: {
         label: 'R&B',
         deezerQuery: 'rnb',
-        jamendoTag: 'rnb',
         tags: ['R&B', 'Soul', 'Romance', 'Mood'],
         stationNames: ['Velvet R&B', 'Slow Burn Soul', 'Moonlit Vocals', 'Quiet Storm'],
-        descriptors: ['silky vocals', 'soft groove', 'after-dark warmth'],
-        coverOffset: 7
     },
     indie: {
         label: 'Indie',
         deezerQuery: 'indie',
-        jamendoTag: 'indie',
         tags: ['Indie', 'Chill', 'Focus'],
         stationNames: ['Indie Apartment', 'Soft Static', 'Bedroom Bloom', 'Analog Daydream'],
-        descriptors: ['textured guitars', 'intimate vocals', 'handmade atmosphere'],
-        coverOffset: 8
     },
     reggae: {
         label: 'Reggae',
         deezerQuery: 'reggae',
-        jamendoTag: 'reggae',
         tags: ['Reggae', 'Chill', 'Mood', 'Party'],
         stationNames: ['Island Drift', 'Roots & Sun', 'Dub Garden', 'Reggae Sunset'],
-        descriptors: ['easy skank', 'warm bass', 'sun-soaked rhythm'],
-        coverOffset: 9
     },
     metal: {
         label: 'Metal',
         deezerQuery: 'metal',
-        jamendoTag: 'metal',
         tags: ['Metal', 'Workout', 'Motivation'],
         stationNames: ['Iron Circuit', 'Heavy Weather', 'Riff Forge', 'Dark Stage'],
-        descriptors: ['dense riffs', 'double-kick drive', 'towering distortion'],
-        coverOffset: 10
     },
     classical: {
         label: 'Classical',
         deezerQuery: 'classical',
-        jamendoTag: 'classical',
         tags: ['Classical', 'Study', 'Focus'],
         stationNames: ['Quiet Conservatory', 'Strings at Dawn', 'Piano Library', 'Orchestral Focus'],
-        descriptors: ['patient dynamics', 'elegant strings', 'cinematic space'],
-        coverOffset: 11
     },
     country: {
         label: 'Country',
         deezerQuery: 'country',
-        jamendoTag: 'country',
         tags: ['Country', 'Roadtrip', 'Throwback'],
         stationNames: ['Country Roads', 'Desert Radio', 'Porchlight Country', 'Highway Ballads'],
-        descriptors: ['road-worn guitars', 'plainspoken stories', 'golden-hour twang'],
-        coverOffset: 12
     },
     blues: {
         label: 'Blues',
         deezerQuery: 'blues',
-        jamendoTag: 'blues',
         tags: ['Blues', 'Mood', 'Chill'],
         stationNames: ['Blue Smoke', 'Delta Night', 'Guitar & Gravel', 'After Midnight Blues'],
-        descriptors: ['bent-note guitar', 'smoky phrasing', 'slow-burning soul'],
-        coverOffset: 13
     },
     folk: {
         label: 'Folk',
         deezerQuery: 'folk',
-        jamendoTag: 'folk',
         tags: ['Folk', 'Chill', 'Roadtrip'],
         stationNames: ['Folk Trails', 'Cabin Session', 'Open Road Folk', 'Acoustic Fireside'],
-        descriptors: ['fingerpicked warmth', 'story-first writing', 'natural room tone'],
-        coverOffset: 14
     },
     funk: {
         label: 'Funk',
         deezerQuery: 'funk',
-        jamendoTag: 'funk',
         tags: ['Funk', 'Party', 'Disco'],
         stationNames: ['Funk Factory', 'Pocket Groove', 'Chrome Bassline', 'Friday Funk'],
-        descriptors: ['tight basslines', 'syncopated guitars', 'danceable pocket'],
-        coverOffset: 15
     },
     soul: {
         label: 'Soul',
         deezerQuery: 'soul',
-        jamendoTag: 'soul',
         tags: ['Soul', 'Romance', 'Mood'],
         stationNames: ['Soul Serenade', 'Golden Vocals', 'Warm Vinyl Soul', 'Heartline Radio'],
-        descriptors: ['rich vocals', 'deep pocket drums', 'warm vintage color'],
-        coverOffset: 16
     },
     punk: {
         label: 'Punk',
         deezerQuery: 'punk',
-        jamendoTag: 'punk',
         tags: ['Punk', 'Rock', 'Motivation'],
         stationNames: ['Punk Basement', 'Fast Loud Now', 'Three Chords', 'Static Rebellion'],
-        descriptors: ['fast guitars', 'raw chants', 'basement urgency'],
-        coverOffset: 17
     },
     ambient: {
         label: 'Ambient',
         deezerQuery: 'ambient',
-        jamendoTag: 'ambient',
         tags: ['Ambient', 'Sleep', 'Focus'],
         stationNames: ['Ambient Escape', 'Cloud Field', 'Deep Rest Signal', 'Weightless Room'],
-        descriptors: ['slow motion pads', 'wide-open space', 'soft-focus texture'],
-        coverOffset: 18
     },
     disco: {
         label: 'Disco',
         deezerQuery: 'disco',
-        jamendoTag: 'disco',
         tags: ['Disco', 'Party', 'Throwback'],
         stationNames: ['Disco Fever', 'Mirrorball Magic', 'Saturday Glitter', 'Studio 79'],
-        descriptors: ['four-on-the-floor lift', 'sparkling strings', 'mirrorball momentum'],
-        coverOffset: 19
+    },
+    israeli: {
+        label: 'Israeli',
+        deezerQuery: 'israeli pop',
+        tags: ['Israeli', 'Pop', 'Party'],
+        stationNames: ['Tel Aviv Nights', 'Hebrew Hitlist', 'Israeli Heat', 'Shalom Radio'],
     }
 }
 
@@ -449,7 +389,7 @@ const TAG_COLORS = {
     Classical: '#8B5E3C', Country: '#C97B3D', Blues: '#1E4E8C', Folk: '#6B8E4E',
     Funk: '#D9822B', Soul: '#A63A50', Punk: '#D6001C', Ambient: '#3C6E71',
     Disco: '#B23AEE', Romance: '#E85D75', Study: '#5B7C99', Roadtrip: '#F2A65A',
-    Motivation: '#E8590C', Throwback: '#9C6644', Liked: '#5038a0'
+    Motivation: '#E8590C', Throwback: '#9C6644', Liked: '#5038a0', Israeli: '#0038b8'
 }
 
 const TAG_SEARCH_QUERIES = {
@@ -465,39 +405,11 @@ const TAG_SEARCH_QUERIES = {
     Soul: 'vinyl record player warm light', Punk: 'punk mosh pit crowd', Ambient: 'foggy misty landscape minimal',
     Disco: 'disco ball party', Romance: 'romance candles couple', Study: 'study library books',
     Roadtrip: 'roadtrip highway sunset', Motivation: 'motivation sunrise mountain', Throwback: 'retro vintage 80s',
-    Liked: 'roadtrip highway sunset'
+    Liked: 'heart love music', Israeli: 'tel aviv skyline night'
 }
-
-async function buildTagsData() {
-    const entries = await Promise.all(
-        Object.keys(TAG_COLORS).map(async (title) => {
-            const imgUrl = await fetchTagImageFromUnsplash(TAG_SEARCH_QUERIES[title] || title)
-            return { title, color: TAG_COLORS[title], imgUrl }
-        })
-    )
-    return entries
-}
-
-export async function initTagsData() {
-    if (TAGS_DATA.length) return TAGS_DATA
-    TAGS_DATA = await buildTagsData()
-    return TAGS_DATA
-}
-
-function upscaleImageUrl(url, size) {
-    if (!url) return url
-    return url.replace(/([?&])w=\d+&h=\d+/, `$1w=${size}&h=${size}`)
-}
-
-const STATION_COVER_URLS = FALLBACK_IMG_URLS.map(url => upscaleImageUrl(url, 500))
-
-// ------------------------------------------------------------------
-// COMBINED DATA SOURCES — Deezer (mainstream, real cover_xl art, previews)
-// + Jamendo (full-length playable audio, no login required)
-// Register a free Jamendo client_id at https://developer.jamendo.com/
-// ------------------------------------------------------------------
 
 const UNSPLASH_ACCESS_KEY = '0NmFdVz_ARctvjTEja7Z_TVqqyZXldYAGGg_21lHWQ0'
+const LASTFM_API_KEY = '05855db705ab67b60735b4fcfbcc4d85'
 
 const tagImageCache = {}
 
@@ -520,6 +432,29 @@ async function fetchTagImageFromUnsplash(tag) {
         return FALLBACK_IMG_URLS[0]
     }
 }
+
+async function buildTagsData() {
+    const entries = await Promise.all(
+        Object.keys(TAG_COLORS).map(async (title) => {
+            const imgUrl = await fetchTagImageFromUnsplash(TAG_SEARCH_QUERIES[title] || title)
+            return { title, color: TAG_COLORS[title], imgUrl }
+        })
+    )
+    return entries
+}
+
+async function initTagsData() {
+    if (TAGS_DATA.length) return TAGS_DATA
+    TAGS_DATA = await buildTagsData()
+    return TAGS_DATA
+}
+
+function upscaleImageUrl(url, size) {
+    if (!url) return url
+    return url.replace(/([?&])w=\d+&h=\d+/, `$1w=${size}&h=${size}`)
+}
+
+const STATION_COVER_URLS = FALLBACK_IMG_URLS.map(url => upscaleImageUrl(url, 500))
 
 let combinedPoolPromise = null
 let stationCoverPoolPromise = null
@@ -576,7 +511,6 @@ async function fetchDeezerTracks(term) {
     }
 }
 
-
 function jsonpRequest(url) {
     return new Promise((resolve, reject) => {
         const callbackName = `deezer_cb_${Date.now()}_${Math.floor(Math.random() * 10000)}`
@@ -611,7 +545,6 @@ function getUniqueCover(coversPool) {
     return coverQueue.pop()
 }
 
-
 async function fetchDeezerStationCovers() {
     if (!stationCoverPoolPromise) {
         stationCoverPoolPromise = (async () => {
@@ -645,30 +578,102 @@ async function buildCombinedPool() {
     if (!combinedPoolPromise) {
         combinedPoolPromise = (async () => {
             const deezerResults = await Promise.all(
-                SEARCH_TERMS.map(term => fetchDeezerTracks(term))
+                SEARCH_TERMS.map(term => fetchDeezerTracks(GENRE_PROFILES[term].deezerQuery || term))
             )
 
             const itunesResults = await Promise.all(
-                SEARCH_TERMS.map(term => fetchITunesTracks(term))
+                SEARCH_TERMS.map(term => fetchITunesTracks(GENRE_PROFILES[term].deezerQuery || term))
             )
 
-            const combined = [...deezerResults.flat(), ...itunesResults.flat()]
+            const combined = [
+                ...deezerResults.flat().map((t, i) => ({ ...t, term: SEARCH_TERMS[Math.floor(i / 50)] })),
+            ]
+
+            const taggedDeezer = deezerResults.flatMap((results, idx) =>
+                results.map(t => ({ ...t, term: SEARCH_TERMS[idx] }))
+            )
+            const taggedItunes = itunesResults.flatMap((results, idx) =>
+                results.map(t => ({ ...t, term: SEARCH_TERMS[idx] }))
+            )
+
+            const merged = [...taggedDeezer, ...taggedItunes]
 
             const seen = new Set()
-            const deduped = combined.filter(track => {
+            const deduped = merged.filter(track => {
                 const key = `${track.title}__${track.artistName}`.toLowerCase()
                 if (seen.has(key)) return false
                 seen.add(key)
                 return true
             })
 
-            const shuffled = deduped.sort(() => Math.random() - 0.5)
+            const shuffled = shuffleArray(deduped)
 
             console.log(`Combined pool built: ${shuffled.length} unique tracks (Deezer + iTunes)`)
             return shuffled
         })()
     }
     return combinedPoolPromise
+}
+
+async function getArtistInfo(artistName) {
+    return await fetchArtistInfo(artistName)
+}
+
+const artistInfoCache = {}
+
+async function fetchArtistInfo(artistName) {
+    if (artistInfoCache[artistName]) return artistInfoCache[artistName]
+
+    const info = { name: artistName, bio: '', monthlyListeners: 0, imgUrl: '', fans: 0 }
+
+    try {
+        const lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}&api_key=${LASTFM_API_KEY}&format=json`
+        const lastfmRes = await fetch(lastfmUrl)
+        const lastfmJson = await lastfmRes.json()
+        const artist = lastfmJson?.artist
+
+        if (artist) {
+            const rawBio = artist.bio?.summary || ''
+            info.bio = rawBio.replace(/<a href.*?<\/a>/gi, '').trim()
+            info.monthlyListeners = Number(artist.stats?.listeners) || 0
+            info.fans = Number(artist.stats?.playcount) || 0
+        }
+    } catch (err) {
+        console.warn(`Last.fm fetch failed for ${artistName}`, err)
+    }
+
+    try {
+        const deezerUrl = `https://api.deezer.com/search/artist?q=${encodeURIComponent(artistName)}&limit=1`
+        const deezerJson = await jsonpRequest(deezerUrl)
+        const deezerArtist = deezerJson?.data?.[0]
+
+        if (deezerArtist) {
+            info.imgUrl = deezerArtist.picture_xl || deezerArtist.picture_big || ''
+            if (!info.fans) info.fans = deezerArtist.nb_fan || 0
+        }
+    } catch (err) {
+        console.warn(`Deezer artist fetch failed for ${artistName}`, err)
+    }
+
+    if (!info.bio) {
+        info.bio = `${artistName} is a featured artist on this platform.`
+    }
+
+    artistInfoCache[artistName] = info
+    return info
+}
+
+async function buildArtistInfoMap(pool) {
+    const uniqueNames = [...new Set(pool.map(t => t.artistName))]
+    const map = {}
+
+    for (const name of uniqueNames) {
+        map[name] = await fetchArtistInfo(name)
+        await new Promise(r => setTimeout(r, 220))
+    }
+
+    console.log(`Fetched artist info for ${uniqueNames.length} unique artists`)
+    return map
 }
 
 export async function generateSpotifyData(songsCount = 200, stationsCount = 100) {
@@ -704,7 +709,10 @@ async function _initData(key, generateFn, count) {
     let data = await loadFromStorage(key)
     if (data && data.length > 1) return
 
-    data = await Promise.all(Array.from({ length: count }, (_, i) => generateFn(i)))
+    data = []
+    for (let i = 0; i < count; i++) {
+        data.push(await generateFn(i))
+    }
     await saveToStorage(key, data)
 }
 
@@ -723,12 +731,13 @@ function formatDuration(seconds) {
     return `${minutes}:${String(secs).padStart(2, '0')}`
 }
 
-async function _generateSong(idx, pool) {
+async function _generateSong(idx, pool, artistInfoMap = {}) {
     if (pool && pool.length) {
         const track = pool[idx % pool.length]
         const duration = track.duration || getRandomIntInclusive(180, 420)
         const tags = SONG_TAGS_MAP[track.term] || ['Trending']
         const description = `${track.artistName} — "${track.title}" from the album ${track.album}.`
+        const info = artistInfoMap[track.artistName] || {}
 
         return {
             _id: makeId(),
@@ -736,11 +745,18 @@ async function _generateSong(idx, pool) {
             url: track.url,
             previewUrl: track.previewUrl,
             imgUrl: track.imgUrl,
-            artists: [track.artistName],
+            artists: [{
+                _id: makeId(),
+                name: track.artistName,
+                bio: info.bio || '',
+                monthlyListeners: info.monthlyListeners || 0,
+                imgUrl: info.imgUrl || track.imgUrl
+            }],
             addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
             album: track.album,
             duration,
             durationLabel: formatDuration(duration),
+            stationIds: [],
             tags,
             type: 'song',
             description
@@ -750,6 +766,7 @@ async function _generateSong(idx, pool) {
     const term = SEARCH_TERMS[idx % SEARCH_TERMS.length]
     const tags = SONG_TAGS_MAP[term] || ['Trending']
     const fallbackDuration = getRandomIntInclusive(180, 420)
+    const fallbackArtistName = FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]
 
     return {
         _id: makeId(),
@@ -757,11 +774,18 @@ async function _generateSong(idx, pool) {
         url: `https://example.com/track/${idx}`,
         previewUrl: '',
         imgUrl: FALLBACK_IMG_URLS[idx % FALLBACK_IMG_URLS.length],
-        artists: [FALLBACK_ARTISTS[idx % FALLBACK_ARTISTS.length]],
+        artists: [{
+            _id: makeId(),
+            name: fallbackArtistName,
+            bio: `${fallbackArtistName} is a featured artist on this platform.`,
+            monthlyListeners: getRandomIntInclusive(10000, 5000000),
+            imgUrl: FALLBACK_IMG_URLS[idx % FALLBACK_IMG_URLS.length]
+        }],
         addedAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),
         album: FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length],
         duration: fallbackDuration,
         durationLabel: formatDuration(fallbackDuration),
+        stationIds: [],
         tags,
         type: 'song',
         description: `Fallback song from the album ${FALLBACK_ALBUMS[idx % FALLBACK_ALBUMS.length]}. Curated mix.`
@@ -769,6 +793,7 @@ async function _generateSong(idx, pool) {
 }
 
 async function _generateStation(idx) {
+    const _id = makeId()
     const FALLBACK_COVER = 'https://via.placeholder.com/600x600/1a1a1a/ffffff?text=No+Cover'
 
     function pickCoverUrl(url) {
@@ -793,6 +818,13 @@ async function _generateStation(idx) {
     const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
     const shuffledSongs = shuffleArray(allSongs)
     const stationSongs = shuffledSongs.slice(0, getRandomIntInclusive(12, 35))
+
+    stationSongs.forEach(song => {
+        if (!song.stationIds) song.stationIds = []
+        song.stationIds.push(_id)
+    })
+
+    await saveToStorage(SONG_STORAGE_KEY, allSongs)
 
     const allUsers = await loadFromStorage('userDB') || []
     const randomUser = allUsers.length > 0
@@ -822,7 +854,7 @@ async function _generateStation(idx) {
         const deezerCovers = await fetchDeezerStationCovers()
         const rawCoverUrl = deezerCovers.length > 0
             ? getUniqueCover(deezerCovers)
-            : (stationSongs[getRandomIntInclusive(0, stationSongs.length - 1)]?.imgUrl || '')
+            : (stationSongs[getRandomIntInclusive(0, Math.max(stationSongs.length - 1, 0))]?.imgUrl || '')
         uploadImgUrl = pickCoverUrl(rawCoverUrl)
     }
 
@@ -830,12 +862,12 @@ async function _generateStation(idx) {
     const nameSuffix = Math.random() < 0.15 ? ` ${getRandomIntInclusive(2, 99)}` : ''
 
     return {
-        _id: makeId(),
+        _id,
         name: `${randomStationName}${nameSuffix}`,
         tags: stationTags,
         uploadImgUrl,
         songsImagesUrls,
-        isPrivate: Math.random() < 0.4,
+        isPrivate: false,
         savedCount: getRandomIntInclusive(10, 15000),
         songs: stationSongs,
         createdAt: Date.now() - getRandomIntInclusive(0, 1000 * 60 * 60 * 24 * 365),

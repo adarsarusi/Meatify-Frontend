@@ -16,10 +16,9 @@
     container-type: inline-size;
 
     .station-header__private-txt {
-        font-size: var(--font-lg);
-        font-weight: 700;
+        color: var(--essential-base);
+        font-size: var(--font-md);
     }
-
 
     .station-name {
         visibility: visible;
@@ -49,7 +48,7 @@
 
     .creator-name {
         color: var(--text-base);
-        font-weight: 600;
+        font-weight: 700;
     }
 }
 
@@ -83,9 +82,8 @@
     height: 2rem;
     margin-left: -12px;
     border-radius: 50%;
-
-
     overflow: hidden;
+    box-shadow: var(--encore-overlay-box-shadow);
 }
 
 .avatar-wrapper:first-child {
