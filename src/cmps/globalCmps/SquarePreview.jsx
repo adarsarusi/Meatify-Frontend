@@ -3,6 +3,8 @@ import { StationCover } from "./StationCover"
 
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
+import { formatArtists } from "../../services/util.service"
+
 
 export function SquarePreview({ entity, hover = true }) {
 
@@ -12,7 +14,7 @@ export function SquarePreview({ entity, hover = true }) {
 
   const rawArtists =
     type === "station"
-      ? [...new Set(entity.songs.flatMap((song) => song.artists))]
+      ? [...new Set(entity.songs.flatMap((song) => formatArtists(song)))]
       : entity.artists || []
 
   const displayArtists =

@@ -7,6 +7,7 @@ import { EqPlayIconAnimation } from "./EqPlayIconAnimation"
 
 import { LikeBtn } from "../LikeBtn"
 import { StationCover } from "./StationCover"
+import { formatArtists } from "../../services/util.service"
 import {
   setCurrentSong,
   toggleIsPlaying,
@@ -44,6 +45,8 @@ export function SongPreview({ song, index }) {
     ev.preventDefault()
     navigate(`/song/${song._id}`)
   }
+  
+  
 
   return (
     <section aria-label={song.title} className="song-preview__item">
@@ -79,7 +82,7 @@ export function SongPreview({ song, index }) {
             {song.title}
           </div>
           <div className="song-preview__artists ellipsis-text">
-            {(song.artists || []).map(artist => artist.name).join(", ")}
+            {formatArtists(song)}
           </div>
         </div>
       </div>

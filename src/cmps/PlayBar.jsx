@@ -5,9 +5,10 @@ import {
   setQueue,
   toggleIsPlaying,
 } from "../store/actions/player.actions.js"
+
 import { StationCover } from "./globalCmps/StationCover.jsx"
 
-import { formatTime } from "../services/util.service.js"
+import { formatArtists, formatTime } from "../services/util.service.js"
 
 import ReactPlayer from "react-player"
 import { store } from "../store/store.js"
@@ -101,7 +102,7 @@ export function PlayBar() {
         <div>
           <a className="player-song-title ellipsis-text">{currentSong?.title}</a>
           <div className="player-song-artists ellipsis-text">
-            {(currentSong?.artists || []).join(", ")}
+            {formatArtists(currentSong)}
           </div>
         </div>
         <LikeBtn itemId={currentSong?._id} userField="likedSongIds" />

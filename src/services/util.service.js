@@ -98,3 +98,7 @@ export function getMostCommonTags(songs, limit = 3) {
         .slice(0, limit)
         .map(([tag]) => tag)
 }
+
+export function formatArtists(song) {
+    return (song.artists || []).map(artist => artist.name).join(", ")
+}
