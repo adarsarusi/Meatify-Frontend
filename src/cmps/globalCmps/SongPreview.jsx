@@ -30,11 +30,20 @@ export function SongPreview({ song, index }) {
     (storeState) => storeState.stationModule.selectedStation,
   )
 
-  const { setNodeRef, transform, transition, attributes, listeners, } = useSortable({ id: song._id, })
+  const {
+    setNodeRef,
+    transform,
+    transition,
+    attributes,
+    listeners,
+    isDragging,
+  } = useSortable({ id: song._id })
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
+    opacity: isDragging ? 0.6 : 1,
+    touchAction: "none",
   }
 
   const isCurrentSong = currentSong?._id === song._id
@@ -54,20 +63,24 @@ export function SongPreview({ song, index }) {
     ev.preventDefault()
     navigate(`/song/${song._id}`)
   }
-  
-  
 
   return (
-    <section aria-label={song.title} className="song-preview__item"
-      ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <section
+      aria-label={song.title}
+      className="song-preview__item"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       <div className="song-preview__play">
-
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
           <p className="song-preview__index">{index}</p>}
         <button
-
           className="song-preview__btn song-preview__btn--play"
-          onClick={() => {
+          onPointerDown={(ev) => ev.stopPropagation()}
+          onClick={(ev) => {
+            ev.stopPropagation()
             if (isCurrentSong) {
               toggleIsPlaying()
             } else {
@@ -102,7 +115,10 @@ export function SongPreview({ song, index }) {
       <div className="song-preview__date ellipsis-text">28/06/26</div>
 
       <div className="song-preview__actions">
-        <div className="song-preview__btn song-preview__btn--like">
+        <div
+          className="song-preview__btn song-preview__btn--like"
+          onPointerDown={(ev) => ev.stopPropagation()}
+        >
           <LikeBtn itemId={song._id} userField="likedSongIds" />
         </div>
 
@@ -112,18 +128,25 @@ export function SongPreview({ song, index }) {
 
         <button
           className="song-preview__btn song-preview__btn--more"
-          onClick={() => setIsMenuOpen(true)}
+          onPointerDown={(ev) => ev.stopPropagation()}
+          onClick={(ev) => {
+            ev.stopPropagation()
+            setIsMenuOpen(true)
+          }}
           onBlur={() => setIsMenuOpen(false)}
         >
           <IconComp name="more" className="icon--white" />
           {isMenuOpen && (
-            <div className="song-preview__context-menu">
+            <div
+              className="song-preview__context-menu"
+              onPointerDown={(ev) => ev.stopPropagation()}
+            >
               {isSongInStation ? (
-                <span onMouseDown={() => removeSongFromStation(station._id, song._id)}>
+                <span onClick={() => removeSongFromStation(station._id, song._id)}>
                   Remove from playlist
                 </span>
               ) : (
-                <span onMouseDown={() => addSongToStation(station._id, song._id)}>
+                <span onClick={() => addSongToStation(station._id, song._id)}>
                   Add to playlist
                 </span>
               )}
@@ -131,8 +154,8 @@ export function SongPreview({ song, index }) {
           )}
         </button>
       </div>
-    </section >
+    </section>
   )
 }
 
-export default SongPreview
+export default SongPreview  

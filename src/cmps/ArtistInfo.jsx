@@ -11,10 +11,8 @@ export function ArtistInfo() {
 
     return (
         <section className="artist-info">
-            <ScrollArea>
                 <ArtistInfoPreview currentSong={currentSong} />
                 <QueueCmp />
-            </ScrollArea>
         </section >
     )
 }

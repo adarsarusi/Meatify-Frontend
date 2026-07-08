@@ -1,17 +1,21 @@
 import { useNavigate } from 'react-router-dom'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-
 import { IconComp } from './globalCmps/IconComp'
 
 import { StationCover } from './globalCmps/StationCover'
 import { setCurrentSong } from "../store/actions/player.actions.js"
+import { useSelector } from 'react-redux'
 
 export function QueuePreview({ song }) {
 
     const navigate = useNavigate()
 
     const { setNodeRef, transform, transition, attributes, listeners, } = useSortable({ id: song._id, })
+    const currentSong = useSelector(
+        (storeState) => storeState.playerModule.currentSong,
+    )
+    const isCurrentSong = currentSong?._id === song._id
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -34,7 +38,7 @@ export function QueuePreview({ song }) {
         </div>
 
         <div className="queue-preview__info" onClick={() => navigate(`/song/${song._id}`)}>
-            <p className='queue-preview__title ellipsis-text '>{song.title}</p>
+            <p className={`queue-preview__title ${(isCurrentSong) ? "playing-song" : ""} ellipsis-text`}>{song.title}</p>
             <p className='queue-preview__creator-name ellipsis-text '>{song.artists[0].name}</p>
         </div>
 

@@ -31,6 +31,7 @@
 
     border: 1px solid #0000;
     border-radius: 4px;
+    pointer-events: auto;
 
     &:hover {
         background: var(--background-tinted-base);
@@ -50,8 +51,6 @@
         .song-preview__btn {
             visibility: visible;
         }
-
-
     }
 
     .song-preview__play {
@@ -80,6 +79,10 @@
     grid-template-columns: 3rem 1fr;
     gap: 1rem;
     min-width: 0;
+
+    >.station-cover {
+        padding: 0.3rem;
+    }
 
     .song-preview__title {
         font-size: var(--font-base);

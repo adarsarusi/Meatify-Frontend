@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
+import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../../store/actions/player.actions"
 
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
@@ -9,6 +9,9 @@ import { LikeBtn } from "../LikeBtn"
 export function StationOptions({ likedStation, station, isOwner, onEditStation, onRemoveStation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
+    const currStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
+
+    const isCurrStationPlaying = currStation._id === station._id
 
     const isLikedStation = station._id === 'likedSongs'
 
@@ -30,10 +33,15 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
                 {station?.songs?.length > 0 && <button
                     className="station-options__play-btn btn play-btn green-btn "
                     onClick={() => {
-                        setQueue(station.songs)
-                        setCurrentSong(station.songs[0])
+                        if (isCurrStationPlaying) {
+                            toggleIsPlaying()
+                        } else {
+                            setQueue(station.songs)
+                            setCurrentSong(station.songs[0])
+                            setPlayingStation(station)
+                        }
                     }}
-                >   {(isPlaying) ?
+                >   {(isPlaying && isCurrStationPlaying) ?
                     <IconComp name="pause" className="icon--md" />
                     : <IconComp name="play" className="icon--md" />
                     }

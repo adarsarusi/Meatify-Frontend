@@ -1,15 +1,21 @@
+.station-cover{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
 .station-cover-img__container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    border-radius: clamp(4px, calc(100% * 0.05), 8px);
+    border-radius: var(--global-border-radius);
     overflow: hidden;
     box-shadow: var(--encore-overlay-box-shadow);
 }
 
 .station-cover-img {
     position: relative;
-    border-radius: clamp(4px, calc(100% * 0.05), 8px);
+    border-radius: var(--global-border-radius);
     overflow: hidden;
     transition: all 0.3s ease;
     box-shadow: var(--encore-overlay-box-shadow);

@@ -41,6 +41,7 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
         <button
             onClick={toggleLike}
             className={`btn ${isLiked ? 'no-hover' : ''} `}
+            onMouseDown={(ev) => ev.stopPropagation()}
         >
             <IconComp
                 name={isLiked ? 'added' : 'like'}

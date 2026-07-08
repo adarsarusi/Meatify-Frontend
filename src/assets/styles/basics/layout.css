@@ -36,7 +36,7 @@
         height: 100%;
         width: 100%;
 
-        border-radius: 0.5rem;
+        border-radius: var(--global-border-radius);
         background-color: var(--background-base);
         overflow: hidden;
     }
@@ -51,7 +51,7 @@
     .app-library {
         height: 100%;
         width: 100%;
-        border-radius: 0.5rem;
+        border-radius: var(--global-border-radius);
         background-color: var(--background-base);
         overflow: hidden;
     }

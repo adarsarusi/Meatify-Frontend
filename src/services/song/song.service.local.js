@@ -28,7 +28,7 @@ function firstDemoSong() {
     addedAt: 1778089220183,
     album: 'Total Anarchy',
     artists: [
-      'Skazi'
+      { name: 'Skazi' }
     ],
     duration: 424,
     durationLabel: '7:04',

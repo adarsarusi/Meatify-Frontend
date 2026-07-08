@@ -8,9 +8,11 @@ export const REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE"
 
 export const TOGGLE_IS_PLAYING = "TOGGLE_IS_PLAYING"
 export const SET_IS_PLAYING = "SET_IS_PLAYING"
+export const SET_PLAYING_STATION = "SET_PLAYING_STATION"
 
 const initialState = {
   currentSong: songService.firstDemoSong(),
+  currPlayingStation: null,
   queue: [],
   isPlaying: false,
 }
@@ -23,6 +25,11 @@ export function playerReducer(state = initialState, action = {}) {
       return {
         ...state,
         queue: action.songs,
+      }
+
+    case SET_PLAYING_STATION:
+      return {
+        ...state, currPlayingStation: action.station
       }
 
     case ADD_TO_QUEUE:

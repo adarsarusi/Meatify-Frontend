@@ -16,6 +16,7 @@
   --icon--black: black;
   --icon--white: #ffffff;
   --icon--green: #1DB954;
+  --icon--lightgreen: #c5f0c9;
   --icon--active: #1DB954;
 
   --circle-bg-hover: #1f1f1f;
@@ -39,6 +40,7 @@
   --encore-text-size: 6rem;
   --encore-text-size-base: 1rem;
 
+  --global-border-radius: clamp(4px, calc(100% * 0.05), 8px);
 
   /* Sizes */
   --creatorIndex: 1;

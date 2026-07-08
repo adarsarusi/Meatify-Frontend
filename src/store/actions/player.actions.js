@@ -1,6 +1,17 @@
 import { store } from "../store.js"
 
-import { SET_CURRENT_SONG,ADD_TO_QUEUE,REMOVE_FROM_QUEUE,TOGGLE_IS_PLAYING,SET_IS_PLAYING,SET_QUEUE } from "../reducers/player.reducer.js"
+import {
+  SET_CURRENT_SONG,
+  ADD_TO_QUEUE,
+  REMOVE_FROM_QUEUE,
+  TOGGLE_IS_PLAYING,
+  SET_IS_PLAYING,
+  SET_QUEUE,
+  SET_PLAYING_STATION
+} from "../reducers/player.reducer.js"
+
+import { LOADING_START, LOADING_DONE } from "../reducers/system.reducer.js"
+import { stationService } from "../../services/station"
 
 export function setCurrentSong(song) {
   try {
@@ -46,5 +57,22 @@ export function toggleIsPlaying() {
   } catch (err) {
     console.log("Cannot toggle", err)
     throw err
+  }
+}
+
+export async function setPlayingStation(currStation) {
+  store.dispatch({ type: LOADING_START })
+  try {
+    const station = await stationService.getById(currStation._id)
+
+    const { _id, name } = station
+    const stationInfo = { _id, name }
+    store.dispatch({ type: SET_PLAYING_STATION, station: stationInfo })
+  } catch (err) {
+    console.log("Cannot load station", err)
+    throw err
+  }
+  finally {
+    store.dispatch({ type: LOADING_DONE })
   }
 }

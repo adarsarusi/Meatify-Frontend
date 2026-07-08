@@ -17,15 +17,15 @@
 
     .station-header__private-txt {
         color: var(--essential-base);
-        font-size: var(--font-md);
+        font-size: var(--font-base);
     }
 
     .station-name {
         visibility: visible;
         font-size: clamp(var(--font-base), 12cqw, var(--font-station-heading));
-        white-space: nowrap;
+        overflow-wrap: break-word;
         font-weight: 800;
-        letter-spacing: -3px;
+        letter-spacing: -1.5px;
     }
 }
 
@@ -70,29 +70,41 @@
 /* Avatar */
 
 .creator-img-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .avatar-wrapper {
-    position: relative;
-    z-index: calc(10 - var(--index));
-
-    width: 2rem;
-    height: 2rem;
-    margin-left: -12px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: var(--encore-overlay-box-shadow);
+  position: relative;
+  z-index: calc(10 - var(--index));
+  width: 1.5rem;
+  aspect-ratio: 1/1;
+  margin-left: -5px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--encore-overlay-box-shadow);
 }
 
 .avatar-wrapper:first-child {
-    margin-left: 0;
+  margin-left: 0;
+}
+
+.avatar-wrapper:not(:first-child) {
+  -webkit-mask: radial-gradient(
+    circle at calc(0% - 12px) 50%,
+    transparent 50%,
+    #000 50%
+  );
+  mask: radial-gradient(
+    circle at calc(0% - 12px) 50%,
+    transparent 50%,
+    #000 50%
+  );
 }
 
 .avatar-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

@@ -5,6 +5,7 @@ export function ScrollArea({ children, className = '', style = {} }) {
     <OverlayScrollbarsComponent
       defer
       options={{
+        paddingAbsolute: true,
         scrollbars: {
           theme: 'os-theme-spotify',
           autoHide: 'leave',
