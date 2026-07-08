@@ -89,7 +89,7 @@ function saveLoggedinUser(user) {
 }
 
 export async function generateDemoUsers(userCount) {
-    let users = loadFromStorage(USER_STORAGE_KEY)
+    let users = await loadFromStorage(USER_STORAGE_KEY)
 
     if (users?.length) return users
 
@@ -101,7 +101,7 @@ export async function generateDemoUsers(userCount) {
 }
 
 export async function setDemoLoggedinUser() {
-    let users = loadFromStorage(USER_STORAGE_KEY)
+    let users = await loadFromStorage(USER_STORAGE_KEY)
 
     if (!users?.length) {
         users = await generateDemoUsers(50)
@@ -109,36 +109,39 @@ export async function setDemoLoggedinUser() {
 
     const demoUser = users[0]
 
-    const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
-    const allStations = await loadFromStorage(STATION_STORAGE_KEY) || []
-    const otherStations = allStations.filter(station => station._id !== 'likedSongs')
-    const likedSongsStation = allStations.filter(station => station._id === 'likedSongs')
+    const alreadyHasLikedData = demoUser.likedSongIds?.length || demoUser.likedStationIds?.length
 
-    const likedSongIds = allSongs.length
-        ? getRandomFromArr(allSongs, Math.min(15, allSongs.length)).map(song => song._id)
-        : (demoUser.likedSongIds || [])
+    if (!alreadyHasLikedData) {
+        const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
+        const allStations = await loadFromStorage(STATION_STORAGE_KEY) || []
+        const otherStations = allStations.filter(station => station._id !== 'likedSongs')
+        const likedSongsStation = allStations.filter(station => station._id === 'likedSongs')
 
-    const likedStationIds = otherStations.length
-        ? getRandomFromArr(otherStations, Math.min(10, otherStations.length)).map(station => station._id)
-        : (demoUser.likedStationIds || [])
+        const likedSongIds = allSongs.length
+            ? getRandomFromArr(allSongs, Math.min(15, allSongs.length)).map(song => song._id)
+            : []
 
-    if (!likedStationIds.includes('likedSongs')) {
-        likedStationIds.unshift('likedSongs')
-    }
+        const likedStationIds = otherStations.length
+            ? getRandomFromArr(otherStations, Math.min(10, otherStations.length)).map(station => station._id)
+            : []
 
-    demoUser.likedSongIds = likedSongIds
-    demoUser.likedStationIds = likedStationIds
+        if (!likedStationIds.includes('likedSongs')) {
+            likedStationIds.unshift('likedSongs')
+        }
 
+        demoUser.likedSongIds = likedSongIds
+        demoUser.likedStationIds = likedStationIds
 
-    if (likedSongsStation[0]) {
-        likedSongsStation[0].songs = allSongs.filter(song => likedSongIds.includes(song._id))
-        stationService.save(likedSongsStation[0])
-    }
+        if (likedSongsStation[0]) {
+            likedSongsStation[0].songs = allSongs.filter(song => likedSongIds.includes(song._id))
+            await stationService.save(likedSongsStation[0])
+        }
 
-    const userIdx = users.findIndex(u => u._id === demoUser._id)
-    if (userIdx !== -1) {
-        users[userIdx] = demoUser
-        saveToStorage(USER_STORAGE_KEY, users)
+        const userIdx = users.findIndex(u => u._id === demoUser._id)
+        if (userIdx !== -1) {
+            users[userIdx] = demoUser
+            await saveToStorage(USER_STORAGE_KEY, users)
+        }
     }
 
     const user = {
@@ -160,14 +163,14 @@ export async function setDemoLoggedinUser() {
 
 function _generateUser(idx) {
     const firstNames = [
-        'Alex', 'Jordan', 'Casey', 'Morgan', 'Taylor',
+        'Will', 'Jordan', 'Casey', 'Morgan', 'Taylor',
         'Riley', 'Sam', 'Jamie', 'Drew', 'Quinn',
         'Blake', 'River', 'Phoenix', 'Sage', 'Storm',
         'Nova', 'Kai', 'Eden', 'Leo', 'Zara'
     ]
 
     const lastNames = [
-        'Smith', 'Johnson', 'Williams', 'Brown', 'Jones',
+        'Smooth', 'Johnson', 'Williams', 'Brown', 'Jones',
         'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
         'Hernandez', 'Lopez', 'Gonzalez', 'Wilson',
         'Anderson', 'Thomas', 'Moore', 'Jackson',
