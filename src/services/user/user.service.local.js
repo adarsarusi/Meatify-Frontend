@@ -109,7 +109,7 @@ export async function setDemoLoggedinUser() {
 
     const demoUser = users[0]
 
-    const alreadyHasLikedData = demoUser.likedSongIds?.length || demoUser.likedStationIds?.length
+    const alreadyHasLikedData = demoUser.likedSongIds?.length ||( demoUser.likedStationIds?.length > 1)
 
     if (!alreadyHasLikedData) {
         const allSongs = await loadFromStorage(SONG_STORAGE_KEY) || []
