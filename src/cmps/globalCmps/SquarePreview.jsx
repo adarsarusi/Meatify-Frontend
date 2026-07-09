@@ -12,6 +12,7 @@ export function SquarePreview({ entity, hover = true }) {
 
   const navigate = useNavigate()
 
+  // Flats Artist names form songs to usable string
   const rawArtists =
     type === "station"
       ? [...new Set(entity.songs.flatMap((song) => formatArtists(song)))]
@@ -23,7 +24,7 @@ export function SquarePreview({ entity, hover = true }) {
       : rawArtists.join(", ")
 
   return (
-    <article className="entity-square-preview__item" onClick={() => navigate(`/${type}/${entity._id}`)} >
+    <article className="entity-square-preview__item" onClick={() => type === "station" && navigate(`/${type}/${entity._id}`)} >
       <div className="entity-square-preview__meta">
         <div className="entity-square-preview__img">
           <StationCover entity={entity} />

@@ -54,6 +54,7 @@
     }
 
     .entity-square-preview__artists {
+        color: var(--text-subdued);
         font-size: var(--font-sm);
     }
 }

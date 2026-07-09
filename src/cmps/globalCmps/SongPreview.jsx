@@ -59,11 +59,6 @@ export function SongPreview({ song, index }) {
     return `${m}:${s.toString().padStart(2, "0")}`
   }
 
-  function navigateToSong(ev) {
-    ev.preventDefault()
-    navigate(`/song/${song._id}`)
-  }
-
   return (
     <section
       aria-label={song.title}

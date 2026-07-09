@@ -1,7 +1,9 @@
-.station-cover{
-    display: grid;
+.station-cover {
+    display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .station-cover-img__container {
@@ -20,7 +22,7 @@
     transition: all 0.3s ease;
     box-shadow: var(--encore-overlay-box-shadow);
     height: 100%;
-    width: aspect-ratio 1/1;
+    width: 100%;
 
     img {
         width: 100%;
@@ -41,7 +43,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 100%;
     height: 100%;
     background-color: var(--background-elevated-highlight);
