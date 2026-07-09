@@ -11,9 +11,9 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const currStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
 
-    const isCurrStationPlaying = currStation._id === station._id
+    const isCurrStationPlaying = currStation?._id === station?._id
 
-    const isLikedStation = station._id === 'likedSongs'
+    const isLikedStation = station?._id === 'likedSongs'
 
     useEffect(() => {
         function closeMenu() {
