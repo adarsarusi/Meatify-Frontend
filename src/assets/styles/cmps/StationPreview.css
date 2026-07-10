@@ -2,25 +2,30 @@
     position: relative;
 
     display: grid;
-    grid-template-columns: 3rem auto;
+    grid-template-columns: 3rem auto auto;
+    align-content: center;
     gap: 0.5rem;
 
     width: 100%;
 
     border-radius: 5px;
     padding: 0.5rem;
-    margin-inline: -0.5rem -1rem;
+    padding-inline-end: 1rem;
+    margin-inline: -0.5rem;
 
     &:hover {
-        background-color: var(--background-elevated-base);
+        background-color: var(--background-highlight);
         cursor: pointer;
-
 
         .station-cover__hover,
         .station-preview__btn {
             visibility: visible;
         }
     }
+}
+
+.station-preview--active {
+    background-color: var(--background-tinted-highlight);
 }
 
 .station-preview__title {
@@ -45,4 +50,9 @@
     align-self: center;
     justify-self: center;
     place-items: center;
+}
+
+.station-preview__station-playing-icon {
+    justify-self: self-end;
+    align-self: center;
 }

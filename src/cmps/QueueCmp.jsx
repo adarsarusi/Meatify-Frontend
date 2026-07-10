@@ -14,7 +14,7 @@ export function QueueCmp() {
   const currentSong = useSelector((storeState) => storeState.playerModule.currentSong)
   const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened)
 
-  const currStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
+  const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
   const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
 
   const sensors = useSensors(
@@ -63,7 +63,7 @@ export function QueueCmp() {
                     <p>Now Playing</p>
                     <QueuePreview key={currentSong._id} song={currentSong} />
                   </div>
-                  <p>Next from: {currStation?.name} </p>
+                  <p>Next from: {currPlayingStation?.name} </p>
                   {queue
                     .filter(song => song._id !== currentSong._id)
                     .map(song => (

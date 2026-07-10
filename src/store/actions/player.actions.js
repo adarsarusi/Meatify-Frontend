@@ -60,10 +60,10 @@ export function toggleIsPlaying() {
   }
 }
 
-export async function setPlayingStation(currStation) {
+export async function setPlayingStation(currPlayingStation) {
   store.dispatch({ type: LOADING_START })
   try {
-    const station = await stationService.getById(currStation._id)
+    const station = await stationService.getById(currPlayingStation._id)
 
     const { _id, name } = station
     const stationInfo = { _id, name }

@@ -34,7 +34,7 @@
     pointer-events: auto;
 
     &:hover {
-        background: var(--background-tinted-base);
+        background: var(--background-elevated-base);
 
         color: var(--text-base);
 

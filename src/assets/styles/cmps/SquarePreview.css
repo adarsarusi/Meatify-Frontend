@@ -1,7 +1,7 @@
 .entity-square-preview__item {
     display: grid;
     gap: 1rem;
-    align-items: center;
+    align-items: start;
     color: var(--text-main);
     padding: 0.75rem;
     border-radius: 0.5rem;

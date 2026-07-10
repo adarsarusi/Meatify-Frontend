@@ -9,9 +9,9 @@ import { LikeBtn } from "../LikeBtn"
 export function StationOptions({ likedStation, station, isOwner, onEditStation, onRemoveStation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
-    const currStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
+    const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
 
-    const isCurrStationPlaying = currStation?._id === station?._id
+    const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
     const isLikedStation = station?._id === 'likedSongs'
 

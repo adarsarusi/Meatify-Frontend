@@ -41,6 +41,7 @@
 
     background-color: transparent;
     transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+    border-radius: 9999px;
 
     &.hover-bg {
         &:hover {
@@ -93,7 +94,7 @@
         transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
 
         &:hover {
-            background-color: var(--background-elevated-highlight);
+            background-color: var(--background-highlight);
 
             .icon {
                 color: var(--icon--white);
@@ -148,6 +149,6 @@
 
 
 .remove-first-letter-space {
-  /* Pulls the very first letter perfectly to the left container edge */
-  text-indent: -0.06em; 
+    /* Pulls the very first letter perfectly to the left container edge */
+    text-indent: -0.06em;
 }

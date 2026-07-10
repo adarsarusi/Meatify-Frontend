@@ -16,7 +16,7 @@ export function ArtistInfoPreview({ currentSong }) {
 
   const songs = useSelector(storeState => storeState.songModule.songs)
   const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
-  const currStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
+  const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
 
   useEffect(() => {
     if (currentSong?.artists?.[0]?.name) {
@@ -42,7 +42,7 @@ export function ArtistInfoPreview({ currentSong }) {
       <ScrollArea>
         <div className="entity-artist-preview__meta">
           <div className="entity-artist-preview__station-name">
-            {currStation?.name}
+            {currPlayingStation?.name}
           </div>
 
           <div className="entity-artist-preview__img">

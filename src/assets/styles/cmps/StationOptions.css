@@ -1,5 +1,11 @@
 .station-options {
-    width: 100%;
+  width: 100%;
+  padding-block-start: 1rem;
+}
+.station-details__options {
+    /* position: sticky; */
+    /* top: 0; */
+    z-index: 10;
     padding-block-start: 1rem;
 }
 
