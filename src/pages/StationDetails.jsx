@@ -170,7 +170,7 @@ export function StationDetails() {
 
             {isEditOpen && (
               <EditModal
-                title="Edit playlist"
+                title="Edit station"
                 entity={station}
                 onClose={() => setIsEditOpen(false)}
                 onSave={onSaveStation}
@@ -205,7 +205,7 @@ export function StationDetails() {
               {(station.songs?.length === 0 || isSearchVisible) && (
                 <div className="station-details__search-container">
                   <div>
-                    <h2>Let's find something for your playlist</h2>
+                    <h2>Let's find something for your station</h2>
                     <div className="station-details__search-bar">
                       <span>
                         <IconComp name="search" />

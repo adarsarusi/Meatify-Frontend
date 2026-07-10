@@ -88,7 +88,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
                                         onRemoveStation()
                                     }}
                                 >
-                                    Delete playlist
+                                    Delete station
                                 </button>}
 
 

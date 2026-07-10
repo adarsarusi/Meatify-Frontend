@@ -29,6 +29,17 @@ export function SongPreview({ song, index }) {
   const station = useSelector(
     (storeState) => storeState.stationModule.selectedStation,
   )
+  const loggedinUser = useSelector(
+    storeState => storeState.userModule.user
+  )
+  const stations = useSelector(
+    storeState => storeState.stationModule.stations
+  )
+  const userStations = stations.filter(
+    station =>
+      station.createdBy?._id === loggedinUser?._id &&
+      !station.tags?.includes("liked")
+  )
 
   const {
     setNodeRef,
@@ -136,15 +147,53 @@ export function SongPreview({ song, index }) {
               className="song-preview__context-menu"
               onPointerDown={(ev) => ev.stopPropagation()}
             >
-              {isSongInStation ? (
+
+              <>
+                {isSongInStation && (
+                  <span
+                    onClick={() =>
+                      removeSongFromStation(station._id, song._id)
+                    }
+                  >
+                    Remove from this station
+                  </span>
+                )}
+
+                <div className="song-preview__submenu-title">
+                  Add to station
+                </div>
+
+                {userStations.map(userStation => {
+                  const alreadyExists = userStation.songs.some(
+                    s => s._id === song._id
+                  )
+
+                  return (
+                    <span
+                      key={userStation._id}
+                      className={alreadyExists ? "disabled" : ""}
+                      onClick={() => {
+                        if (alreadyExists) return
+                        addSongToStation(userStation._id, song._id)
+                        setIsMenuOpen(false)
+                      }}
+                    >
+                      {userStation.name}
+                      {alreadyExists && " ✓"}
+                    </span>
+                  )
+                })}
+              </>
+
+              {/* {isSongInStation ? (
                 <span onClick={() => removeSongFromStation(station._id, song._id)}>
-                  Remove from playlist
+                  Remove from station
                 </span>
               ) : (
                 <span onClick={() => addSongToStation(station._id, song._id)}>
-                  Add to playlist
+                  Add to station
                 </span>
-              )}
+              )} */}
             </div>
           )}
         </button>

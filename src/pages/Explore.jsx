@@ -40,7 +40,7 @@ export function Explore() {
 
   const discoverableStations = stations.filter(
     (station) =>
-      station._id !== "likedSongs" &&
+      !station.tags?.includes("Liked") &&
       station.createdBy?._id !== loggedinUser?._id,
   )
 
