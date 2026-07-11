@@ -212,11 +212,9 @@
     background: var(--background-tinted-highlight);
 }
 
-
-.song-context-menu__button--add-wrapper:hover .song-context-menu__station-list {
+.song-context-menu__button--add:hover~.song-context-menu__station-list {
     display: flex;
 }
-
 
 .song-preview__context-menu span.disabled {
     color: var(--text-subdued);
@@ -239,37 +237,3 @@
 
     pointer-events: none;
 }
-
-/* .song-preview__context-menu {
-    position: absolute;
-
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-
-    right: 0;
-    bottom: 2rem;
-
-    max-width: max-content;
-
-    inset: 0 auto auto 0;
-
-    color: var(--text-base);
-    background-color: var(--decorative-subdued);
-
-    border-radius: 4px;
-    padding: 0.5rem 0.5rem;
-    z-index: 1000;
-
-    span {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        color: var(--text-base);
-
-        font-size: var(--font-sm);
-        font-weight: 500;
-        border-radius: 2px;
-        padding: 12px 4px; //
-    }
-} */
