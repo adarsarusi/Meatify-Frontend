@@ -46,8 +46,8 @@ export function StationPreview({ station, isSearch }) {
 
         <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
             <p className={`song-preview__title ${(isCurrStationPlaying && isPlaying) ? "playing-song" : ""} ellipsis-text  `}>{station.name}</p>
-            {isLikedStation && <p className='station-preview__creator-name ellipsis-text'>{station.createdBy.fullname}</p>}
-            {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{station.songs.length} songs</p>}
+            {isLikedStation && <p className='station-preview__creator-name ellipsis-text'>{station?.createdBy?.fullname}</p>}
+            {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{station?.songs.length} songs</p>}
         </div>
 
         {isSearch ? <div className="btn station-preview__station-icon ">

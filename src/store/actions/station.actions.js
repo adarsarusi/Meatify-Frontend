@@ -83,10 +83,8 @@ export async function addStationMsg(stationId, txt) {
 
 export async function addSongToStation(stationId, songId) {
   try {
-    const updatedSong = await songService.addSongStationId(songId)
     const addedSong = await stationService.addSongToStation(stationId, songId)
     await updateStation(addedSong)
-    // await updateSong(updatedSong)  this line causes an error because updateSong does not exist
   } catch (err) {
     console.log("Cannot add song to station", err)
     throw err
@@ -95,10 +93,8 @@ export async function addSongToStation(stationId, songId) {
 
 export async function removeSongFromStation(stationId, songId) {
   try {
-    const updatedSong = await songService.addSongStationId(songId)
     const removedSong = await stationService.removeSongFromStation(stationId, songId)
     await updateStation(removedSong)
-    // await updateSong(updatedSong)  this line causes an error because updateSong does not exist
   } catch (err) {
     console.log("Cannot remove song from station", err)
     throw err

@@ -22,7 +22,7 @@ export function ArtistInfoPreview({ currentSong }) {
 
   useEffect(() => {
     if (currentSong?.artists?.[0]?.name) {
-      songService.getArtistsInfo(currentSong._id,currentSong.artists[0].name).then(setArtistInfo)
+      songService.getArtistInfo(currentSong._id,currentSong.artists[0].name).then(setArtistInfo)
     }
   }, [currentSong])
 

@@ -4,20 +4,19 @@ export const songService = {
   query,
   getById,
   firstDemoSong,
-  getArtistsInfo
+  getArtistInfo,
 }
 
-async function query() {
-  return await httpService.get()
+async function query(filterBy = {}) {
+  return await httpService.get(`song`, filterBy)
 }
 
 async function getById(songId) {
   return await httpService.get(`song/${songId}`)
 }
 
-async function getArtistsInfo(songId,aritstName) {
-  return await httpService.get(`song/${songId}/artists/`)
-  
+async function getArtistInfo(songId) {
+  return await httpService.get(`song/${songId}/artist`)
 }
 
 async function firstDemoSong() {
