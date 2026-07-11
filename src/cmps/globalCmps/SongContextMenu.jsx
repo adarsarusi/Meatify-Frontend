@@ -23,10 +23,11 @@ export function SongContextMenu({ song }) {
     const userStations = stations.filter(
         (station) =>
             station.createdBy?._id === loggedinUser?._id &&
-            !station.tags?.includes('liked')
+            !station.tags?.includes('Liked')
     )
-
+    
     const isSongInStation = station?.songs?.some((s) => s._id === song._id)
+    
 
     function handleBlur(ev) {
         const currentTarget = ev.currentTarget

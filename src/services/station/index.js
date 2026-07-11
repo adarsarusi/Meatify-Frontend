@@ -1,5 +1,6 @@
 const { DEV, VITE_LOCAL } = import.meta.env
 
+import { userService } from '../user'
 import { stationService as local } from './station.service.local'
 import { stationService as remote } from './station.service.remote'
 
@@ -8,7 +9,7 @@ function getEmptyStation() {
         name: 'My Station',
         tags: [],
         songs: [],
-        createdBy: null,
+        createdBy: userService.getLoggedinUser(),
         savedCount: 0,
         songsImagesUrls: [],
         uploadImgUrl: '',

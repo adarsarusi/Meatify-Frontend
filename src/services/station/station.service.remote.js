@@ -28,7 +28,7 @@ async function remove(stationId) {
 }
 
 async function addSongToStation(stationId, songId) {
-    return httpService.put(`station/${stationId}/song`)
+    return httpService.put(`station/${stationId}/song/${songId}`)
 }
 
 async function removeSongFromStation(stationId, songId) {
