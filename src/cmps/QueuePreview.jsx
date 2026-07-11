@@ -39,7 +39,7 @@ export function QueuePreview({ song }) {
 
         <div className="queue-preview__info">
             <p className={`queue-preview__title ${(isCurrentSong) ? "playing-song" : ""} ellipsis-text`}>{song.title}</p>
-            <p className='queue-preview__creator-name ellipsis-text '>{song.artists[0].name}</p>
+            <p className='queue-preview__creator-name ellipsis-text '>{song?.artists[0].name}</p>
         </div>
 
         <button className="queue-preview__btn queue-preview__btn--more">

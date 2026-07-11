@@ -11,7 +11,7 @@ export const SET_IS_PLAYING = "SET_IS_PLAYING"
 export const SET_PLAYING_STATION = "SET_PLAYING_STATION"
 
 const initialState = {
-  currentSong: songService.firstDemoSong(),
+  currentSong: await songService.firstDemoSong(),
   currPlayingStation: null,
   queue: [],
   isPlaying: false,

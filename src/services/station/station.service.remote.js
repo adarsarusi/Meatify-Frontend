@@ -8,8 +8,8 @@ export const stationService = {
     addStationMsg,
 }
 
-async function query(filterBy = { txt: '', minSpeed: 0 }) {
-    return httpService.get(`station`, filterBy)
+async function query() {
+    return httpService.get(`station`)
 }
 
 function getById(stationId) {
