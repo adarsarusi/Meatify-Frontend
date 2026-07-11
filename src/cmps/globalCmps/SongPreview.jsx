@@ -148,42 +148,52 @@ export function SongPreview({ song, index }) {
               onPointerDown={(ev) => ev.stopPropagation()}
             >
 
-              <>
+              <div className="song-context-menu__button--add-wrapper">
+                <span className="song-context-menu__button song-context-menu__button--add"
+                >
+                  <div>
+                    <IconComp name='plus' className='icon--muted' />
+                    Add to playlist
+                  </div>
+                  <IconComp name='triangle-arrow' className='icon--white icon--xs' />
+                </span>
+
                 {isSongInStation && (
-                  <span
+                  <span className="song-context-menu__button"
                     onClick={() =>
                       removeSongFromStation(station._id, song._id)
                     }
                   >
-                    Remove from this station
+                    <div>
+                      <IconComp name='remove' className='icon--muted' />
+                      Remove from this playlist
+                    </div>
                   </span>
                 )}
+                <div className="song-context-menu__station-list">
+                  {userStations.map(userStation => {
+                    const alreadyExists = userStation.songs.some(
+                      s => s._id === song._id
+                    )
 
-                <div className="song-preview__submenu-title">
-                  Add to station
+                    return (
+                      <span
+                        key={userStation._id}
+                        className={alreadyExists ? "song-context-menu__button disabled" : "song-context-menu__button"}
+                        onClick={() => {
+                          if (alreadyExists) return
+                          addSongToStation(userStation._id, song._id)
+                          setIsMenuOpen(false)
+                        }}
+                      >
+                        {userStation.name}
+                        {alreadyExists &&
+                          <IconComp name='added' className='icon--active' />}
+                      </span>
+                    )
+                  })}
                 </div>
-
-                {userStations.map(userStation => {
-                  const alreadyExists = userStation.songs.some(
-                    s => s._id === song._id
-                  )
-
-                  return (
-                    <span
-                      key={userStation._id}
-                      className={alreadyExists ? "disabled" : ""}
-                      onClick={() => {
-                        if (alreadyExists) return
-                        addSongToStation(userStation._id, song._id)
-                        setIsMenuOpen(false)
-                      }}
-                    >
-                      {userStation.name}
-                      {alreadyExists && " ✓"}
-                    </span>
-                  )
-                })}
-              </>
+              </div>
 
               {/* {isSongInStation ? (
                 <span onClick={() => removeSongFromStation(station._id, song._id)}>

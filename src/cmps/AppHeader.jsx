@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom"
-import { isCookie, useNavigate } from "react-router"
+import { isCookie, useNavigate, useLocation } from "react-router"
 import { useSelector, useDispatch } from "react-redux"
 import { useState, useRef, useEffect } from "react"
 
@@ -19,10 +19,13 @@ export function AppHeader() {
   const stations = useSelector((state) => state.stationModule.stations)
 
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useDispatch()
 
   const [isOpen, setIsOpen] = useState(false)
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+
+  const isHome = location.pathname === `/`
 
   const debouncedApplyFilter = useRef(
     debounce((updatedFilter) => {
@@ -69,7 +72,10 @@ export function AppHeader() {
             <button
               className="btn"
               onClick={() => navigate("/")}>
-              <IconComp name="home" className="icon--white" />
+              {isHome 
+              ? <IconComp name="home" className="icon--white" /> :
+                <IconComp name="home-hollow" className="icon--white" />}
+
             </button>
           </div>
           <div className="search-bar">

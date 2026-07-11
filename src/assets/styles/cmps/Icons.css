@@ -1,4 +1,5 @@
 :root {
+  --icon-size-xs:   0.875rem;      /* 16px */
   --icon-size-sm:   1rem;      /* 16px */
   --icon-size:      1.25rem;   /* 20px — default */
   --icon-size-md:   1.5rem;    /* 24px */
@@ -23,6 +24,7 @@
 
 
 /* --- Sizes --- */
+.icon--xs { width: var(--icon-size-xs); height: var(--icon-size-xs); }
 .icon--sm { width: var(--icon-size-sm); height: var(--icon-size-sm); }
 .icon--md { width: var(--icon-size-md); height: var(--icon-size-md); }
 .icon--lg { width: var(--icon-size-lg); height: var(--icon-size-lg); }
