@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IconComp } from './globalCmps/IconComp'
+import { LikeBtn } from './LikeBtn'
 
 import { StationCover } from './globalCmps/StationCover'
 import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../store/actions/player.actions.js"
 import { useSelector } from 'react-redux'
 
-export function StationPreview({ station }) {
+export function StationPreview({ station, isSearch }) {
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -48,8 +49,15 @@ export function StationPreview({ station }) {
             {isLikedStation && <p className='station-preview__creator-name ellipsis-text'>{station.createdBy.fullname}</p>}
             {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{station.songs.length} songs</p>}
         </div>
+        {console.log('isSearch: ', isSearch)}
 
-        {(isCurrStationPlaying && isPlaying) && <div className="station-preview__station-playing-icon">
+        {isSearch ? <div className="btn station-preview__station-icon ">
+            <LikeBtn
+                itemId={station._id}
+                userField="likedStationIds"
+                iconSize="icon--sm"
+            />
+        </div> : (isCurrStationPlaying && isPlaying) && <div className="station-preview__station-icon">
             <IconComp name='volume-playing' className='icon--sm icon--active' />
         </div>}
     </article >

@@ -52,7 +52,7 @@
     place-items: center;
 }
 
-.station-preview__station-playing-icon {
+.station-preview__station-icon {
     justify-self: self-end;
     align-self: center;
 }
