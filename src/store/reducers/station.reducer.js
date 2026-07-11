@@ -1,3 +1,5 @@
+import { stationService } from "../../services/station"
+
 export const SET_STATIONS = "SET_STATIONS"
 export const SET_STATION = "SET_STATION"
 export const REMOVE_STATION = "REMOVE_STATION"
@@ -11,19 +13,7 @@ export const REMOVE_SONG_FROM_STATION = "REMOVE_SONG_FROM_STATION"
 
 const initialStationState = {
     stations: [],
-    userLikedStation: {
-        _id: 'likedSongs',
-        name: 'Liked Songs',
-        type: 'station',
-         tags: ['Liked'],
-        createdBy: {
-            _id: '',
-            fullname: '',
-            imgUrl: '',
-        },
-        songs: [],
-        uploadImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.png',
-    },
+    userLikedStation: await stationService.getLikedStation,
     selectedStation: null,
     lastWatchedStationId: null,
     lastWatchedStations: [],
@@ -34,7 +24,7 @@ const initialStationState = {
 export function stationReducer(state = initialStationState, action = {}) {
     switch (action.type) {
         case SET_STATIONS:
-            const allStations = action.stations.filter(station => station._id !== 'likedSongs')
+            const allStations = action.stations.filter(station => !station.tags?.includes("liked"))
             return {
                 ...state,
                 stations: [state.userLikedStation, ...allStations]

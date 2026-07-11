@@ -16,6 +16,7 @@ export async function loadStations(filterBy) {
   store.dispatch({ type: "SET_STATION_LOADING", isLoading: true })
   try {
     const stations = await stationService.query(filterBy)
+    
     store.dispatch(getCmdSetStations(stations))
   } catch (err) {
     console.log("Cannot load stations", err)

@@ -8,10 +8,11 @@ export const stationService = {
     remove,
     addSongToStation,
     removeSongFromStation,
+    getLikedStation
 }
 
-async function query() {
-    return httpService.get(`station`)
+async function query(filterBy = {}) {
+    return httpService.get(`station`,filterBy)
 }
 
 function getById(stationId) {
@@ -19,7 +20,7 @@ function getById(stationId) {
 }
 
 async function getByIds(stationIds) {
-    return httpService.post("station/getIds", { stationIds })
+    return httpService.post('station/getIds', { stationIds })
 }
 
 async function remove(stationId) {
@@ -34,7 +35,9 @@ async function removeSongFromStation(stationId, songId) {
     return httpService.delete(`station/${stationId}/song/${songId}`)
 }
 
-
+async function getLikedStation() {
+   return httpService.get('station/6a4ff07d47db264eea7790b8')
+}
 
 
 
