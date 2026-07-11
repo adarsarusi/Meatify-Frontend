@@ -34,7 +34,7 @@
 /* --- Colors --- */
 .icon--muted   { color: var(--icon--muted); }
 .icon--white   { color: var(--icon--white); }
-.icon--green   { color: var(--icon--green); }
+.icon--green   { color: var(--icon--active); }
 .icon--active  { color: var(--icon--active); }
 .icon--black  { color: var(--icon--black); }
 .icon--lightgreen  { color: var(--icon--lightgreen); }

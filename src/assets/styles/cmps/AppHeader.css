@@ -9,7 +9,7 @@
     align-items: center;
   }
 
-  background-color: var(--bg-color);
+  background-color: var(--background-press);
   padding: 0.5rem 2rem;
   padding-inline-end: 0.5rem;
 
@@ -34,7 +34,7 @@
   align-self: center;
   justify-self: end;
   padding: 0 0 0 0.5rem;
-  border-left: 1px solid var(--text-muted);
+  border-left: 1px solid var(--text-subdued);
 }
 
 .search-bar {
@@ -50,11 +50,11 @@
   min-width: 25rem;
 
   font-size: 1rem;
-  color: var(--text-main);
+  color: var(--text-base);
 
   padding: 0 0.5rem;
   border-radius: 5rem;
-  background-color: var(--bg-base);
+  background-color: var(--background-base);
 
   transition:
     box-shadow 0.22s ease-in,
@@ -64,11 +64,11 @@
   text-overflow: ellipsis;
 
   &:hover {
-    box-shadow: inset 0 0 2px 1px var(--bg-hover-clicked);
-    background-color: var(--bg-hover);
+    box-shadow: inset 0 0 2px 1px var(--background-tinted-press);
+    background-color: var(--background-elevated-highlight);
 
     .search-bar__btn .icon {
-      color: var(--text-main);
+      color: var(--text-base);
     }
   }
 }
@@ -88,7 +88,7 @@
   background: none;
   border: none;
   overflow: hidden;
-  color: var(--text-main);
+  color: var(--text-base);
 }
 
 
@@ -101,13 +101,13 @@
   width: 3rem;
   aspect-ratio: 1/1;
 
-  background-color: var(--bg-base);
+  background-color: var(--background-base);
   border-radius: 50%;
 
   cursor: pointer;
 
   &:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--background-elevated-highlight);
   }
 }
 
@@ -117,7 +117,7 @@
   cursor: pointer;
 
   &:hover .icon {
-    color: var(--text-main);
+    color: var(--text-base);
   }
 }
 

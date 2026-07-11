@@ -19,7 +19,7 @@
     border-radius: 8px;
 
     background-color: #3e3e3e;
-    color: var(--text-main);
+    color: var(--text-base);
 
     box-shadow: var(--encore-overlay-box-shadow);
 

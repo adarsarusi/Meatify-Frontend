@@ -7,6 +7,6 @@
 }
 
 .square-list--empty {
-    color: var(--text-muted);
+    color: var(--text-subdued);
     padding: 0.75rem;
 }

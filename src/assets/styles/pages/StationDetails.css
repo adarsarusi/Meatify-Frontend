@@ -35,7 +35,7 @@
   display: block;
   max-width: 100%;
   margin-inline-start: auto;
-  color: var(--text-main);
+  color: var(--text-base);
 
   margin-top: 32px;
   margin-right: 16px;
@@ -55,7 +55,7 @@
   justify-content: space-between;
 
   button {
-    color: var(--text-main);
+    color: var(--text-base);
     margin-inline-end: 8px;
 
     svg {

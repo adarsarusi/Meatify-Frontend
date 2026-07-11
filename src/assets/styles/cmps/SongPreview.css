@@ -219,7 +219,7 @@
 
     inset: 0 auto auto 0;
 
-    color: var(--text-main);
+    color: var(--text-base);
     background-color: var(--decorative-subdued);
 
     border-radius: 4px;
@@ -230,7 +230,7 @@
         display: flex;
         align-items: center;
         width: 100%;
-        color: var(--text-main);
+        color: var(--text-base);
 
         font-size: var(--font-sm);
         font-weight: 500;

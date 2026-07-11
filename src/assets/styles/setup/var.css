@@ -1,27 +1,12 @@
 :root {
   --primary: #d62828;
-  --bg-color: #000000;
-  --bg-base: #1b1b1b;
-  --bg-highlight-color: #2a2a2a;
-
-  --bg-hover: #2a2a2a;
-  --bg-hover-clicked: #ffffff4d;
-
-  --surface: #121212;
   --accent: #ffb7c5;
-  --text-main: #fdfdfd;
-  --text-muted: #b3b3b3;
 
   --icon--muted: #b3b3b3;
   --icon--black: black;
   --icon--white: #ffffff;
-  --icon--green: #1DB954;
   --icon--lightgreen: #c5f0c9;
   --icon--active: #1DB954;
-
-  --circle-bg-hover: #1f1f1f;
-
-  --gradient1: linear-gradient(180deg, var(--accent) 0%, var(--bg-base) 80%);
 
   --gray1: #ddd;
   --gray2: #aaa;
@@ -31,6 +16,8 @@
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
 
+
+  /* Animation */
   --button-hover-scale: 1.1;
 
   /* global sizes */
