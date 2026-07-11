@@ -8,6 +8,8 @@ import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
+import { useEffect, useRef } from "react"
+import { REMOVE_FROM_QUEUE } from "../store/reducers/player.reducer.js"
 
 export function QueueCmp() {
   const queue = useSelector((storeState) => storeState.playerModule.queue)
@@ -16,6 +18,15 @@ export function QueueCmp() {
 
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
   const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
+
+
+  const currSongRef = useRef(null)
+
+  useEffect(() => {
+    currSongRef.current = currentSong._id
+    store.dispatch({ type: REMOVE_FROM_QUEUE, songId: currSongRef.current })
+  }, [currentSong])
+
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
