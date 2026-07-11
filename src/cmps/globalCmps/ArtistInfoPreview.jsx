@@ -1,6 +1,7 @@
 import { IconComp } from "./IconComp"
 import { StationCover } from "./StationCover"
 import { stationService } from "../../services/station"
+import { songService } from "../../services/song"
 
 import { setQueue, setCurrentSong } from "../../store/actions/player.actions"
 import { useNavigate } from "react-router-dom"
@@ -9,6 +10,7 @@ import { SquarePreview } from "./SquarePreview"
 import { QueuePreview } from "../QueuePreview"
 import { useEffect, useState } from "react"
 import { ScrollArea } from "./ScrollArea"
+
 
 export function ArtistInfoPreview({ currentSong }) {
   const [artistInfo, setArtistInfo] = useState(null)
@@ -20,7 +22,7 @@ export function ArtistInfoPreview({ currentSong }) {
 
   useEffect(() => {
     if (currentSong?.artists?.[0]?.name) {
-      stationService.getArtistInfo(currentSong.artists[0].name).then(setArtistInfo)
+      songService.getArtistsInfo(currentSong._id,currentSong.artists[0].name).then(setArtistInfo)
     }
   }, [currentSong])
 
