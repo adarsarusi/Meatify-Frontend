@@ -22,7 +22,7 @@ export function AppHeader() {
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
 
   const isHome = location.pathname === `/`
