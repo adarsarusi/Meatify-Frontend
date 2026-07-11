@@ -7,7 +7,7 @@ import {
 } from '../../store/actions/station.actions'
 
 export function SongContextMenu({ song }) {
-    const [isMenuOpen, setIsMenuOpen] = useState(true)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const btnRef = useRef(null)
 
     const station = useSelector(
