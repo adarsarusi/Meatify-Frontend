@@ -31,6 +31,7 @@ export function ArtistInfoPreview({ currentSong }) {
   if (!artistInfo) return null
 
   const { name, bio, monthlyListeners, imgUrl, fans } = artistInfo
+  
 
   const shortBio = `${bio.slice(0, 95)} ...`
 

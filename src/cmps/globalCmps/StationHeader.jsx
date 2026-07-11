@@ -46,7 +46,7 @@ export function StationHeader({
                             {!likedStation && station.participants?.map((participant, i) => (
                                 <div
                                     className="avatar-wrapper"
-                                    key={participant._id}
+                                    key={i}
                                     style={{ "--index": i + 2 }}
                                 >
                                     <img

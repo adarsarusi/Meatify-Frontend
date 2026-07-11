@@ -16,10 +16,15 @@ export function StationPreview({ station, isSearch }) {
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
 
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
-    const isLikedStation = station.name !== 'Liked Songs'
+    const isLikedStation = !station.tags?.includes("Liked")
 
     const isSelectedStation = location.pathname === `/station/${station._id}`
 
+    const loggedinUser = useSelector(
+        storeState => storeState.userModule.user
+    )
+
+    const songCount = loggedinUser.likedSongIds.length
 
     return <article className={`station-preview ${isSelectedStation ? 'station-preview--active' : ''}`}>
 
@@ -47,7 +52,7 @@ export function StationPreview({ station, isSearch }) {
         <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
             <p className={`song-preview__title ${(isCurrStationPlaying && isPlaying) ? "playing-song" : ""} ellipsis-text  `}>{station.name}</p>
             {isLikedStation && <p className='station-preview__creator-name ellipsis-text'>{station?.createdBy?.fullname}</p>}
-            {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{station?.songs.length} songs</p>}
+            {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{songCount} songs</p>}
         </div>
 
         {isSearch ? <div className="btn station-preview__station-icon ">
