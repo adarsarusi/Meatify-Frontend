@@ -15,13 +15,31 @@ export const stationService = {
     remove,
     addStationMsg,
     addSongToStation,
-    removeSongFromStation,
+    getLikedStation,
+    
+
     generateSpotifyData,
     initTagsData,
     getArtistInfo,
 }
 
 window.cs = stationService
+
+async function getLikedStation(params) {
+   return {
+    _id: 'likedStation',
+        name: 'Liked Songs',
+        type: 'station',
+         tags: ['Liked'],
+        createdBy: {
+            _id: '',
+            fullname: '',
+            imgUrl: '',
+        },
+        songs: [],
+        uploadImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.png',
+    }
+}
 
 async function query(filterBy = {}) {
     let stations = await storageService.query(STATION_STORAGE_KEY) || []

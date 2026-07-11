@@ -72,11 +72,11 @@ export function QueueCmp() {
                 <ul className="queue-cmp__list">
                   <div className="queue-cmp__now-playing">
                     <p>Now Playing</p>
-                    <QueuePreview key={currentSong._id} song={currentSong} />
+                    <QueuePreview key={currentSong?._id} song={currentSong} />
                   </div>
                   <p>Next from: {currPlayingStation?.name} </p>
                   {queue
-                    .filter(song => song._id !== currentSong._id)
+                    .filter(song => song._id !== currentSong?._id)
                     .map(song => (
                       <QueuePreview key={song._id} song={song} />
                     ))

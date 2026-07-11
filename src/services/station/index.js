@@ -5,7 +5,6 @@ import { stationService as remote } from './station.service.remote'
 
 function getEmptyStation() {
     return {
-        _id: '',
         name: 'My Station',
         tags: [],
         songs: [],
@@ -23,9 +22,6 @@ function getDefaultFilter() {
     return {
         txt: '',
         tags: [],
-        genres: [],
-        albums: [],
-        artists: []
     }
 }
 

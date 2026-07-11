@@ -45,7 +45,8 @@ export function StationDetails() {
     }),
   ).current
 
-  const isLikedStation = station?.name === "Liked Songs"
+  const isLikedStation = station?.tags?.includes("Liked")
+
   const likedSongs = songs.filter((song) =>
     user?.likedSongIds?.includes(song._id),
   )
