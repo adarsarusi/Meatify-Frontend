@@ -85,8 +85,7 @@ export function Explore() {
             </div>
 
             <ul className="explore__stations-list">
-              <SquareList entities={likedStation} />
-
+              <SquareList entities={likedStation ? [likedStation] : []} />
             </ul>
           </div>
 

@@ -1,14 +1,24 @@
 import { Link } from 'react-router-dom'
-import { TAGS_DATA } from '../services/station/station.service.local'
+import { stationService } from '../services/station'
 import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
+import { useEffect, useState } from 'react'
+
 export function Browse() {
+    const [tagsData, setTagsData] = useState([])
+
+    useEffect(() => {
+        stationService.getTagsData()
+            .then(tags => setTagsData(tags))
+            .catch(err => console.error('Cannot load tags', err))
+    }, [])
+
     return (
         <section className="browse-page dynamic-area">
             <ScrollArea>
                 <div className='browse-page__content'>
                     <h1>Browse all</h1>
                     <div className="browse-page__grid">
-                        {TAGS_DATA.map(tag => (
+                        {tagsData.map(tag => (
                             <Link
                                 key={tag.title}
                                 to={`/browse/${encodeURIComponent(tag.title)}`}

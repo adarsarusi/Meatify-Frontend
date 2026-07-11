@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { SongList } from '../cmps/globalCmps/SongList'
 import { SquarePreview } from '../cmps/globalCmps/SquarePreview'
-import { TAGS_DATA } from '../services/station/station.service.local'
+import { TAGS_DATA } from '../services/station'
 import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 import { SquareList } from '../cmps/globalCmps/SquareList'
 

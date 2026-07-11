@@ -8,7 +8,7 @@ import {
   removeStation,
 } from "../store/actions/station.actions"
 import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
-import { TAGS_DATA } from '../services/station/station.service.local'
+import { TAGS_DATA } from '../services/station'
 
 import { EditModal } from "../cmps/globalCmps/EditModal"
 import { StationHeader } from "../cmps/globalCmps/StationHeader"

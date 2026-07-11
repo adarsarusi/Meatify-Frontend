@@ -8,19 +8,20 @@ export const stationService = {
     remove,
     addSongToStation,
     removeSongFromStation,
-    getLikedStation
+    getLikedStation,
+    getTagsData,
 }
 
 async function query(filterBy = {}) {
-    return httpService.get(`station`,filterBy)
+    return httpService.get(`station`, filterBy)
 }
 
-function getById(stationId) {
+async function getById(stationId) {
     return httpService.get(`station/${stationId}`)
 }
 
 async function getByIds(stationIds) {
-    return httpService.post('station/getIds', { stationIds })
+    return httpService.post('station/by-ids', { stationIds })
 }
 
 async function remove(stationId) {
@@ -28,18 +29,20 @@ async function remove(stationId) {
 }
 
 async function addSongToStation(stationId, songId) {
-    return httpService.put(`station/${stationId}/song`)
+    return httpService.post(`station/${stationId}/song/${songId}`)
 }
 
 async function removeSongFromStation(stationId, songId) {
     return httpService.delete(`station/${stationId}/song/${songId}`)
 }
 
-async function getLikedStation() {
-   return httpService.get('station/6a4ff07d47db264eea7790b8')
+async function getLikedStation(userId) {
+    return httpService.get(`user/${userId}/liked-songs`)
 }
 
-
+async function getTagsData() {
+    return httpService.get('station/tags')
+}
 
 async function save(station) {
     var savedStation
@@ -50,4 +53,3 @@ async function save(station) {
     }
     return savedStation
 }
-

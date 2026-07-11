@@ -16,21 +16,19 @@ export const stationService = {
     addStationMsg,
     addSongToStation,
     getLikedStation,
-    
-
     generateSpotifyData,
-    initTagsData,
+    getTagsData,
     getArtistInfo,
 }
 
 window.cs = stationService
 
 async function getLikedStation(params) {
-   return {
-    _id: 'likedStation',
+    return {
+        _id: 'likedStation',
         name: 'Liked Songs',
         type: 'station',
-         tags: ['Liked'],
+        tags: ['Liked'],
         createdBy: {
             _id: '',
             fullname: '',
@@ -461,7 +459,7 @@ async function buildTagsData() {
     return entries
 }
 
-async function initTagsData() {
+async function getTagsData() {
     if (TAGS_DATA.length) return TAGS_DATA
     TAGS_DATA = await buildTagsData()
     return TAGS_DATA
@@ -695,7 +693,7 @@ async function buildArtistInfoMap(pool) {
 }
 
 export async function generateSpotifyData(songsCount = 200, stationsCount = 100) {
-    await initTagsData()
+    await getTagsData()
 
     const existingSongs = await loadFromStorage(SONG_STORAGE_KEY)
     const existingStations = await loadFromStorage(STATION_STORAGE_KEY)
