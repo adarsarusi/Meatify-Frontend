@@ -190,30 +190,30 @@
 }
 
 .song-context-menu__button--add-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .song-context-menu__station-list {
-    position: absolute;
-    right: 100%;
-    top: 0;
-    z-index: 2000;
+  position: absolute;
+  right: 100%;
+  top: 0;
+  z-index: 2000;
 
-    display: none;
-    flex-direction: column;
-    justify-content: start;
-    padding: 0.25rem;
-    background: var(--background-elevated-base);
-    border-radius: var(--global-border-radius);
-    box-shadow: var(--encore-overlay-box-shadow);
+  display: none;
+  flex-direction: column;
+  justify-content: start;
+  padding: 0.25rem;
+  background: var(--background-elevated-base);
+  border-radius: var(--global-border-radius);
+  box-shadow: var(--encore-overlay-box-shadow);
 }
 
 .song-context-menu__button:hover {
-    background: var(--background-tinted-highlight);
+  background: var(--background-tinted-highlight);
 }
 
-.song-context-menu__button--add:hover~.song-context-menu__station-list {
-    display: flex;
+.song-context-menu__button--add-wrapper:hover .song-context-menu__station-list {
+  display: flex;
 }
 
 .song-preview__context-menu span.disabled {

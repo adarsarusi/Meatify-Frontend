@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useSortable } from '@dnd-kit/sortable'
@@ -14,31 +14,16 @@ import {
   setCurrentSong,
   toggleIsPlaying,
 } from "../../store/actions/player.actions"
-import {
-  addSongToStation,
-  removeSongFromStation,
-} from "../../store/actions/station.actions"
+import { SongContextMenu } from "./SongContextMenu"
 
 export function SongPreview({ song, index }) {
+  const navigate = useNavigate()
+
   const currentSong = useSelector(
     (storeState) => storeState.playerModule.currentSong,
   )
   const isPlaying = useSelector(
     (storeState) => storeState.playerModule.isPlaying,
-  )
-  const station = useSelector(
-    (storeState) => storeState.stationModule.selectedStation,
-  )
-  const loggedinUser = useSelector(
-    storeState => storeState.userModule.user
-  )
-  const stations = useSelector(
-    storeState => storeState.stationModule.stations
-  )
-  const userStations = stations.filter(
-    station =>
-      station.createdBy?._id === loggedinUser?._id &&
-      !station.tags?.includes("liked")
   )
 
   const {
@@ -58,11 +43,6 @@ export function SongPreview({ song, index }) {
   }
 
   const isCurrentSong = currentSong?._id === song._id
-  const isSongInStation = station?.songs?.some((s) => s._id === song._id)
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const navigate = useNavigate()
 
   function formatTime(seconds = 0) {
     const m = Math.floor(seconds / 60)
@@ -106,7 +86,7 @@ export function SongPreview({ song, index }) {
         <StationCover entity={song} />
         <div className="song-preview__meta-text">
           <div
-            className={`song-preview__title ${(isCurrentSong && isPlaying) ? "playing-song" : ""} ellipsis-text `}
+            className={`song-preview__title ${(isCurrentSong && isPlaying) ? "playing-song" : ""} ellipsis-text`}
           >
             {song.title}
           </div>
@@ -132,84 +112,10 @@ export function SongPreview({ song, index }) {
           {formatTime(song.duration)}
         </div>
 
-        <button
-          className="song-preview__btn song-preview__btn--more"
-          onPointerDown={(ev) => ev.stopPropagation()}
-          onClick={(ev) => {
-            ev.stopPropagation()
-            setIsMenuOpen(true)
-          }}
-          onBlur={() => setIsMenuOpen(false)}
-        >
-          <IconComp name="more" className="icon--white" />
-          {isMenuOpen && (
-            <div
-              className="song-preview__context-menu"
-              onPointerDown={(ev) => ev.stopPropagation()}
-            >
-
-              <div className="song-context-menu__button--add-wrapper">
-                <span className="song-context-menu__button song-context-menu__button--add"
-                >
-                  <div>
-                    <IconComp name='plus' className='icon--muted' />
-                    Add to playlist
-                  </div>
-                  <IconComp name='triangle-arrow' className='icon--white icon--xs' />
-                </span>
-
-                {isSongInStation && (
-                  <span className="song-context-menu__button"
-                    onClick={() =>
-                      removeSongFromStation(station._id, song._id)
-                    }
-                  >
-                    <div>
-                      <IconComp name='remove' className='icon--muted' />
-                      Remove from this playlist
-                    </div>
-                  </span>
-                )}
-                <div className="song-context-menu__station-list">
-                  {userStations.map(userStation => {
-                    const alreadyExists = userStation.songs.some(
-                      s => s._id === song._id
-                    )
-
-                    return (
-                      <span
-                        key={userStation._id}
-                        className={alreadyExists ? "song-context-menu__button disabled" : "song-context-menu__button"}
-                        onClick={() => {
-                          if (alreadyExists) return
-                          addSongToStation(userStation._id, song._id)
-                          setIsMenuOpen(false)
-                        }}
-                      >
-                        {userStation.name}
-                        {alreadyExists &&
-                          <IconComp name='added' className='icon--active' />}
-                      </span>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* {isSongInStation ? (
-                <span onClick={() => removeSongFromStation(station._id, song._id)}>
-                  Remove from station
-                </span>
-              ) : (
-                <span onClick={() => addSongToStation(station._id, song._id)}>
-                  Add to station
-                </span>
-              )} */}
-            </div>
-          )}
-        </button>
+        <SongContextMenu song={song} />
       </div>
     </section>
   )
 }
 
-export default SongPreview  
+export default SongPreview
