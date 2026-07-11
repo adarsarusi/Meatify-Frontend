@@ -49,7 +49,6 @@ export function StationPreview({ station, isSearch }) {
             {isLikedStation && <p className='station-preview__creator-name ellipsis-text'>{station.createdBy.fullname}</p>}
             {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{station.songs.length} songs</p>}
         </div>
-        {console.log('isSearch: ', isSearch)}
 
         {isSearch ? <div className="btn station-preview__station-icon ">
             <LikeBtn

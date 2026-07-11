@@ -6,6 +6,7 @@ import { IconComp } from './globalCmps/IconComp'
 import { StationCover } from './globalCmps/StationCover'
 import { setCurrentSong } from "../store/actions/player.actions.js"
 import { useSelector } from 'react-redux'
+import { SongContextMenu } from './globalCmps/SongContextMenu.jsx'
 
 export function QueuePreview({ song }) {
 
@@ -42,9 +43,9 @@ export function QueuePreview({ song }) {
             <p className='queue-preview__creator-name ellipsis-text '>{song.artists[0].name}</p>
         </div>
 
-        <button className="queue-preview__btn queue-preview__btn--more">
-            <IconComp name="more" className="icon--white" />
-        </button>
+        <div className="queue-preview__btn queue-preview__btn--more">
+            <SongContextMenu song={song} />
+        </div>
     </article>
 
 }
