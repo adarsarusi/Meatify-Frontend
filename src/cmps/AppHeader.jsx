@@ -8,7 +8,7 @@ import { logout } from "../store/actions/user.actions.js"
 import { debounce } from "../services/util.service.js"
 
 import { stationService } from "../services/station"
-import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
+import { SearchResultsDropdown } from "./SearchResultsDropdown.jsx"
 
 import { IconComp } from "./globalCmps/IconComp.jsx"
 
@@ -108,7 +108,7 @@ export function AppHeader() {
                 <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
-            {isOpen && <SerachResultsDropdown stations={searchResults} />}
+            {isOpen && <SearchResultsDropdown stations={searchResults} />}
           </div>
         </div>
         <div className="app-header__user-actions">

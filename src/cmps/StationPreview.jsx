@@ -31,7 +31,9 @@ export function StationPreview({ station, isSearch }) {
         <div className='station-preview__cover-container'>
             <StationCover entity={station} />
             <button className="station-preview__btn"
-                onClick={() => {
+                onPointerDown={(ev) => ev.stopPropagation()}
+                onClick={(ev) => {
+                    ev.stopPropagation()
                     if (isCurrStationPlaying) {
                         toggleIsPlaying()
                     } else {

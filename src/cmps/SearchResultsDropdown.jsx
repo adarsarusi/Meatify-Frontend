@@ -2,7 +2,7 @@
 import { ScrollArea } from "./globalCmps/ScrollArea"
 import { QueuePreview } from "./QueuePreview"
 import { StationList } from "./StationList"
-export function SerachResultsDropdown({ stations }) {
+export function SearchResultsDropdown({ stations }) {
   return (
     <section className="search-dropdown">
       <ScrollArea >
