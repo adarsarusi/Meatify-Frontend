@@ -81,7 +81,7 @@ export function Library() {
   return (
     <section className="app-library">
       <div className="library-header">
-        <h3>Your Library</h3>
+        <h3 className="library-header__title">Your Library</h3>
 
         <section className="library-controls">
           <button onClick={onCreateStation} className="btn bg-button">
@@ -107,7 +107,7 @@ export function Library() {
       <ScrollArea>
         <div className={isExpanded || isSquare ? 'library-content library-content--expanded' : 'library-content'}>
           {isSquare ? (
-            <SquareList entities={likedStations} isOwner={true} />
+            <SquareList entities={likedStations} isOwner={true} isLibrary={true} />
           ) : (
             <StationList stations={likedStations} />
           )}

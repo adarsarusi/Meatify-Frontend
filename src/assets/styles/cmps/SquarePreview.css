@@ -25,7 +25,24 @@
             visibility: hidden;
         }
     }
+}
 
+.entity-square-preview__item--active {
+    background-color: var(--background-tinted-highlight);
+
+    .entity-square-preview__btn {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+}
+
+.entity-square-preview__item--playing {
+    .entity-square-preview__btn {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
 }
 
 .entity-square-preview__img {

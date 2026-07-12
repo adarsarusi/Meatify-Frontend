@@ -74,7 +74,7 @@ export function Explore() {
 
         <div className="explore--container dynamic-max-width">
 
-          <div className="explore__stations-grid ">
+          {/* <div className="explore__stations-grid ">
             <div className="explore-sub-header">
               <p className="explore-sub-header__sub-title">Made For</p>
               <h1 className="explore-sub-header__title">
@@ -85,7 +85,7 @@ export function Explore() {
             <ul className="explore__stations-list">
               <SquareList entities={likedStation} />
             </ul>
-          </div>
+          </div> */}
 
           {recommendations.length > 0 && (
             <div className="explore__stations-grid">

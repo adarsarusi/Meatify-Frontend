@@ -3,7 +3,7 @@ import { SquarePreview } from "./SquarePreview"
 import { SongListTable } from "./SongListTable"
 import { useSelector } from "react-redux"
 
-export function SquareList({ entities = [], isOwner }) {
+export function SquareList({ entities = [], isOwner, isLibrary = false }) {
   if (!entities || entities.length === 0)
     return <div className="square-list square-list--empty">No entities</div>
 
@@ -12,7 +12,7 @@ export function SquareList({ entities = [], isOwner }) {
   if (isLoading) return
 
   return (
-    <section className="square-list">
+    <section className={`square-list ${isLibrary ? 'is-library': ''} `}>
       {!entities.length ? (
         <SquarePreview
           key={entities._id}
@@ -23,6 +23,7 @@ export function SquareList({ entities = [], isOwner }) {
           <SquarePreview
             key={entity._id}
             entity={entity}
+            isLibrary={isLibrary}
           />
         ))
       )}
