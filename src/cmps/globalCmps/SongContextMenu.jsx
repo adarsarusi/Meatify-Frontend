@@ -25,9 +25,9 @@ export function SongContextMenu({ song }) {
             station.createdBy?._id === loggedinUser?._id &&
             !station.tags?.includes('Liked')
     )
-    
+
     const isSongInStation = station?.songs?.some((s) => s._id === song._id)
-    
+
 
     function handleBlur(ev) {
         const currentTarget = ev.currentTarget
@@ -97,7 +97,9 @@ export function SongContextMenu({ song }) {
                     {isSongInStation && (
                         <span
                             className="song-context-menu__button"
-                            onClick={() => removeSongFromStation(station._id, song._id)}
+                            onClick={(ev) => {
+                                removeSongFromStation(station._id, song._id)
+                            }}
                         >
                             <div>
                                 <IconComp name="remove" className="icon--muted" />

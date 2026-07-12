@@ -16,7 +16,7 @@ export async function loadStations(filterBy) {
   store.dispatch({ type: "SET_STATION_LOADING", isLoading: true })
   try {
     const stations = await stationService.query(filterBy)
-    
+
     store.dispatch(getCmdSetStations(stations))
   } catch (err) {
     console.log("Cannot load stations", err)
@@ -84,8 +84,9 @@ export async function addStationMsg(stationId, txt) {
 
 export async function addSongToStation(stationId, songId) {
   try {
-    const addedSong = await stationService.addSongToStation(stationId, songId)
-    await updateStation(addedSong)
+    const updatedStation = await stationService.addSongToStation(stationId, songId)
+    store.dispatch(getCmdUpdateStation(updatedStation))
+    return updatedStation
   } catch (err) {
     console.log("Cannot add song to station", err)
     throw err
@@ -94,8 +95,9 @@ export async function addSongToStation(stationId, songId) {
 
 export async function removeSongFromStation(stationId, songId) {
   try {
-    const removedSong = await stationService.removeSongFromStation(stationId, songId)
-    await updateStation(removedSong)
+    const updatedStation = await stationService.removeSongFromStation(stationId, songId)
+    store.dispatch(getCmdUpdateStation(updatedStation))
+    return updatedStation
   } catch (err) {
     console.log("Cannot remove song from station", err)
     throw err

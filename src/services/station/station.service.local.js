@@ -16,6 +16,7 @@ export const stationService = {
     addStationMsg,
     addSongToStation,
     getLikedStation,
+    removeSongFromStation,
     generateSpotifyData,
     getTagsData,
     getArtistInfo,
