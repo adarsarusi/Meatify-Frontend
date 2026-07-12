@@ -8,18 +8,15 @@ import { EditModal } from '../cmps/globalCmps/EditModal'
 import { ScrollArea } from '../cmps/globalCmps/ScrollArea'
 
 import { loadUser, updateUser } from '../store/actions/user.actions'
-import { store } from '../store/store'
-import { userService } from '../services/user'
 import { stationService } from '../services/station'
 import { uploadService } from '../services/upload.service'
-import { showSuccessMsg } from '../services/event-bus.service'
-// import { socketService, SOCKET_EVENT_USER_UPDATED, SOCKET_EMIT_USER_WATCH } from '../services/socket.service'
 
 export function Profile() {
-
   const params = useParams()
+  
   const user = useSelector(storeState => storeState.userModule.watchedUser)
-  const songs = useSelector(storeState => storeState.songModule.songs)
+  const songs = useSelector(storeState => storeState.songModule.songs) || []
+  
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [likedStations, setLikedStations] = useState([])
 
@@ -28,63 +25,41 @@ export function Profile() {
   )
 
   useEffect(() => {
-    if (!user?.likedStationIds?.length) return
+    if (!user?.likedStationIds?.length) {
+      setLikedStations([])
+      return
+    }
 
-      ; (async () => {
-        const stations = await stationService.getByIds(
-          user.likedStationIds
-        )
-
+    const fetchLikedStations = async () => {
+      try {
+        const stations = await stationService.getByIds(user.likedStationIds)
         setLikedStations(stations)
-      })()
-  }, [user])
+      } catch (err) {
+        console.error("Failed to fetch liked stations:", err)
+      }
+    }
 
-  async function loadLikedStations() {
-    const stations = await stationService.getByIds(
-      user.likedStationIds
-    )
-
-    setLikedStations(stations)
-  }
+    fetchLikedStations()
+  }, [user?.likedStationIds])
 
   useEffect(() => {
-    loadUser(params.id)
-
-    // socketService.emit(SOCKET_EMIT_USER_WATCH, params.id)
-    // socketService.on(SOCKET_EVENT_USER_UPDATED, onUserUpdate)
-
-    // return () => {
-    //   socketService.off(SOCKET_EVENT_USER_UPDATED, onUserUpdate)
-    // }
-
+    if (params.id) {
+      loadUser(params.id)
+    }
   }, [params.id])
-
-  async function changeNickname() {
-    const user = await userService.getById(params.id)
-    const fullname = prompt('Change Nickname', user.fullname)
-
-    if (!fullname) return
-
-    user.fullname = fullname
-
-    await updateUser(user)
-  }
 
   async function changeProfileImg(ev) {
     try {
       const imgData = await uploadService.uploadImg(ev)
-
       const updatedUser = {
         ...user,
         imgUrl: imgData.secure_url
       }
-
       await updateUser(updatedUser)
     } catch (err) {
-      console.log('Cannot upload image', err)
+      console.error('Cannot upload image', err)
     }
   }
-
 
   return (
     <section className="user-details dynamic-area">
@@ -98,7 +73,6 @@ export function Profile() {
                   src={user.imgUrl}
                   alt={user.fullname}
                 />
-
                 <input
                   type="file"
                   accept="image/*"
@@ -109,11 +83,9 @@ export function Profile() {
 
               <div className="user-details-header">
                 <p className="profile-type">Profile</p>
-
                 <h1 onClick={() => setIsEditOpen(true)}>
                   {user.fullname}
                 </h1>
-
                 <p className="profile-stats">
                   {user.likedStationIds?.length || 0} public playlists · 0 following
                 </p>
@@ -125,10 +97,10 @@ export function Profile() {
                 <h2>Liked Playlists</h2>
                 <ul className='station-list square-list'>
                   {likedStations.map(station =>
-
                     <li key={station._id} className="user-details-liked-stations-list">
-                      <SquarePreview entity={station} />
-                    </li>)}
+                      <SquarePreview station={station} />
+                    </li>
+                  )}
                 </ul>
               </section>
             )}
