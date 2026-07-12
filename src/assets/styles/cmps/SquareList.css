@@ -4,6 +4,10 @@
     margin-inline-start: -0.8rem;
     padding: 1rem;
     padding-inline-start: 1.5rem;
+
+    &.is-library {
+        grid-template-columns: repeat(2, minmax(10rem, 1fr));
+    }
 }
 
 .square-list--empty {

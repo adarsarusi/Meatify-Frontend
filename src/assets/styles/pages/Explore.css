@@ -1,5 +1,6 @@
 .explore__stations-grid {
     padding: 1rem;
+    padding-block-start: 3rem;
     display: grid;
     gap: 1rem;
     /* margin-bottom: 1rem; */

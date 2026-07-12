@@ -64,7 +64,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-        <img src="src\assets\logo\meatify-logo.svg"/>
+          <img src="meatify-logo.svg" />
         </NavLink>
 
         <div className="search-bar-container">
@@ -72,8 +72,8 @@ export function AppHeader() {
             <button
               className="btn"
               onClick={() => navigate("/")}>
-              {isHome 
-              ? <IconComp name="home" className="icon--white" /> :
+              {isHome
+                ? <IconComp name="home" className="icon--white" /> :
                 <IconComp name="home-hollow" className="icon--white" />}
 
             </button>
