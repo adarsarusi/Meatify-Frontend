@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { IconComp } from './globalCmps/IconComp'
@@ -9,7 +10,6 @@ export function StationPreview({ station, isSearch }) {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const isLoading = useSelector((storeState) => storeState.systemModule.isLoading)
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const songs = useSelector((storeState) => storeState.songModule.songs) || []
@@ -19,13 +19,14 @@ export function StationPreview({ station, isSearch }) {
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
     const isSelectedStation = location.pathname === `/station/${station?._id}`
 
-    const stationSongs = songs.filter(song =>
-        station?.songs?.includes(song._id.toString())
-    )
+    const stationSongs = useMemo(() => {
+        if (!station?.songs?.length) return []
+        return songs.filter(song => station.songs.includes(song._id.toString()))
+    }, [songs, station?.songs])
 
     const songCount = loggedinUser?.likedSongIds?.length || 0
 
-    if (isLoading || !station) return null
+    if (!station) return null
 
     const onPlayStation = (ev) => {
         ev.stopPropagation()

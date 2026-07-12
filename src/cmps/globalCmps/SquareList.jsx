@@ -3,12 +3,10 @@ import { SquarePreview } from "./SquarePreview"
 import { useSelector } from "react-redux"
 
 export function SquareList({ stations = [], isOwner, isLibrary = false }) {
-  const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
 
-
-  if (isLoading) return <div className="square-list loader">Loading...</div>
+  if (!stations) return <div className="square-list loader">Loading...</div>
 
   if (!stations || stations.length === 0) {
     return <div className="square-list square-list--empty">No stations</div>

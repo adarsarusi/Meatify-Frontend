@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -33,16 +33,15 @@ export function Library() {
     (storeState) => storeState.systemModule.isExpanded,
   )
 
-  const likedSongs = songs.filter((song) =>
-    loggedinUser?.likedSongIds?.includes(song._id),
+  const likedSongs = useMemo(() =>
+    songs.filter((song) => loggedinUser?.likedSongIds?.includes(song._id)),
+    [songs, loggedinUser?.likedSongIds],
   )
 
-  const likedStations = stations.filter((station) =>
-    loggedinUser?.likedStationIds?.includes(station._id),
+  const likedStations = useMemo(() =>
+    stations.filter((station) => loggedinUser?.likedStationIds?.includes(station._id)),
+    [stations, loggedinUser?.likedStationIds],
   )
-
-
-  useEffect(() => { }, [likedSongs])
 
   function onExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })

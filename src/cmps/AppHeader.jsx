@@ -14,6 +14,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const stations = useSelector((storeState) => storeState.stationModule.stations) || []
 
   const searchRef = useRef(null)
   const [searchTxt, setSearchTxt] = useState('')
@@ -27,22 +28,21 @@ export function AppHeader() {
   const isHome = location.pathname === `/`
 
   useEffect(() => {
-    async function loadAllStations() {
-      const stations = await stationService.query()
+    if (!searchTxt.trim()) {
       setSearchResults(stations)
     }
-
-    loadAllStations()
-  }, [])
+  }, [stations, searchTxt])
 
   const debouncedSearch = useRef(
     debounce(async (txt) => {
       try {
-        const stations = txt.trim()
-          ? await stationService.query({ txt })
-          : await stationService.query()
+        if (!txt.trim()) {
+          setSearchResults(stations)
+          return
+        }
 
-        setSearchResults(stations)
+        const searchedStations = await stationService.query({ txt })
+        setSearchResults(searchedStations)
       } catch (err) {
         console.error('Cannot search stations', err)
       }

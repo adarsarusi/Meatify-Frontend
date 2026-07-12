@@ -21,7 +21,6 @@ export function QueueCmp() {
   const [originalQueue, setOriginalQueue] = useState([])
 
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
-  const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
 
   const currSongRef = useRef(null)
 
@@ -57,8 +56,6 @@ export function QueueCmp() {
 
     setQueue(updatedQueue)
   }
-
-  if (isLoading) return
 
   return (
     <section className="queue-cmp">

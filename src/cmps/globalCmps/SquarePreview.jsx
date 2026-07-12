@@ -26,7 +26,6 @@ export function SquarePreview({ station, stationSongs, hover = true, isLibrary =
     storeState => storeState.userModule.user
   )
 
-
   const songCount = loggedinUser.likedSongIds.length
 
   // Flats Artist names form songs to usable string

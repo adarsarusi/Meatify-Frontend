@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -32,8 +32,8 @@ export function StationDetails() {
     (storeState) => storeState.stationModule.selectedStation,
   )
 
-  const isLoading = useSelector(
-    (storeState) => storeState.systemModule.isLoading,
+  const selectedStationId = useSelector(
+    (storeState) => storeState.stationModule.selectedStation?._id,
   )
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
@@ -43,19 +43,22 @@ export function StationDetails() {
 
   const isLikedStation = station?.tags?.includes("Liked")
 
-  const likedSongs = songs.filter(song =>
-    user.likedSongIds.includes(song._id.toString())
-  )
+  const likedSongs = useMemo(() => {
+    if (!Array.isArray(songs) || !Array.isArray(user?.likedSongIds)) return []
+    return songs.filter(song => user.likedSongIds.includes(song._id.toString()))
+  }, [songs, user?.likedSongIds])
 
-  const stationSongs = songs.filter(song =>
-    station?.songs.includes(song._id.toString())
-  )
+  const stationSongs = useMemo(() => {
+    if (!station?.songs?.length || !Array.isArray(songs)) return []
+    const stationSongIds = new Set(station.songs.map(id => id.toString()))
+    return songs.filter(song => stationSongIds.has(song._id.toString()))
+  }, [songs, station?.songs])
 
 
   useEffect(() => {
-    if (!id) return
+    if (!id || selectedStationId === id) return
     loadStation(id)
-  }, [id])
+  }, [id, selectedStationId])
 
 
   async function onSaveStation(updatedStation) {
@@ -94,7 +97,7 @@ export function StationDetails() {
     updateStation(updatedStation)
   }
 
-  if (isLoading && !station)
+  if (!station && selectedStationId !== id)
     return (
       <section className="station-details">
         <div className="station-container">

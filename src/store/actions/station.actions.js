@@ -10,10 +10,7 @@ import {
   SET_STATION_LOADING,
 } from "../reducers/station.reducer"
 
-import { LOADING_START, LOADING_DONE } from "../reducers/system.reducer.js"
-
 export async function loadStations(filterBy) {
-  store.dispatch({ type: LOADING_START })
   try {
     const stations = await stationService.query(filterBy)
 
@@ -21,26 +18,20 @@ export async function loadStations(filterBy) {
   } catch (err) {
     console.log("Cannot load stations", err)
     throw err
-  } finally {
-    store.dispatch({ type: LOADING_DONE })
   }
 }
 
 export async function loadStation(stationId) {
-  store.dispatch({ type: LOADING_START })
   try {
     const station = await stationService.getById(stationId)
     store.dispatch(getCmdSetStation(station))
   } catch (err) {
     console.log("Cannot load station", err)
     throw err
-  } finally {
-    store.dispatch({ type: LOADING_DONE })
   }
 }
 
 export async function removeStation(stationId) {
-  store.dispatch({ type: LOADING_START })
   try {
     await stationService.remove(stationId)
     store.dispatch(getCmdRemoveStation(stationId))
@@ -52,7 +43,6 @@ export async function removeStation(stationId) {
 }
 
 export async function addStation(station) {
-  store.dispatch({ type: LOADING_START })
   try {
     const savedStation = await stationService.save(station)
     store.dispatch(getCmdAddStation(savedStation))
@@ -60,13 +50,10 @@ export async function addStation(station) {
   } catch (err) {
     console.log("Cannot add station", err)
     throw err
-  } finally {
-    store.dispatch({ type: LOADING_DONE })
   }
 }
 
 export async function updateStation(station) {
-  store.dispatch({ type: LOADING_START })
   try {
     const savedStation = await stationService.save(station)
     store.dispatch(getCmdUpdateStation(savedStation))
@@ -75,14 +62,11 @@ export async function updateStation(station) {
     console.log("Cannot save station", err)
     throw err
   }
-  finally {
-    store.dispatch({ type: LOADING_DONE })
-  }
+
 }
 
 
 export async function addSongToStation(stationId, songId) {
-  store.dispatch({ type: LOADING_START })
   try {
     const updatedStation = await stationService.addSongToStation(stationId, songId)
     store.dispatch(getCmdUpdateStation(updatedStation))
@@ -91,13 +75,10 @@ export async function addSongToStation(stationId, songId) {
     console.log("Cannot add song to station", err)
     throw err
   }
-  finally {
-    store.dispatch({ type: LOADING_DONE })
-  }
+
 }
 
 export async function removeSongFromStation(stationId, songId) {
-  store.dispatch({ type: LOADING_START })
   try {
     const updatedStation = await stationService.removeSongFromStation(stationId, songId)
     store.dispatch(getCmdUpdateStation(updatedStation))
@@ -105,9 +86,6 @@ export async function removeSongFromStation(stationId, songId) {
   } catch (err) {
     console.log("Cannot remove song from station", err)
     throw err
-  }
-  finally {
-    store.dispatch({ type: LOADING_DONE })
   }
 }
 

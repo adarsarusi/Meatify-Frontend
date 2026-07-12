@@ -17,7 +17,6 @@ export function ArtistInfoPreview({ currentSong }) {
   const navigate = useNavigate()
 
   const songs = useSelector(storeState => storeState.songModule.songs)
-  const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
 
   useEffect(() => {
@@ -26,13 +25,11 @@ export function ArtistInfoPreview({ currentSong }) {
     }
   }, [currentSong])
 
-  if (isLoading) return
   if (!currentSong) return null
   if (!artistInfo) return null
 
   const { name, bio, monthlyListeners, imgUrl, fans } = artistInfo
   
-
   const shortBio = `${bio.slice(0, 95)} ...`
 
   const filteredSongs = songs.filter(song =>

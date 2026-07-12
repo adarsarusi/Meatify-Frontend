@@ -11,10 +11,6 @@ export function StationSearchMore({ station, songs }) {
     const [searchedSong, setSearchedSong] = useState("")
 
 
-    const isLoading = useSelector(
-        (storeState) => storeState.systemModule.isLoading,
-    )
-
     const currentStation = useSelector(
         (storeState) => storeState.stationModule.selectedStation,
     )
@@ -57,7 +53,7 @@ export function StationSearchMore({ station, songs }) {
 
 
 
-    if (!isOwner && isLoading) return
+    if (!isOwner) return
 
     return (<section className="station-details__search">
         {stationSongs?.length > 0 && !isSearchVisible && (

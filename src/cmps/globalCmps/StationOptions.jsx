@@ -9,9 +9,6 @@ import { LikeBtn } from "../LikeBtn"
 
 export function StationOptions({ station, stationSongs, isOwner, onEditStation, onRemoveStation }) {
 
-    const isLoading = useSelector(
-        (storeState) => storeState.systemModule.isLoading,
-    )
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isShuffle, setIsShuffle] = useState(false)
@@ -48,8 +45,6 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
             setIsShuffle(false)
         }
     }
-
-    if (isLoading) return
 
     return (
         <section className="station-options">

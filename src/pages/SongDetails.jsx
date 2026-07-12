@@ -9,9 +9,6 @@ import { songService } from "../services/song"
 
 export function SongDetails() {
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
-  const isLoading = useSelector(
-    (storeState) => storeState.stationModule.isLoading,
-  )
 
   const navigate = useNavigate()
   const { id } = useParams()
@@ -31,7 +28,7 @@ export function SongDetails() {
     }
   }
 
-  if (isLoading || !song) return <div>loading...</div>
+  if (!song) return <div>loading...</div>
   console.log(song);
 
   return (
