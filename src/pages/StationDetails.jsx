@@ -47,8 +47,8 @@ export function StationDetails() {
 
   const isLikedStation = station?.tags?.includes("Liked")
 
-  const likedSongs = songs.filter((song) =>
-    user?.likedSongIds?.includes(song._id),
+  const likedSongs = songs.filter(song =>
+    user.likedSongIds.includes(song._id.toString())
   )
 
   useEffect(() => {
@@ -150,7 +150,6 @@ export function StationDetails() {
         <section className="station-details__container">
           <section className="station-details__header">
             <StationHeader
-              likedStation={isLikedStation}
               user={user}
               station={station}
               isOwner={isOwner}
@@ -161,7 +160,6 @@ export function StationDetails() {
           <div className="station-details__content">
             <section className="station-details__options dynamic-max-width">
               <StationOptions
-                likedStation={isLikedStation}
                 station={station}
                 isOwner={isOwner}
                 onRemoveStation={onRemoveStation}
@@ -179,20 +177,20 @@ export function StationDetails() {
             )}
 
             <section className="station-details__song-list dynamic-max-width">
-              
-              {!isLikedStation ? (
+
+              {isLikedStation ?
+                <SongList
+                  songs={likedSongs || []}
+                  isSortable
+                  onReorder={handleReorderSongs}
+                />
+                :
                 <SongList
                   songs={station?.songs || []}
                   isSortable
                   onReorder={handleReorderSongs}
                 />
-              ) : (
-                <SongList
-                  songs={likedSongs}
-                  isSortable
-                  onReorder={handleReorderSongs}
-                />
-              )}
+              }
 
               {station.songs?.length > 0 && !isSearchVisible && (
                 <button

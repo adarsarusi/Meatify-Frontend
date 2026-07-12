@@ -7,7 +7,7 @@ import { shuffle } from "../../services/util.service.js"
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
 
-export function StationOptions({ likedStation, station, isOwner, onEditStation, onRemoveStation }) {
+export function StationOptions({ station, isOwner, onEditStation, onRemoveStation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isShuffle, setIsShuffle] = useState(false)
     const [originalQueue, setOriginalQueue] = useState([])
@@ -17,7 +17,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
 
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
-    const isLikedStation = station?._id === 'likedSongs'
+    const isLikedStation = station?.tags?.includes("Liked")
 
     useEffect(() => {
         function closeMenu() {
@@ -104,7 +104,7 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
                                     Edit details
                                 </button>
 
-                                {!likedStation && <button className="station-options__menu__item"
+                                {!isLikedStation && <button className="station-options__menu__item"
                                     onClick={() => {
                                         setIsMenuOpen(false)
                                         onRemoveStation()
