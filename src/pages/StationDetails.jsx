@@ -20,6 +20,7 @@ import { loadSongs } from "../store/actions/song.actions"
 
 import { StationOptions } from "../cmps/globalCmps/StationOptions"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
+import { StationSearchMore } from "../cmps/StationSearchMore"
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -36,15 +37,7 @@ export function StationDetails() {
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
-  const [isSearchVisible, setIsSearchVisible] = useState(false)
-
-  const [searchedSong, setSearchedSong] = useState("")
-  const debouncedSearch = useRef(
-    debounce((txt) => {
-      loadSongs({ txt })
-    }),
-  ).current
-
+  
   const isLikedStation = station?.tags?.includes("Liked")
 
   const likedSongs = songs.filter((song) =>
@@ -56,25 +49,7 @@ export function StationDetails() {
     loadStation(id)
   }, [id])
 
-  useEffect(() => {
-    if (!station) return
-
-    if (station.songs?.length === 0) {
-      setIsSearchVisible(true)
-    } else {
-      setIsSearchVisible(false)
-    }
-  }, [station])
-
-  useEffect(() => {
-    debouncedSearch(searchedSong)
-  }, [searchedSong])
-
-  function handleSearchChange({ target }) {
-    const { value } = target
-    setSearchedSong(value)
-  }
-
+  
   async function onSaveStation(updatedStation) {
     try {
       await updateStation(updatedStation)
@@ -179,7 +154,7 @@ export function StationDetails() {
             )}
 
             <section className="station-details__song-list dynamic-max-width">
-              
+
               {!isLikedStation ? (
                 <SongList
                   songs={station?.songs || []}
@@ -194,51 +169,12 @@ export function StationDetails() {
                 />
               )}
 
-              {station.songs?.length > 0 && !isSearchVisible && (
-                <button
-                  className="station-details__find-more-btn"
-                  onClick={() => setIsSearchVisible(true)}
-                >
-                  <span>Find more</span>
-                </button>
-              )}
-
-              {(station.songs?.length === 0 || isSearchVisible) && (
-                <div className="station-details__search-container">
-                  <div>
-                    <h2>Let's find something for your station</h2>
-                    <div className="station-details__search-bar">
-                      <span>
-                        <IconComp name="search" />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Search for songs..."
-                        value={searchedSong}
-                        onChange={handleSearchChange}
-                      />
-                    </div>
-                  </div>
-                  {station.songs?.length > 0 && (
-                    <button onClick={() => setIsSearchVisible(false)}>
-                      <span>
-                        <IconComp name="close" />
-                      </span>
-                    </button>
-                  )}
-                </div>
-              )}
-              {isSearchVisible && searchedSong && (
-                <div className="station-details__search-results">
-                  <SongList songs={songs} isSearchResult={true} />
-                </div>
-              )}
+              <StationSearchMore station={station} songs={songs} />
             </section>
           </div>
         </section>
       </ScrollArea>
     </section>
   )
-
 }
 

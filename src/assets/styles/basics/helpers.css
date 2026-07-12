@@ -102,6 +102,25 @@
         }
     }
 
+     &.outline-button {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 0.5rem;
+
+        font-size: var(--font-sm);
+        font-weight: 600;
+        border: 1px solid var(--essential-subdued);
+
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+
+        transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+
+        &:hover {
+             border: 1px solid var(--essential-base);
+        }
+    }
+
     &:hover {
         .icon {
             color: var(--icon--white);

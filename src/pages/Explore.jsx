@@ -19,7 +19,6 @@ export function Explore() {
   )
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
   const likedStation = stations.filter(station => station.tags.includes('Liked'))
-  console.log('likedStation: ', likedStation)
 
   const likedSongs = songs.filter((song) =>
     loggedinUser?.likedSongIds?.includes(song._id),

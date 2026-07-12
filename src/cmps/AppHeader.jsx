@@ -64,7 +64,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <IconComp name="spotify-logo" className="icon--white icon--lg" />
+        <img src="src\assets\logo\meatify-logo.svg"/>
         </NavLink>
 
         <div className="search-bar-container">

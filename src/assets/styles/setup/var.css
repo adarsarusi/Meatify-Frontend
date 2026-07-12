@@ -27,8 +27,10 @@
 
   --essential-base: #fff;
   --essential-positive: #e93535;
+  --essential-subdued: #7c7c7c;;
 
   --decorative-base: #fff;
+  --decorative-subdued: #292929;
 
   /* Animation */
   --button-hover-scale: 1.1;

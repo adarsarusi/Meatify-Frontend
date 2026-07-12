@@ -15,10 +15,18 @@ import {
   toggleIsPlaying,
 } from "../../store/actions/player.actions"
 import { SongContextMenu } from "./SongContextMenu"
+import { addSongToStation } from "../../store/actions/station.actions"
 
-export function SongPreview({ song, index }) {
+export function SongPreview({ song, index, isSearchResult = false }) {
   const navigate = useNavigate()
 
+  const currentStation = useSelector(
+    (storeState) => storeState.stationModule.selectedStation,
+  )
+
+  const loggedinUser = useSelector(
+    storeState => storeState.userModule.user
+  )
   const currentSong = useSelector(
     (storeState) => storeState.playerModule.currentSong,
   )
@@ -50,6 +58,7 @@ export function SongPreview({ song, index }) {
     return `${m}:${s.toString().padStart(2, "0")}`
   }
 
+
   return (
     <section
       aria-label={song.title}
@@ -59,27 +68,29 @@ export function SongPreview({ song, index }) {
       {...attributes}
       {...listeners}
     >
-      <div className="song-preview__play">
+      <div className="song-preview__index-wrap">
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
-          <p className="song-preview__index">{index}</p>}
-        <button
-          className="song-preview__btn song-preview__btn--play"
-          onPointerDown={(ev) => ev.stopPropagation()}
-          onClick={(ev) => {
-            ev.stopPropagation()
-            if (isCurrentSong) {
-              toggleIsPlaying()
-            } else {
-              setCurrentSong(song)
-            }
-          }}
-        >
-          {isCurrentSong && isPlaying ? (
-            <IconComp name="pause" className="icon--white icon-no-padding" />
-          ) : (
-            <IconComp name="play" className="icon--white icon-no-padding" />
-          )}
-        </button>
+          <span className="song-preview__index">{index}</span>}
+        <div className="song-preview__play">
+          <button
+            className="song-preview__btn song-preview__btn--play"
+            onPointerDown={(ev) => ev.stopPropagation()}
+            onClick={(ev) => {
+              ev.stopPropagation()
+              if (isCurrentSong) {
+                toggleIsPlaying()
+              } else {
+                setCurrentSong(song)
+              }
+            }}
+          >
+            {isCurrentSong && isPlaying ? (
+              <IconComp name="pause" className="icon--white icon-no-padding" />
+            ) : (
+              <IconComp name="play" className="icon--white icon-no-padding" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="song-preview__meta">
@@ -98,9 +109,9 @@ export function SongPreview({ song, index }) {
 
       <div className="song-preview__album ellipsis-text">{song.album}</div>
 
-      <div className="song-preview__date ellipsis-text">28/06/26</div>
+      {!isSearchResult && <div className="song-preview__date ellipsis-text">28/06/26</div>}
 
-      <div className="song-preview__actions">
+      {!isSearchResult && <div className="song-preview__actions">
         <div
           className="song-preview__btn song-preview__btn--like"
           onPointerDown={(ev) => ev.stopPropagation()}
@@ -113,7 +124,17 @@ export function SongPreview({ song, index }) {
         </div>
 
         <SongContextMenu song={song} />
-      </div>
+      </div>}
+
+      {isSearchResult && <button className="btn outline-button"
+        onPointerDown={(ev) => ev.stopPropagation()}
+        onClick={(ev) => {
+          ev.stopPropagation()
+          addSongToStation(currentStation._id, song._id
+          )
+        }}>
+        Add
+      </button>}
     </section>
   )
 }
