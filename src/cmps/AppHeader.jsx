@@ -69,7 +69,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <img src="src\assets\logo\meatify-logo.svg" />
+          <img src="/logo/meatify-logo.svg" alt="Meatify logo" />
         </NavLink>
 
         <div className="search-bar-container">
