@@ -2,14 +2,18 @@
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../../store/actions/player.actions"
+import { shuffle } from "../../services/util.service.js"
 
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
 
 export function StationOptions({ likedStation, station, isOwner, onEditStation, onRemoveStation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isShuffle, setIsShuffle] = useState(false)
+    const [originalQueue, setOriginalQueue] = useState([])
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
+    const queue = useSelector((storeState) => storeState.playerModule.queue)
 
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
@@ -27,6 +31,18 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
         }
     }, [])
 
+    function handleShuffle(queue) {
+        if (!isShuffle) {
+            setOriginalQueue(queue)
+            const shuffledQueue = shuffle(queue)
+            setQueue(shuffledQueue)
+            setIsShuffle(true)
+        } else {
+            setQueue(originalQueue)
+            setIsShuffle(false)
+        }
+    }
+    console.log('queue: ', queue)
     return (
         <section className="station-options">
             <div className="station-options__btn-container">
@@ -47,8 +63,15 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
                     }
                 </button>}
 
-                <button className="btn">
-                    <IconComp name="shuffle" className="icon--muted  icon--lg" />
+                <button
+                    className={`btn ${isShuffle ? 'no-hover' : ''} `}
+                    onClick={() => handleShuffle(queue)}
+                    title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
+                >
+                    <IconComp
+                        name="shuffle"
+                        className={isShuffle ? "icon--active icon--lg" : "icon--muted icon--lg"}
+                    />
                 </button>
 
                 {!isLikedStation && <div className="btn">
