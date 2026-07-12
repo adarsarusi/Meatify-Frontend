@@ -3,12 +3,11 @@ import { IconComp } from "./IconComp"
 
 
 export function StationHeader({
-    likedStation,
     station,
     isOwner,
     user, }) {
 
-    const isLikedStation = station._id === 'likedSongs'
+    const isLikedStation = station.tags?.includes("Liked")
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -43,7 +42,7 @@ export function StationHeader({
                                 />
                             </div>
 
-                            {!likedStation && station.participants?.map((participant, i) => (
+                            {!isLikedStation && station.participants?.map((participant, i) => (
                                 <div
                                     className="avatar-wrapper"
                                     key={i}
@@ -64,7 +63,7 @@ export function StationHeader({
                         )}
                     </div>
 
-                    {!likedStation && <p> • {station.savedCount ?? 0} saves • </p>}
+                    {!isLikedStation && <p> • {station.savedCount ?? 0} saves • </p>}
                     <p> {station.songs?.length ?? 0} songs,</p>
                     <p>about {formatDuration(station.songs)}</p>
                 </div>
