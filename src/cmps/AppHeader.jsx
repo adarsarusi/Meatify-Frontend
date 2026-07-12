@@ -7,47 +7,52 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { logout } from "../store/actions/user.actions.js"
 import { debounce } from "../services/util.service.js"
 
+import { stationService } from "../services/station"
 import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
 
-import { SET_FILTER_BY } from "../store/reducers/station.reducer.js"
-import { loadStations } from "../store/actions/station.actions.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
-  const filterBy = useSelector((state) => state.stationModule.filterBy)
-  const stations = useSelector((state) => state.stationModule.stations)
+
+  const [searchTxt, setSearchTxt] = useState('')
+  const [searchResults, setSearchResults] = useState([])
 
   const navigate = useNavigate()
   const location = useLocation()
-  const dispatch = useDispatch()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
 
   const isHome = location.pathname === `/`
 
-  const debouncedApplyFilter = useRef(
-    debounce((updatedFilter) => {
-      dispatch({ type: SET_FILTER_BY, filterBy: updatedFilter })
-    }, 500),
+  useEffect(() => {
+    async function loadAllStations() {
+      const stations = await stationService.query()
+      setSearchResults(stations)
+    }
+
+    loadAllStations()
+  }, [])
+
+  const debouncedSearch = useRef(
+    debounce(async (txt) => {
+      try {
+        const stations = txt.trim()
+          ? await stationService.query({ txt })
+          : await stationService.query()
+
+        setSearchResults(stations)
+      } catch (err) {
+        console.error('Cannot search stations', err)
+      }
+    }, 300)
   ).current
 
-  useEffect(() => {
-    debouncedApplyFilter(filterByToEdit)
-  }, [filterByToEdit])
-
-  useEffect(() => {
-    loadStations(filterBy)
-  }, [filterBy])
-
   function handleChange({ target }) {
-    const { name, value } = target
+    const value = target.value
 
-    setFilterByToEdit((prevFilter) => ({
-      ...prevFilter,
-      [name]: value,
-    }))
+    setSearchTxt(value)      // immediate UI update
+    debouncedSearch(value)   // backend search
   }
 
   async function onLogout() {
@@ -64,7 +69,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-        <img src="src\assets\logo\meatify-logo.svg"/>
+          <img src="src\assets\logo\meatify-logo.svg" />
         </NavLink>
 
         <div className="search-bar-container">
@@ -72,8 +77,8 @@ export function AppHeader() {
             <button
               className="btn"
               onClick={() => navigate("/")}>
-              {isHome 
-              ? <IconComp name="home" className="icon--white" /> :
+              {isHome
+                ? <IconComp name="home" className="icon--white" /> :
                 <IconComp name="home-hollow" className="icon--white" />}
 
             </button>
@@ -89,7 +94,7 @@ export function AppHeader() {
               name="txt"
               id=""
               placeholder="What do you want to play?"
-              value={filterByToEdit.txt}
+              value={searchTxt}
               onChange={handleChange}
               onFocus={() => setIsOpen(true)}
               onBlur={() => setIsOpen(false)}
@@ -103,7 +108,7 @@ export function AppHeader() {
                 <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
-            {isOpen && <SerachResultsDropdown stations={stations} />}
+            {isOpen && <SerachResultsDropdown stations={searchResults} />}
           </div>
         </div>
         <div className="app-header__user-actions">
