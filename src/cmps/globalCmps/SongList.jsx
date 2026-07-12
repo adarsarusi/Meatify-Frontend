@@ -1,5 +1,5 @@
 import React from "react"
-import SongPreview from "./SongPreview"
+import { SongPreview } from "./SongPreview"
 import { SongListTable } from "./SongListTable"
 
 import { DndContext } from '@dnd-kit/core'
@@ -42,5 +42,3 @@ export function SongList({ songs = [], isOwner, isSortable = false, onReorder = 
     </DndContext>
   )
 }
-
-export default SongList

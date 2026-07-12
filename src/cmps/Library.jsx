@@ -107,7 +107,7 @@ export function Library() {
       <ScrollArea>
         <div className={isExpanded || isSquare ? 'library-content library-content--expanded' : 'library-content'}>
           {isSquare ? (
-            <SquareList entities={likedStations} isOwner={true} isLibrary={true} />
+            <SquareList stations={likedStations} isOwner={true} isLibrary={true} />
           ) : (
             <StationList stations={likedStations} />
           )}

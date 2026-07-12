@@ -12,7 +12,7 @@ import { TAGS_DATA } from '../services/station'
 
 import { EditModal } from "../cmps/globalCmps/EditModal"
 import { StationHeader } from "../cmps/globalCmps/StationHeader"
-import SongList from "../cmps/globalCmps/SongList"
+import { SongList } from "../cmps/globalCmps/SongList"
 import { IconComp } from "../cmps/globalCmps/IconComp"
 
 import { debounce } from "../services/util.service"
@@ -21,6 +21,7 @@ import { loadSongs } from "../store/actions/song.actions"
 import { StationOptions } from "../cmps/globalCmps/StationOptions"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 import { StationSearchMore } from "../cmps/StationSearchMore"
+import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -30,26 +31,33 @@ export function StationDetails() {
   const station = useSelector(
     (storeState) => storeState.stationModule.selectedStation,
   )
+
   const isLoading = useSelector(
-    (storeState) => storeState.stationModule.isLoading,
+    (storeState) => storeState.systemModule.isLoading,
   )
+
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
-  
+
   const isLikedStation = station?.tags?.includes("Liked")
 
   const likedSongs = songs.filter(song =>
     user.likedSongIds.includes(song._id.toString())
   )
 
+  const stationSongs = songs.filter(song =>
+    station?.songs.includes(song._id.toString())
+  )
+
+
   useEffect(() => {
     if (!id) return
     loadStation(id)
   }, [id])
 
-  
+
   async function onSaveStation(updatedStation) {
     try {
       await updateStation(updatedStation)
@@ -91,6 +99,7 @@ export function StationDetails() {
       <section className="station-details">
         <div className="station-container">
           <div className="station-header">
+            <LoadingAnimation />
             <p>Loading station...</p>
           </div>
         </div>
@@ -102,6 +111,7 @@ export function StationDetails() {
         <ScrollArea>
           <div className="station-container">
             <div className="station-header">
+              <LoadingAnimation />
               <p>Station not found</p>
             </div>
           </div>
@@ -126,6 +136,7 @@ export function StationDetails() {
           <section className="station-details__header">
             <StationHeader
               user={user}
+              stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}
               onRemoveStation={onRemoveStation}
@@ -135,6 +146,7 @@ export function StationDetails() {
           <div className="station-details__content">
             <section className="station-details__options dynamic-max-width">
               <StationOptions
+                stationSongs={stationSongs}
                 station={station}
                 isOwner={isOwner}
                 onRemoveStation={onRemoveStation}
@@ -161,7 +173,7 @@ export function StationDetails() {
                 />
                 :
                 <SongList
-                  songs={station?.songs || []}
+                  songs={stationSongs || []}
                   isSortable
                   onReorder={handleReorderSongs}
                 />

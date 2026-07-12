@@ -1,5 +1,5 @@
 import { IconComp } from "./globalCmps/IconComp"
-import SongList from "./globalCmps/SongList"
+import { SongList } from "./globalCmps/SongList"
 import { debounce } from "../services/util.service"
 import { useEffect, useRef, useState } from "react"
 import { loadSongs } from "../store/actions/song.actions"
@@ -11,12 +11,20 @@ export function StationSearchMore({ station, songs }) {
     const [searchedSong, setSearchedSong] = useState("")
 
 
+    const isLoading = useSelector(
+        (storeState) => storeState.systemModule.isLoading,
+    )
+
     const currentStation = useSelector(
         (storeState) => storeState.stationModule.selectedStation,
     )
 
     const loggedinUser = useSelector(
         storeState => storeState.userModule.user
+    )
+
+    const stationSongs = songs.filter(song =>
+        station?.songs.includes(song._id.toString())
     )
 
     const isOwner = currentStation.createdBy.fullname === loggedinUser.fullname
@@ -40,7 +48,7 @@ export function StationSearchMore({ station, songs }) {
     useEffect(() => {
         if (!station) return
 
-        if (station.songs?.length === 0) {
+        if (stationSongs?.length === 0) {
             setIsSearchVisible(true)
         } else {
             setIsSearchVisible(false)
@@ -49,10 +57,10 @@ export function StationSearchMore({ station, songs }) {
 
 
 
-    if (!isOwner) return
+    if (!isOwner && isLoading) return
 
     return (<section className="station-details__search">
-        {station.songs?.length > 0 && !isSearchVisible && (
+        {stationSongs?.length > 0 && !isSearchVisible && (
             <button
                 className="station-details__find-more-btn"
                 onClick={() => setIsSearchVisible(true)}
@@ -61,7 +69,7 @@ export function StationSearchMore({ station, songs }) {
             </button>
         )}
         {
-            (station.songs?.length === 0 || isSearchVisible) && (
+            (stationSongs?.length === 0 || isSearchVisible) && (
                 <div className="station-details__search-container">
                     <div>
                         <h2>Let's find something for your station</h2>
@@ -77,7 +85,7 @@ export function StationSearchMore({ station, songs }) {
                             />
                         </div>
                     </div>
-                    {station.songs?.length > 0 && (
+                    {stationSongs?.length > 0 && (
                         <button onClick={() => setIsSearchVisible(false)}>
                             <span>
                                 <IconComp name="close" />
@@ -90,7 +98,7 @@ export function StationSearchMore({ station, songs }) {
         {
             isSearchVisible && searchedSong && (
                 <div className="station-details__search-results">
-                    <SongList songs={songs} isSearchResult={true} />
+                    <SongList songs={stationSongs} isSearchResult={true} />
                 </div>
             )
         }

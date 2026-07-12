@@ -5,10 +5,10 @@ import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "..
 import { useLocation, useNavigate } from "react-router-dom"
 import { formatArtists } from "../../services/util.service"
 import { useSelector } from "react-redux"
+import { useEffect } from "react"
 
-export function SquarePreview({ entity, hover = true, isLibrary = false }) {
+export function SquarePreview({ station, stationSongs, hover = true, isLibrary = false }) {
 
-  const type = entity.type
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -17,22 +17,20 @@ export function SquarePreview({ entity, hover = true, isLibrary = false }) {
   const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
   const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
 
-  const isCurrStationPlaying = currPlayingStation?._id === entity?._id
-  const isLikedStation = !entity.tags?.includes("Liked")
+  const isCurrStationPlaying = currPlayingStation?._id === station?._id
+  const isLikedStation = !station.tags?.includes("Liked")
 
-  const isSelectedStation = location.pathname === `/${type}/${entity._id}`
+  const isSelectedStation = location.pathname === `/station/${station._id}`
 
   const loggedinUser = useSelector(
     storeState => storeState.userModule.user
   )
 
+
   const songCount = loggedinUser.likedSongIds.length
 
   // Flats Artist names form songs to usable string
-  const rawArtists =
-    type === "station"
-      ? [...new Set(entity.songs.flatMap((song) => formatArtists(song)))]
-      : entity.artists || []
+  const rawArtists = [...new Set(stationSongs.flatMap((song) => formatArtists(song)))]
 
   const displayArtists =
     rawArtists.length > 3
@@ -44,12 +42,12 @@ export function SquarePreview({ entity, hover = true, isLibrary = false }) {
       ${isSelectedStation && isLibrary ? 'entity-square-preview__item--active' : ''}
       ${isCurrStationPlaying && isPlaying ? 'entity-square-preview__item--playing' : ''}
       `}
-      onClick={() => type === "station" && navigate(`/${type}/${entity._id}`)
+      onClick={() => navigate(`/station/${station._id}`)
       }
     >
       <div className="entity-square-preview__meta">
         <div className="entity-square-preview__img">
-          <StationCover entity={entity} />
+          <StationCover entity={station} />
           <button
             className="btn play-btn green-btn entity-square-preview__btn"
             onClick={(e) => {
@@ -57,9 +55,9 @@ export function SquarePreview({ entity, hover = true, isLibrary = false }) {
               if (isCurrStationPlaying) {
                 toggleIsPlaying()
               } else {
-                setQueue(entity.songs)
-                setCurrentSong(entity.songs[0])
-                setPlayingStation(entity)
+                setQueue(stationSongs)
+                setCurrentSong(stationSongs[0])
+                setPlayingStation(station)
               }
             }}
           >
@@ -71,8 +69,8 @@ export function SquarePreview({ entity, hover = true, isLibrary = false }) {
           </button>
         </div>
         <div className="entity-square-preview__meta-text ">
-          <div className="entity-square-preview__title ellipsis-text ">
-            {entity.title || entity.name}
+          <div className={`entity-square-preview__title ${(isCurrStationPlaying && isPlaying) ? "playing-song" : ""} ellipsis-text `}>
+            {station.title || station.name}
           </div>
           {isLikedStation && <div className="entity-square-preview__artists ellipsis-text ">{displayArtists}</div>}
           {!isLikedStation && <p className='station-preview__song-length ellipsis-text'>{songCount} songs</p>}

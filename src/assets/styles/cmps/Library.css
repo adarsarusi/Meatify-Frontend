@@ -46,16 +46,6 @@
 
 }
 
-.library-content--expanded {
-    .square-list {
-
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-
-    }
-
-}
-
 .library-controls {
     gap: 0.5rem;
 }
