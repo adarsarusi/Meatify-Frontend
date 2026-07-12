@@ -3,36 +3,28 @@ import { useState, useRef, useEffect } from "react"
 
 import { IconComp } from './globalCmps/IconComp'
 
-import { utilService } from "../services/util.service"
+import { debounce } from "../services/util.service"
+
 import { useDispatch, useSelector } from "react-redux"
 
 import { TOGGLE_SQUARE_LIBRARY } from '../store/reducers/system.reducer'
 import { store } from '../store/store.js'
 
-export function StationFilter() {
+export function StationFilter({ filterBy, setFilterBy }) {
 
-    const filterBy = useSelector(state => state.stationModule.filterBy)
     const dispatch = useDispatch()
+    const [searchTxt, setSearchTxt] = useState(filterBy.txt || '')
 
-    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
-
-    const debouncedApplyFilter = useRef(
-        utilService.debounce(updatedFilter => {
-            dispatch({ type: SET_FILTER_BY, filterBy: updatedFilter })
-        }, 500)
+    const debouncedSearch = useRef(
+        debounce((txt) => {
+            setFilterBy({ txt })
+        }, 300)
     ).current
 
-    useEffect(() => {
-        debouncedApplyFilter(filterByToEdit)
-    }, [filterByToEdit])
-
     function handleChange({ target }) {
-        const { name, value } = target
-
-        setFilterByToEdit(prevFilter => ({
-            ...prevFilter,
-            [name]: value
-        }))
+        const value = target.value
+        setSearchTxt(value)      // updates the input instantly
+        debouncedSearch(value)   // delays the search
     }
 
     const isSquare = useSelector(
@@ -61,7 +53,7 @@ export function StationFilter() {
                     className='library-search__input'
                     type="text"
                     name="txt"
-                    value={filterByToEdit.txt}
+                    value={searchTxt}
                     onChange={handleChange}
                     placeholder="Search in Playlists"
                 />

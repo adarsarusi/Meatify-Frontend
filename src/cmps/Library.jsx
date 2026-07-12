@@ -21,10 +21,9 @@ export function Library() {
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations,
   )
-  
-  const filterBy = useSelector(
-    (storeState) => storeState.stationModule.filterBy,
-  )
+
+  const [filterBy, setFilterBy] = useState({txt: ''})
+
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
 
@@ -37,11 +36,11 @@ export function Library() {
   const likedSongs = songs.filter((song) =>
     loggedinUser?.likedSongIds?.includes(song._id),
   )
-  
+
   const likedStations = stations.filter((station) =>
     loggedinUser?.likedStationIds?.includes(station._id),
   )
-  
+
 
   useEffect(() => { }, [likedSongs])
 
@@ -100,7 +99,9 @@ export function Library() {
       </div>
 
       <div className="filter">
-        <StationFilter />
+        <StationFilter 
+        filterBy={filterBy}
+        setFilterBy={setFilterBy}/>
       </div>
 
       <ScrollArea>
