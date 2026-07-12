@@ -15,6 +15,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
 
+  const searchRef = useRef(null)
   const [searchTxt, setSearchTxt] = useState('')
   const [searchResults, setSearchResults] = useState([])
 
@@ -55,6 +56,19 @@ export function AppHeader() {
     debouncedSearch(value)   // backend search
   }
 
+  useEffect(() => {
+    function handleClickOutside(ev) {
+      if (searchRef.current && !searchRef.current.contains(ev.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
   async function onLogout() {
     try {
       await logout()
@@ -83,7 +97,7 @@ export function AppHeader() {
 
             </button>
           </div>
-          <div className="search-bar">
+          <div className="search-bar" ref={searchRef}>
             <button className="btn">
               <IconComp name="search" className="icon--muted" />
             </button>
@@ -97,7 +111,6 @@ export function AppHeader() {
               value={searchTxt}
               onChange={handleChange}
               onFocus={() => setIsOpen(true)}
-              onBlur={() => setIsOpen(false)}
             />
 
             <div className="search-browse-container">
