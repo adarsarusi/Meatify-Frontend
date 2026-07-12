@@ -117,7 +117,7 @@ export function PlayBar() {
           >
             <IconComp
               name="shuffle"
-              className={isShuffle ? "icon--green" : "icon--muted"}
+              className={isShuffle ? "icon--active" : "icon--muted"}
             />
           </button>
 
@@ -148,7 +148,7 @@ export function PlayBar() {
           >
             <IconComp
               name="repeat"
-              className={isRepeat ? "icon--green" : "icon--muted"}
+              className={isRepeat ? "icon--active" : "icon--muted"}
             />
           </button>
         </div>

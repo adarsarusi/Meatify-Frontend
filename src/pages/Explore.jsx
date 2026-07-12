@@ -80,7 +80,7 @@ export function Explore() {
             <div className="explore-sub-header">
               <p className="explore-sub-header__sub-title">Made For</p>
               <h1 className="explore-sub-header__title">
-                {loggedinUser.fullname}
+                {loggedinUser?.fullname}
               </h1>
             </div>
 
