@@ -23,15 +23,7 @@ export function QueueCmp() {
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
   const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
 
-  const currSongRef = useRef(null)
-
-  useEffect(() => {
-    currSongRef.current = currentSong?._id
-    if (queue.length === 1) return
-    store.dispatch({ type: REMOVE_FROM_QUEUE, songId: currSongRef.current })
-  }, [currentSong])
-
-
+  const nextSongs = queue.filter(song => song._id !== currentSong?._id)
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -71,13 +63,13 @@ export function QueueCmp() {
           </button>
         </div>
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <SortableContext items={queue.map(song => song._id)} strategy={verticalListSortingStrategy}>
+          <SortableContext items={nextSongs.map(song => song._id)} strategy={verticalListSortingStrategy}>
             <div className="queue-cmp__list-container">
               <ScrollArea>
                 <ul className="queue-cmp__list">
                   <div className="queue-cmp__now-playing">
                     <p>Now Playing</p>
-                    <QueuePreview key={currentSong?._id} song={currentSong} />
+                    <QueuePreview key={song._id} song={song} />
                   </div>
                   <p>Next from: {currPlayingStation?.name} </p>
                   {queue
