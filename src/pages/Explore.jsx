@@ -18,9 +18,8 @@ export function Explore() {
     (storeState) => storeState.stationModule.isLoading,
   )
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
-  const likedStation = useSelector(
-    (storeState) => storeState.stationModule.userLikedStation,
-  )
+  const likedStation = stations.filter(station => station.tags.includes('Liked'))
+  console.log('likedStation: ', likedStation)
 
   const likedSongs = songs.filter((song) =>
     loggedinUser?.likedSongIds?.includes(song._id),
@@ -85,7 +84,7 @@ export function Explore() {
             </div>
 
             <ul className="explore__stations-list">
-              <SquareList entities={likedStation ? [likedStation] : []} />
+              <SquareList entities={likedStation} />
             </ul>
           </div>
 

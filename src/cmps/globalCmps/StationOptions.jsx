@@ -42,7 +42,6 @@ export function StationOptions({ likedStation, station, isOwner, onEditStation, 
             setIsShuffle(false)
         }
     }
-    console.log('queue: ', queue)
     return (
         <section className="station-options">
             <div className="station-options__btn-container">

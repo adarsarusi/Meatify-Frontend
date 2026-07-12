@@ -8,7 +8,7 @@ export const stationService = {
     remove,
     addSongToStation,
     removeSongFromStation,
-    getLikedStation,
+    // getLikedStation,
     getTagsData,
 }
 
@@ -36,9 +36,9 @@ async function removeSongFromStation(stationId, songId) {
     return httpService.delete(`station/${stationId}/song/${songId}`)
 }
 
-async function getLikedStation(userId) {
-    return httpService.get(`user/${userId}/liked-songs`)
-}
+// async function getLikedStation(userId) {
+//     return httpService.get(`station/6a4ff07d47db264eea7790b8`)
+// }
 
 async function getTagsData() {
     return httpService.get('station/tags')

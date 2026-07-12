@@ -33,11 +33,6 @@ export function Library() {
   const isExpanded = useSelector(
     (storeState) => storeState.systemModule.isExpanded,
   )
-  const likedStation = useSelector(
-    (storeState) => storeState.stationModule.userLikedStation,
-  )
-
-  
 
   const likedSongs = songs.filter((song) =>
     loggedinUser?.likedSongIds?.includes(song._id),
@@ -47,8 +42,6 @@ export function Library() {
     loggedinUser?.likedStationIds?.includes(station._id),
   )
   
-
-  likedStation.songs = likedSongs
 
   useEffect(() => { }, [likedSongs])
 
