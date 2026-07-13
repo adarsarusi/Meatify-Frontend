@@ -1,5 +1,5 @@
 import React from "react"
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux"
 
 import { BrowserRouter as Router } from "react-router-dom"
 import { Routes, Route } from "react-router-dom"
@@ -16,9 +16,27 @@ import { SongDetails } from "./pages/SongDetails.jsx"
 import { TagDetails } from "./pages/TagDetails.jsx"
 import { PlayBar } from "./cmps/PlayBar.jsx"
 
-function App() {
+import { useEffect } from "react"
+import {socketService, SOCKET_EVENT_STATION_REMOVED,} from "./services/socket.service"
+import { removeStationFromStore } from "./store/actions/station.actions.js"
 
-  const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
+function App() {
+  const isExpanded = useSelector(
+    (storeState) => storeState.systemModule.isExpanded,
+  )
+
+  useEffect(() => {
+    const onStationRemoved = (stationId) => {
+      console.log("Received station-removed:", stationId)
+      removeStationFromStore(stationId)
+    }
+
+    socketService.on(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
+
+    return () => {
+      socketService.off(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
+    }
+  }, [])
 
   return (
     <Router>
@@ -26,7 +44,7 @@ function App() {
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main className={isExpanded ? 'app-layout expanded' : 'app-layout'}>
+        <main className={isExpanded ? "app-layout expanded" : "app-layout"}>
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
