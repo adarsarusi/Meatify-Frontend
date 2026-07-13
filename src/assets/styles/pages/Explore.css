@@ -1,9 +1,17 @@
 .explore__stations-grid {
     padding: 1rem;
+    padding-block-start: 3rem;
     display: grid;
     gap: 1rem;
     /* margin-bottom: 1rem; */
 
+}
+
+.explore--container {
+    background:
+        linear-gradient(to bottom,
+            color-mix(in srgb, var(--background-tinted-highlight) 25%, transparent),
+            transparent 250px);
 }
 
 

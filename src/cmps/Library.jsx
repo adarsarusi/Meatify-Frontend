@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -21,10 +21,9 @@ export function Library() {
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations,
   )
-  
-  const filterBy = useSelector(
-    (storeState) => storeState.stationModule.filterBy,
-  )
+
+  const [filterBy, setFilterBy] = useState({txt: ''})
+
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
 
@@ -33,24 +32,16 @@ export function Library() {
   const isExpanded = useSelector(
     (storeState) => storeState.systemModule.isExpanded,
   )
-  const likedStation = useSelector(
-    (storeState) => storeState.stationModule.userLikedStation,
+
+  const likedSongs = useMemo(() =>
+    songs.filter((song) => loggedinUser?.likedSongIds?.includes(song._id)),
+    [songs, loggedinUser?.likedSongIds],
   )
 
-  
-
-  const likedSongs = songs.filter((song) =>
-    loggedinUser?.likedSongIds?.includes(song._id),
+  const likedStations = useMemo(() =>
+    stations.filter((station) => loggedinUser?.likedStationIds?.includes(station._id)),
+    [stations, loggedinUser?.likedStationIds],
   )
-  
-  const likedStations = stations.filter((station) =>
-    loggedinUser?.likedStationIds?.includes(station._id),
-  )
-  
-
-  likedStation.songs = likedSongs
-
-  useEffect(() => { }, [likedSongs])
 
   function onExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
@@ -89,7 +80,7 @@ export function Library() {
   return (
     <section className="app-library">
       <div className="library-header">
-        <h3>Your Library</h3>
+        <h3 className="library-header__title">Your Library</h3>
 
         <section className="library-controls">
           <button onClick={onCreateStation} className="btn bg-button">
@@ -107,13 +98,15 @@ export function Library() {
       </div>
 
       <div className="filter">
-        <StationFilter />
+        <StationFilter 
+        filterBy={filterBy}
+        setFilterBy={setFilterBy}/>
       </div>
 
       <ScrollArea>
         <div className={isExpanded || isSquare ? 'library-content library-content--expanded' : 'library-content'}>
           {isSquare ? (
-            <SquareList entities={likedStations} isOwner={true} />
+            <SquareList stations={likedStations} isOwner={true} isLibrary={true} />
           ) : (
             <StationList stations={likedStations} />
           )}

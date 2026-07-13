@@ -13,6 +13,10 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
         storeState => storeState.userModule.user
     )
 
+    const likedSongsStation = stations.find(
+        station => station?.tags?.includes("Liked")
+    )
+
     if (!loggedinUser) return null
 
     const likedIds = loggedinUser[userField] || []
@@ -20,7 +24,6 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
     const isLiked = likedIds.includes(itemId)
 
     async function toggleLike() {
-
         try {
             const updatedUser = {
                 ...loggedinUser,
@@ -29,8 +32,22 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
                     : [...likedIds, itemId]
             }
 
-
             await updateUser(updatedUser)
+
+            // Only for songs
+            if (userField === 'likedSongIds' && likedSongsStation) {
+                if (isLiked) {
+                    await removeSongFromStation(
+                        likedSongsStation._id,
+                        itemId
+                    )
+                } else {
+                    await addSongToStation(
+                        likedSongsStation._id,
+                        itemId
+                    )
+                }
+            }
 
         } catch (err) {
             console.error('Cannot update likes', err)
@@ -39,9 +56,10 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
 
     return (
         <button
+
             onClick={toggleLike}
             className={`btn ${isLiked ? 'no-hover' : ''} `}
-            onMouseDown={(ev) => ev.stopPropagation()}
+            onPointerDown={(ev) => ev.stopPropagation()}
         >
             <IconComp
                 name={isLiked ? 'added' : 'like'}

@@ -18,6 +18,7 @@ export function QueuePreview({ song }) {
     )
     const isCurrentSong = currentSong?._id === song?._id
 
+
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,

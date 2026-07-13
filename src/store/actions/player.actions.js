@@ -10,8 +10,9 @@ import {
   SET_PLAYING_STATION
 } from "../reducers/player.reducer.js"
 
-import { LOADING_START, LOADING_DONE } from "../reducers/system.reducer.js"
 import { stationService } from "../../services/station"
+
+
 
 export function setCurrentSong(song) {
   try {
@@ -21,7 +22,6 @@ export function setCurrentSong(song) {
     console.log("Cannot set current song.", err)
     throw err
   }
-
 }
 
 export function setQueue(songs) {
@@ -61,7 +61,6 @@ export function toggleIsPlaying() {
 }
 
 export async function setPlayingStation(currPlayingStation) {
-  store.dispatch({ type: LOADING_START })
   try {
     const station = await stationService.getById(currPlayingStation._id)
 
@@ -72,7 +71,61 @@ export async function setPlayingStation(currPlayingStation) {
     console.log("Cannot load station", err)
     throw err
   }
-  finally {
-    store.dispatch({ type: LOADING_DONE })
+
+}
+
+
+
+export function playNextSong() {
+  try {
+    const state = store.getState()
+    const { currentSong, queue } = state.playerModule
+
+    if (!currentSong?._id) return
+
+    const currIdx = queue.findIndex(song => song._id === currentSong._id)
+
+    if (currIdx === -1) {
+      if (queue.length) {
+        store.dispatch({ type: SET_CURRENT_SONG, song: queue[0] })
+        store.dispatch({ type: SET_IS_PLAYING, isPlaying: true })
+      }
+      return
+    }
+
+    const nextSong = queue[currIdx + 1]
+
+    if (!nextSong) {
+      store.dispatch({ type: SET_IS_PLAYING, isPlaying: false })
+      return
+    }
+
+    store.dispatch({ type: SET_CURRENT_SONG, song: nextSong })
+    store.dispatch({ type: SET_IS_PLAYING, isPlaying: true })
+  } catch (err) {
+    console.error("Cannot play next song.", err)
+    throw err
+  }
+}
+
+
+export function playPrevSong() {
+  try {
+    const state = store.getState()
+    const { currentSong, queue } = state.playerModule
+
+    if (!currentSong?._id) return
+
+    const currIdx = queue.findIndex(song => song._id === currentSong._id)
+
+    if (currIdx <= 0) return
+
+    const prevSong = queue[currIdx - 1]
+
+    store.dispatch({ type: SET_CURRENT_SONG, song: prevSong })
+    store.dispatch({ type: SET_IS_PLAYING, isPlaying: true })
+  } catch (err) {
+    console.error("Cannot play previous song.", err)
+    throw err
   }
 }

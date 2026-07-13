@@ -7,48 +7,68 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { logout } from "../store/actions/user.actions.js"
 import { debounce } from "../services/util.service.js"
 
-import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
+import { stationService } from "../services/station"
+import { SearchResultsDropdown } from "./SearchResultsDropdown.jsx"
 
-import { SET_FILTER_BY } from "../store/reducers/station.reducer.js"
-import { loadStations } from "../store/actions/station.actions.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
-  const filterBy = useSelector((state) => state.stationModule.filterBy)
-  const stations = useSelector((state) => state.stationModule.stations)
+  const stations = useSelector((storeState) => storeState.stationModule.stations) || []
+
+  const searchRef = useRef(null)
+  const [searchTxt, setSearchTxt] = useState('')
+  const [searchResults, setSearchResults] = useState([])
 
   const navigate = useNavigate()
   const location = useLocation()
-  const dispatch = useDispatch()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
 
   const isHome = location.pathname === `/`
+  const isBrowse = location.pathname === `/browse`
 
-  const debouncedApplyFilter = useRef(
-    debounce((updatedFilter) => {
-      dispatch({ type: SET_FILTER_BY, filterBy: updatedFilter })
-    }, 500),
+  useEffect(() => {
+    if (!searchTxt.trim()) {
+      setSearchResults(stations)
+    }
+  }, [stations, searchTxt])
+
+  const debouncedSearch = useRef(
+    debounce(async (txt) => {
+      try {
+        if (!txt.trim()) {
+          setSearchResults(stations)
+          return
+        }
+
+        const searchedStations = await stationService.query({ txt })
+        setSearchResults(searchedStations)
+      } catch (err) {
+        console.error('Cannot search stations', err)
+      }
+    }, 300)
   ).current
 
-  useEffect(() => {
-    debouncedApplyFilter(filterByToEdit)
-  }, [filterByToEdit])
-
-  useEffect(() => {
-    loadStations(filterBy)
-  }, [filterBy])
-
   function handleChange({ target }) {
-    const { name, value } = target
-
-    setFilterByToEdit((prevFilter) => ({
-      ...prevFilter,
-      [name]: value,
-    }))
+    const value = target.value
+    setIsOpen(true)
+    setSearchTxt(value)      // immediate UI update
+    debouncedSearch(value)   // backend search
   }
+
+  useEffect(() => {
+    function handleClickOutside(ev) {
+      if (searchRef.current && !searchRef.current.contains(ev.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   async function onLogout() {
     try {
@@ -64,48 +84,54 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <IconComp name="spotify-logo" className="icon--white icon--lg" />
+          <img className="app-header__logo" src="/logo/meatify-logo.svg" alt="Meatify logo" />
         </NavLink>
 
         <div className="search-bar-container">
-          <div className="app-header__btn">
-            <button
-              className="btn"
-              onClick={() => navigate("/")}>
-              {isHome 
-              ? <IconComp name="home" className="icon--white" /> :
-                <IconComp name="home-hollow" className="icon--white" />}
 
-            </button>
-          </div>
-          <div className="search-bar">
+          <button
+            className="btn circle-btn"
+            onClick={() => navigate("/")}>
+            <IconComp name={`${isHome ? 'home' : 'home-hollow'}`}
+              className="icon--white icon--md" />
+          </button>
+
+          <div className="search-bar" ref={searchRef}>
             <button className="btn">
-              <IconComp name="search" className="icon--muted" />
+              <IconComp name="search" className="icon--muted icon--md" />
             </button>
+            <div className="search-bar-container__input-wrapper">
 
-            <input
-              className="search-input"
-              type="search"
-              name="txt"
-              id=""
-              placeholder="What do you want to play?"
-              value={filterByToEdit.txt}
-              onChange={handleChange}
-              onFocus={() => setIsOpen(true)}
-              onBlur={() => setIsOpen(false)}
-            />
+              <input
+                className="search-input"
+                type="search"
+                name="txt"
+                id=""
+                placeholder="What do you want to play?"
+                value={searchTxt}
+                onChange={handleChange}
+              />
+
+              {searchTxt.length > 0 && <button className="btn input-close-btn"
+                onClick={() => setSearchTxt('')}>
+                <IconComp name="close" className="icon--muted icon--md" />
+              </button>}
+            </div>
+
 
             <div className="search-browse-container">
               <button
                 className="btn"
                 onClick={() => navigate("/browse")}
               >
-                <IconComp name="browse" className="icon--muted" />
+                <IconComp name={`${isBrowse ? 'browse' : 'browse-hollow'}`}
+                  className="icon--muted icon--md" />
               </button>
             </div>
-            {isOpen && <SerachResultsDropdown stations={stations} />}
+            {isOpen && <SearchResultsDropdown stations={searchResults} />}
           </div>
         </div>
+
         <div className="app-header__user-actions">
           {!user && (
             <NavLink to="auth/login" className="login-link">
@@ -114,20 +140,23 @@ export function AppHeader() {
           )}
           {user && <>
             <button className="btn">
-              <IconComp name="friends" className="icon--sm icon--muted" />
-            </button>
-            <button className="btn">
               <IconComp name="notification" className="icon--sm icon--muted" />
             </button>
+            <button className="btn">
+              <IconComp name="friends" className="icon--sm icon--muted" />
+            </button>
 
-            <div className="user-info app-header__btn">
-              <Link to={`user/${user._id}`}>
-                {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
-              </Link>
+            <div className="user-info">
+              <button className="btn circle-btn">
+                <Link to={`user/${user._id}`}>
+                  {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
+                </Link>
+              </button>
             </div>
           </>
           }
         </div>
+
       </nav>
     </header >
   )

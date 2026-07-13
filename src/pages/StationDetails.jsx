@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ import { TAGS_DATA } from '../services/station'
 
 import { EditModal } from "../cmps/globalCmps/EditModal"
 import { StationHeader } from "../cmps/globalCmps/StationHeader"
-import SongList from "../cmps/globalCmps/SongList"
+import { SongList } from "../cmps/globalCmps/SongList"
 import { IconComp } from "../cmps/globalCmps/IconComp"
 
 import { debounce } from "../services/util.service"
@@ -20,6 +20,8 @@ import { loadSongs } from "../store/actions/song.actions"
 
 import { StationOptions } from "../cmps/globalCmps/StationOptions"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
+import { StationSearchMore } from "../cmps/StationSearchMore"
+import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -29,51 +31,35 @@ export function StationDetails() {
   const station = useSelector(
     (storeState) => storeState.stationModule.selectedStation,
   )
-  const isLoading = useSelector(
-    (storeState) => storeState.stationModule.isLoading,
+
+  const selectedStationId = useSelector(
+    (storeState) => storeState.stationModule.selectedStation?._id,
   )
+
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
-  const [isSearchVisible, setIsSearchVisible] = useState(false)
-
-  const [searchedSong, setSearchedSong] = useState("")
-  const debouncedSearch = useRef(
-    debounce((txt) => {
-      loadSongs({ txt })
-    }),
-  ).current
 
   const isLikedStation = station?.tags?.includes("Liked")
 
-  const likedSongs = songs.filter((song) =>
-    user?.likedSongIds?.includes(song._id),
-  )
+  const likedSongs = useMemo(() => {
+    if (!Array.isArray(songs) || !Array.isArray(user?.likedSongIds)) return []
+    return songs.filter(song => user.likedSongIds.includes(song._id.toString()))
+  }, [songs, user?.likedSongIds])
+
+  const stationSongs = useMemo(() => {
+    if (!station?.songs?.length || !Array.isArray(songs)) return []
+    const stationSongIds = new Set(station.songs.map(id => id.toString()))
+    return songs.filter(song => stationSongIds.has(song._id.toString()))
+  }, [songs, station?.songs])
+
 
   useEffect(() => {
-    if (!id) return
+    if (!id || selectedStationId === id) return
     loadStation(id)
-  }, [id])
+  }, [id, selectedStationId])
 
-  useEffect(() => {
-    if (!station) return
-
-    if (station.songs?.length === 0) {
-      setIsSearchVisible(true)
-    } else {
-      setIsSearchVisible(false)
-    }
-  }, [station])
-
-  useEffect(() => {
-    debouncedSearch(searchedSong)
-  }, [searchedSong])
-
-  function handleSearchChange({ target }) {
-    const { value } = target
-    setSearchedSong(value)
-  }
 
   async function onSaveStation(updatedStation) {
     try {
@@ -111,11 +97,12 @@ export function StationDetails() {
     updateStation(updatedStation)
   }
 
-  if (isLoading && !station)
+  if (!station && selectedStationId !== id)
     return (
       <section className="station-details">
         <div className="station-container">
           <div className="station-header">
+            <LoadingAnimation />
             <p>Loading station...</p>
           </div>
         </div>
@@ -127,6 +114,7 @@ export function StationDetails() {
         <ScrollArea>
           <div className="station-container">
             <div className="station-header">
+              <LoadingAnimation />
               <p>Station not found</p>
             </div>
           </div>
@@ -150,8 +138,8 @@ export function StationDetails() {
         <section className="station-details__container">
           <section className="station-details__header">
             <StationHeader
-              likedStation={isLikedStation}
               user={user}
+              stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}
               onRemoveStation={onRemoveStation}
@@ -161,7 +149,7 @@ export function StationDetails() {
           <div className="station-details__content">
             <section className="station-details__options dynamic-max-width">
               <StationOptions
-                likedStation={isLikedStation}
+                stationSongs={stationSongs}
                 station={station}
                 isOwner={isOwner}
                 onRemoveStation={onRemoveStation}
@@ -179,66 +167,27 @@ export function StationDetails() {
             )}
 
             <section className="station-details__song-list dynamic-max-width">
-              
-              {!isLikedStation ? (
+
+              {isLikedStation ?
                 <SongList
-                  songs={station?.songs || []}
+                  songs={likedSongs || []}
                   isSortable
                   onReorder={handleReorderSongs}
                 />
-              ) : (
+                :
                 <SongList
-                  songs={likedSongs}
+                  songs={stationSongs || []}
                   isSortable
                   onReorder={handleReorderSongs}
                 />
-              )}
+              }
 
-              {station.songs?.length > 0 && !isSearchVisible && (
-                <button
-                  className="station-details__find-more-btn"
-                  onClick={() => setIsSearchVisible(true)}
-                >
-                  <span>Find more</span>
-                </button>
-              )}
-
-              {(station.songs?.length === 0 || isSearchVisible) && (
-                <div className="station-details__search-container">
-                  <div>
-                    <h2>Let's find something for your station</h2>
-                    <div className="station-details__search-bar">
-                      <span>
-                        <IconComp name="search" />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Search for songs..."
-                        value={searchedSong}
-                        onChange={handleSearchChange}
-                      />
-                    </div>
-                  </div>
-                  {station.songs?.length > 0 && (
-                    <button onClick={() => setIsSearchVisible(false)}>
-                      <span>
-                        <IconComp name="close" />
-                      </span>
-                    </button>
-                  )}
-                </div>
-              )}
-              {isSearchVisible && searchedSong && (
-                <div className="station-details__search-results">
-                  <SongList songs={songs} isSearchResult={true} />
-                </div>
-              )}
+              <StationSearchMore station={station} songs={songs} />
             </section>
           </div>
         </section>
       </ScrollArea>
     </section>
   )
-
 }
 

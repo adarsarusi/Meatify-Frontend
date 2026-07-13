@@ -1,11 +1,11 @@
 import React from "react"
-import SongPreview from "./SongPreview"
+import { SongPreview } from "./SongPreview"
 import { SongListTable } from "./SongListTable"
 
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 
-export function SongList({ songs = [], isOwner, isSortable = false, onReorder = null }) {
+export function SongList({ songs = [], isOwner, isSortable = false, onReorder = null, isSearchResult = false }) {
   if (!songs || songs.length === 0)
     return <div className="song-list song-list--empty">No songs</div>
 
@@ -28,12 +28,13 @@ export function SongList({ songs = [], isOwner, isSortable = false, onReorder = 
     <DndContext onDragEnd={handleDragEnd}>
       <SortableContext items={songs.map(song => song._id)} strategy={verticalListSortingStrategy}>
         <section className="song-list">
-          {/* <SongListTable /> */}
+          {!isSearchResult && <SongListTable />}
           {songs.map((song, index = 0) => (
             <SongPreview
               key={song._id || index}
               song={song}
               index={index + 1}
+              isSearchResult={isSearchResult}
             />
           ))}
         </section>
@@ -41,5 +42,3 @@ export function SongList({ songs = [], isOwner, isSortable = false, onReorder = 
     </DndContext>
   )
 }
-
-export default SongList

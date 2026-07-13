@@ -1,14 +1,16 @@
 import { StationCover } from "./StationCover"
 import { IconComp } from "./IconComp"
-
+import { useSelector } from "react-redux"
 
 export function StationHeader({
-    likedStation,
     station,
     isOwner,
     user, }) {
 
-    const isLikedStation = station._id === 'likedSongs'
+    const songs = useSelector((storeState) => storeState.songModule.songs)
+
+
+    const isLikedStation = station.tags?.includes("Liked")
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -23,6 +25,10 @@ export function StationHeader({
 
         return parts.join(' ')
     }
+
+    const stationSongs = songs.filter(song =>
+        station?.songs.includes(song._id.toString())
+    )
 
     return (
         <section className="station-header dynamic-max-width">
@@ -43,7 +49,7 @@ export function StationHeader({
                                 />
                             </div>
 
-                            {!likedStation && station.participants?.map((participant, i) => (
+                            {!isLikedStation && station.participants?.map((participant, i) => (
                                 <div
                                     className="avatar-wrapper"
                                     key={i}
@@ -64,9 +70,9 @@ export function StationHeader({
                         )}
                     </div>
 
-                    {!likedStation && <p> • {station.savedCount ?? 0} saves • </p>}
-                    <p> {station.songs?.length ?? 0} songs,</p>
-                    <p>about {formatDuration(station.songs)}</p>
+                    {!isLikedStation && <p> • {station.savedCount ?? 0} saves • </p>}
+                    <p> {stationSongs?.length ?? 0} songs,</p>
+                    <p>about {formatDuration(stationSongs)}</p>
                 </div>
 
             </div>

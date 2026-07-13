@@ -1,6 +1,10 @@
 import { useSelector, useDispatch } from "react-redux"
-import { DndContext, useSensor, useSensors, PointerSensor } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
+import { DndContext, useSensor, useSensors, PointerSensor } from "@dnd-kit/core"
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable"
 import { setQueue } from "../store/actions/player.actions.js"
 
 import { QueuePreview } from "./QueuePreview.jsx"
@@ -8,26 +12,26 @@ import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
-import { useEffect, useRef } from "react"
-import { REMOVE_FROM_QUEUE } from "../store/reducers/player.reducer.js"
+import { useEffect, useRef, useState } from "react"
+import {
+  REMOVE_FROM_QUEUE,
+  SET_QUEUE,
+} from "../store/reducers/player.reducer.js"
 
 export function QueueCmp() {
+
   const queue = useSelector((storeState) => storeState.playerModule.queue)
-  const currentSong = useSelector((storeState) => storeState.playerModule.currentSong)
-  const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened)
+  const currentSong = useSelector((storeState) => storeState.playerModule.currentSong,)
+  const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened,)
+  const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying,)
+  const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation,)
 
-  const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
-  const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
-
-
-  const currSongRef = useRef(null)
-
-  useEffect(() => {
-    currSongRef.current = currentSong._id
-    store.dispatch({ type: REMOVE_FROM_QUEUE, songId: currSongRef.current })
-  }, [currentSong])
+  const [originalQueue, setOriginalQueue] = useState([])
 
 
+  const currIdx = queue.findIndex((song) => song._id === currentSong?._id)
+  const nextSongs = currIdx === -1 ? queue : queue.slice(currIdx + 1)
+  
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -45,20 +49,20 @@ export function QueueCmp() {
     if (!over) return
     if (active.id === over.id) return
 
-    const oldIndex = queue.findIndex(song => song._id === active.id)
-    const newIndex = queue.findIndex(song => song._id === over.id)
+    const oldIndex = nextSongs.findIndex((song) => song._id === active.id)
+    const newIndex = nextSongs.findIndex((song) => song._id === over.id)
 
-    const updatedQueue = arrayMove(queue, oldIndex, newIndex)
+    const reorderedNextSongs = arrayMove(nextSongs, oldIndex, newIndex)
+    const updatedQueue = currentSong
+      ? [currentSong, ...reorderedNextSongs]
+      : reorderedNextSongs
 
     setQueue(updatedQueue)
   }
 
-  if (isLoading) return
-
   return (
     <section className="queue-cmp">
-      <div className={`queue-cmp__container ${isQueueOpened ? 'is-open' : ''}`}>
-
+      <div className={`queue-cmp__container ${isQueueOpened ? "is-open" : ""}`}>
         <div className="queue-cmp__header">
           <h1>Queue</h1>
           <button className="btn hover-bg" onClick={onToggleQueue}>
@@ -66,7 +70,10 @@ export function QueueCmp() {
           </button>
         </div>
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <SortableContext items={queue.map(song => song._id)} strategy={verticalListSortingStrategy}>
+          <SortableContext
+            items={nextSongs.map((song) => song._id)}
+            strategy={verticalListSortingStrategy}
+          >
             <div className="queue-cmp__list-container">
               <ScrollArea>
                 <ul className="queue-cmp__list">
@@ -74,13 +81,12 @@ export function QueueCmp() {
                     <p>Now Playing</p>
                     <QueuePreview key={currentSong?._id} song={currentSong} />
                   </div>
-                  <p>Next from: {currPlayingStation?.name} </p>
-                  {queue
-                    .filter(song => song._id !== currentSong?._id)
-                    .map(song => (
-                      <QueuePreview key={song._id} song={song} />
-                    ))
-                  }
+
+                  <p>Next from: {currPlayingStation?.name}</p>
+
+                  {nextSongs.map((song) => (
+                    <QueuePreview key={song._id} song={song} />
+                  ))}
                 </ul>
               </ScrollArea>
             </div>
