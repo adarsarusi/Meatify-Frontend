@@ -8,13 +8,15 @@ import { logout } from "../store/actions/user.actions.js"
 import { debounce } from "../services/util.service.js"
 
 import { stationService } from "../services/station"
-import { SerachResultsDropdown } from "./SearchResultsDropdown.jsx"
+import { SearchResultsDropdown } from "./SearchResultsDropdown.jsx"
 
 import { IconComp } from "./globalCmps/IconComp.jsx"
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const stations = useSelector((storeState) => storeState.stationModule.stations) || []
 
+  const searchRef = useRef(null)
   const [searchTxt, setSearchTxt] = useState('')
   const [searchResults, setSearchResults] = useState([])
 
@@ -26,22 +28,21 @@ export function AppHeader() {
   const isHome = location.pathname === `/`
 
   useEffect(() => {
-    async function loadAllStations() {
-      const stations = await stationService.query()
+    if (!searchTxt.trim()) {
       setSearchResults(stations)
     }
-
-    loadAllStations()
-  }, [])
+  }, [stations, searchTxt])
 
   const debouncedSearch = useRef(
     debounce(async (txt) => {
       try {
-        const stations = txt.trim()
-          ? await stationService.query({ txt })
-          : await stationService.query()
+        if (!txt.trim()) {
+          setSearchResults(stations)
+          return
+        }
 
-        setSearchResults(stations)
+        const searchedStations = await stationService.query({ txt })
+        setSearchResults(searchedStations)
       } catch (err) {
         console.error('Cannot search stations', err)
       }
@@ -54,6 +55,19 @@ export function AppHeader() {
     setSearchTxt(value)      // immediate UI update
     debouncedSearch(value)   // backend search
   }
+
+  useEffect(() => {
+    function handleClickOutside(ev) {
+      if (searchRef.current && !searchRef.current.contains(ev.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   async function onLogout() {
     try {
@@ -69,7 +83,7 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <img src="src\assets\logo\meatify-logo.svg" />
+          <img src="/logo/meatify-logo.svg" alt="Meatify logo" />
         </NavLink>
 
         <div className="search-bar-container">
@@ -83,7 +97,7 @@ export function AppHeader() {
 
             </button>
           </div>
-          <div className="search-bar">
+          <div className="search-bar" ref={searchRef}>
             <button className="btn">
               <IconComp name="search" className="icon--muted" />
             </button>
@@ -97,7 +111,6 @@ export function AppHeader() {
               value={searchTxt}
               onChange={handleChange}
               onFocus={() => setIsOpen(true)}
-              onBlur={() => setIsOpen(false)}
             />
 
             <div className="search-browse-container">
@@ -108,7 +121,7 @@ export function AppHeader() {
                 <IconComp name="browse" className="icon--muted" />
               </button>
             </div>
-            {isOpen && <SerachResultsDropdown stations={searchResults} />}
+            {isOpen && <SearchResultsDropdown stations={searchResults} />}
           </div>
         </div>
         <div className="app-header__user-actions">

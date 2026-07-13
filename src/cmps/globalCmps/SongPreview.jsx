@@ -138,5 +138,3 @@ export function SongPreview({ song, index, isSearchResult = false }) {
     </section>
   )
 }
-
-export default SongPreview

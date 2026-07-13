@@ -41,7 +41,7 @@ export function playerReducer(state = initialState, action = {}) {
     case REMOVE_FROM_QUEUE:
       return {
         ...state,
-        queue: state.queue.filter((song) => song._id !== action.songId),
+        queue: state.queue.filter((song) => song._id !== action),
       }
 
     case TOGGLE_IS_PLAYING:

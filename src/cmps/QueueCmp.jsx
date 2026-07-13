@@ -21,7 +21,6 @@ export function QueueCmp() {
   const [originalQueue, setOriginalQueue] = useState([])
 
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
-  const isLoading = useSelector(storeState => storeState.systemModule.isLoading)
 
   const nextSongs = queue.filter(song => song._id !== currentSong?._id)
   const sensors = useSensors(
@@ -49,8 +48,6 @@ export function QueueCmp() {
 
     setQueue(updatedQueue)
   }
-
-  if (isLoading) return
 
   return (
     <section className="queue-cmp">

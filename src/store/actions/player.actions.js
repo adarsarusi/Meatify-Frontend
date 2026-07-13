@@ -10,8 +10,9 @@ import {
   SET_PLAYING_STATION
 } from "../reducers/player.reducer.js"
 
-import { LOADING_START, LOADING_DONE } from "../reducers/system.reducer.js"
 import { stationService } from "../../services/station"
+
+
 
 export function setCurrentSong(song) {
   try {
@@ -21,7 +22,6 @@ export function setCurrentSong(song) {
     console.log("Cannot set current song.", err)
     throw err
   }
-
 }
 
 export function setQueue(songs) {
@@ -61,7 +61,6 @@ export function toggleIsPlaying() {
 }
 
 export async function setPlayingStation(currPlayingStation) {
-  store.dispatch({ type: LOADING_START })
   try {
     const station = await stationService.getById(currPlayingStation._id)
 
@@ -72,9 +71,7 @@ export async function setPlayingStation(currPlayingStation) {
     console.log("Cannot load station", err)
     throw err
   }
-  finally {
-    store.dispatch({ type: LOADING_DONE })
-  }
+
 }
 
 

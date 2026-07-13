@@ -7,13 +7,16 @@ import { shuffle } from "../../services/util.service.js"
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
 
-export function StationOptions({ station, isOwner, onEditStation, onRemoveStation }) {
+export function StationOptions({ station, stationSongs, isOwner, onEditStation, onRemoveStation }) {
+
+
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isShuffle, setIsShuffle] = useState(false)
     const [originalQueue, setOriginalQueue] = useState([])
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const queue = useSelector((storeState) => storeState.playerModule.queue)
+
 
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
@@ -42,6 +45,7 @@ export function StationOptions({ station, isOwner, onEditStation, onRemoveStatio
             setIsShuffle(false)
         }
     }
+
     return (
         <section className="station-options">
             <div className="station-options__btn-container">
@@ -51,8 +55,8 @@ export function StationOptions({ station, isOwner, onEditStation, onRemoveStatio
                         if (isCurrStationPlaying) {
                             toggleIsPlaying()
                         } else {
-                            setQueue(station.songs)
-                            setCurrentSong(station.songs[0])
+                            setQueue(stationSongs)
+                            setCurrentSong(stationSongs[0])
                             setPlayingStation(station)
                         }
                     }}

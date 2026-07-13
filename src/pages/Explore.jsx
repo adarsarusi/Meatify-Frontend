@@ -1,31 +1,15 @@
+import { useMemo } from "react"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { SquareList } from "../cmps/globalCmps/SquareList"
-import { SquarePreview } from "../cmps/globalCmps/SquarePreview"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
-import { setQueue, setCurrentSong } from "../store/actions/player.actions"
-
 import { getMostCommonTags } from "../services/util.service"
-import { useEffect } from "react"
 
 export function Explore() {
-  const navigate = useNavigate()
-  const stations = useSelector(
-    (storeState) => storeState.stationModule.stations,
-  )
-  const songs = useSelector((storeState) => storeState.songModule.songs)
-  const isLoading = useSelector(
-    (storeState) => storeState.stationModule.isLoading,
-  )
+  const stations = useSelector((storeState) => storeState.stationModule.stations) || []
+  const songs = useSelector((storeState) => storeState.songModule.songs) || []
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
-  const likedStation = stations.filter(station => station.tags.includes('Liked'))
 
-  const likedSongs = songs.filter((song) =>
-    loggedinUser?.likedSongIds?.includes(song._id),
-  )
-
-
-  if (isLoading && !stations)
+  if (!stations) {
     return (
       <section className="station-details">
         <div className="station-container">
@@ -35,58 +19,54 @@ export function Explore() {
         </div>
       </section>
     )
+  }
 
-  const discoverableStations = stations.filter(
-    (station) =>
-      !station.tags?.includes("Liked") &&
-      station.createdBy?._id !== loggedinUser?._id,
+  const likedSongs = useMemo(() =>
+    songs.filter((song) => loggedinUser?.likedSongIds?.includes(song._id)),
+    [songs, loggedinUser?.likedSongIds],
+  )
+
+  const discoverableStations = useMemo(() =>
+    stations.filter(
+      (station) =>
+        !station.tags?.includes("Liked") &&
+        station.createdBy?._id !== loggedinUser?._id,
+    ),
+    [stations, loggedinUser?._id],
   )
 
   // recommended for you - based on common tags in user's liked songs
+  const favoriteTags = useMemo(() => getMostCommonTags(likedSongs), [likedSongs])
 
-  const favoriteTags = getMostCommonTags(likedSongs)
-
-  const recommendations = stations
-    .filter((station) =>
-      station.tags?.some((tag) => favoriteTags.includes(tag)),
-    )
-    .slice(0, 12)
+  const recommendations = useMemo(() =>
+    stations
+      .filter((station) =>
+        station.tags?.some((tag) => favoriteTags.includes(tag)),
+      )
+      .slice(0, 12),
+    [stations, favoriteTags],
+  )
 
   // popular stations, sorted by savedCount
-  const popularStations = [...discoverableStations]
-    .sort((a, b) => (b.savedCount ?? 0) - (a.savedCount ?? 0))
-    .slice(0, 12)
+  const popularStations = useMemo(() =>
+    [...discoverableStations]
+      .sort((a, b) => (b.savedCount ?? 0) - (a.savedCount ?? 0))
+      .slice(0, 12),
+    [discoverableStations],
+  )
 
   // new releases sorted by created at
-  const newStations = [...discoverableStations]
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .slice(0, 12)
-
-  // surprise me btn - plays a random station
-  const randomStation =
-    discoverableStations[
-    Math.floor(Math.random() * discoverableStations.length)
-    ]
+  const newStations = useMemo(() =>
+    [...discoverableStations]
+      .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+      .slice(0, 12),
+    [discoverableStations],
+  )
 
   return (
     <section className="explore dynamic-area">
       <ScrollArea>
-
         <div className="explore--container dynamic-max-width">
-
-          <div className="explore__stations-grid ">
-            <div className="explore-sub-header">
-              <p className="explore-sub-header__sub-title">Made For</p>
-              <h1 className="explore-sub-header__title">
-                {loggedinUser?.fullname}
-              </h1>
-            </div>
-
-            <ul className="explore__stations-list">
-              <SquareList entities={likedStation} />
-            </ul>
-          </div>
-
           {recommendations.length > 0 && (
             <div className="explore__stations-grid">
               <div className="explore-sub-header">
@@ -96,9 +76,9 @@ export function Explore() {
                 </p>
               </div>
 
-              <ul className="explore__stations-list">
-                <SquareList entities={recommendations} />
-              </ul>
+              <div className="explore__stations-list">
+                <SquareList stations={recommendations} />
+              </div>
             </div>
           )}
 
@@ -108,9 +88,9 @@ export function Explore() {
               <p className="explore-sub-header__sub-title">Most saved</p>
             </div>
 
-            <ul className="explore__stations-list">
-              <SquareList entities={popularStations} />
-            </ul>
+            <div className="explore__stations-list">
+              <SquareList stations={popularStations} />
+            </div>
           </div>
 
           <div className="explore__stations-grid">
@@ -118,14 +98,12 @@ export function Explore() {
               <h1 className="explore-sub-header__title">New Releases</h1>
             </div>
 
-            <ul className="explore__stations-list">
-              <SquareList entities={newStations} />
-            </ul>
+            <div className="explore__stations-list">
+              <SquareList stations={newStations} />
+            </div>
           </div>
         </div>
-
-
       </ScrollArea>
-    </section >
+    </section>
   )
 }

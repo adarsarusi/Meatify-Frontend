@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ import { TAGS_DATA } from '../services/station'
 
 import { EditModal } from "../cmps/globalCmps/EditModal"
 import { StationHeader } from "../cmps/globalCmps/StationHeader"
-import SongList from "../cmps/globalCmps/SongList"
+import { SongList } from "../cmps/globalCmps/SongList"
 import { IconComp } from "../cmps/globalCmps/IconComp"
 
 import { debounce } from "../services/util.service"
@@ -21,6 +21,7 @@ import { loadSongs } from "../store/actions/song.actions"
 import { StationOptions } from "../cmps/globalCmps/StationOptions"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 import { StationSearchMore } from "../cmps/StationSearchMore"
+import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -30,26 +31,36 @@ export function StationDetails() {
   const station = useSelector(
     (storeState) => storeState.stationModule.selectedStation,
   )
-  const isLoading = useSelector(
-    (storeState) => storeState.stationModule.isLoading,
+
+  const selectedStationId = useSelector(
+    (storeState) => storeState.stationModule.selectedStation?._id,
   )
+
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
-  
+
   const isLikedStation = station?.tags?.includes("Liked")
 
-  const likedSongs = songs.filter(song =>
-    user.likedSongIds.includes(song._id.toString())
-  )
+  const likedSongs = useMemo(() => {
+    if (!Array.isArray(songs) || !Array.isArray(user?.likedSongIds)) return []
+    return songs.filter(song => user.likedSongIds.includes(song._id.toString()))
+  }, [songs, user?.likedSongIds])
+
+  const stationSongs = useMemo(() => {
+    if (!station?.songs?.length || !Array.isArray(songs)) return []
+    const stationSongIds = new Set(station.songs.map(id => id.toString()))
+    return songs.filter(song => stationSongIds.has(song._id.toString()))
+  }, [songs, station?.songs])
+
 
   useEffect(() => {
-    if (!id) return
+    if (!id || selectedStationId === id) return
     loadStation(id)
-  }, [id])
+  }, [id, selectedStationId])
 
-  
+
   async function onSaveStation(updatedStation) {
     try {
       await updateStation(updatedStation)
@@ -86,11 +97,12 @@ export function StationDetails() {
     updateStation(updatedStation)
   }
 
-  if (isLoading && !station)
+  if (!station && selectedStationId !== id)
     return (
       <section className="station-details">
         <div className="station-container">
           <div className="station-header">
+            <LoadingAnimation />
             <p>Loading station...</p>
           </div>
         </div>
@@ -102,6 +114,7 @@ export function StationDetails() {
         <ScrollArea>
           <div className="station-container">
             <div className="station-header">
+              <LoadingAnimation />
               <p>Station not found</p>
             </div>
           </div>
@@ -126,6 +139,7 @@ export function StationDetails() {
           <section className="station-details__header">
             <StationHeader
               user={user}
+              stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}
               onRemoveStation={onRemoveStation}
@@ -135,6 +149,7 @@ export function StationDetails() {
           <div className="station-details__content">
             <section className="station-details__options dynamic-max-width">
               <StationOptions
+                stationSongs={stationSongs}
                 station={station}
                 isOwner={isOwner}
                 onRemoveStation={onRemoveStation}
@@ -161,7 +176,7 @@ export function StationDetails() {
                 />
                 :
                 <SongList
-                  songs={station?.songs || []}
+                  songs={stationSongs || []}
                   isSortable
                   onReorder={handleReorderSongs}
                 />
