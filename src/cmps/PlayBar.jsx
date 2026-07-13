@@ -118,7 +118,7 @@ export function PlayBar() {
 
           <button
             className="btn"
-            onClick={() => handleNextPrev("prev")}
+            onClick={() => playPrevSong("prev")}
           >
             <IconComp name="previous-song" className="icon--muted icon--sm" />
           </button>
@@ -129,7 +129,7 @@ export function PlayBar() {
 
           <button
             className="btn"
-            onClick={() => handleNextPrev("next")}
+            onClick={() => playNextSong("next")}
           >
             <IconComp name="next-song" className="icon--muted icon--sm" />
           </button>
@@ -162,22 +162,11 @@ export function PlayBar() {
       </div>
 
       <div className="playbar-actions__container">
-        <button
-          className={`btn ${isQueueOpened ? "no-hover" : ""} `}
-          onClick={onToggleQueue}
-        >
-          {isQueueOpened ? (
-            <IconComp name="queue" className="icon--active" />
-          ) : (
-            <IconComp name="queue" className="icon--muted" />
-          )}
+        <button className={`btn ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
+          <IconComp name="queue" className={`${isQueueOpened ? 'icon--active' : 'icon--muted'} icon--sm`} isDot={isQueueOpened} />
         </button>
 
         <div className="volume-container">
-
-          <button className={`btn ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
-            <IconComp name="queue" className={`${isQueueOpened ? 'icon--active' : 'icon--muted'} icon--sm`} isDot={isQueueOpened} />
-          </button>
 
           <button className="volume" onClick={onToggleMute}>
             <IconComp name={`${isMuted ? 'volume-off' : 'volume'}`} className="icon--muted icon--sm" />
