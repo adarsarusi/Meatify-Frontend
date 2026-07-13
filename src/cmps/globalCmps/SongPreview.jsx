@@ -16,6 +16,7 @@ import {
 } from "../../store/actions/player.actions"
 import { SongContextMenu } from "./SongContextMenu"
 import { addSongToStation } from "../../store/actions/station.actions"
+import { formatAddedAt } from "/src/services/util.service.js"
 
 export function SongPreview({ song, index, isSearchResult = false }) {
   const navigate = useNavigate()
@@ -109,7 +110,7 @@ export function SongPreview({ song, index, isSearchResult = false }) {
 
       <div className="song-preview__album ellipsis-text">{song.album}</div>
 
-      {!isSearchResult && <div className="song-preview__date ellipsis-text">28/06/26</div>}
+      {!isSearchResult && <div className="song-preview__date ellipsis-text">{formatAddedAt(song.addedAt)}</div>}
 
       {!isSearchResult && <div className="song-preview__actions">
         <div
