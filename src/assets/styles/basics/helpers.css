@@ -38,9 +38,10 @@
     cursor: pointer;
     text-align: center;
     border: none;
+    padding: 0.5rem;
 
     background-color: transparent;
-    transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+    transition: all .2s ease-out;
     border-radius: 9999px;
 
     &.hover-bg {
@@ -78,6 +79,24 @@
         }
     }
 
+    &.circle-btn {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--background-elevated-base);
+
+        border: none;
+        border-radius: 9999px;
+
+        &:hover {
+            background-color: var(--background-elevated-highlight);
+        }
+    }
+
     &.bg-button {
         display: grid;
         grid-auto-flow: column;
@@ -87,22 +106,24 @@
         font-weight: 600;
         color: var(--essential-base);
 
-        padding: 0.5rem 1rem;
+        padding: 1rem;
         border-radius: 9999px;
 
         background-color: var(--background-elevated-base);
         transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
 
+
         &:hover {
-            background-color: var(--background-highlight);
+            transform: scale(var(--button-hover-scale, 1.05));
 
             .icon {
                 color: var(--icon--white);
             }
         }
+
     }
 
-     &.outline-button {
+    &.outline-button {
         display: grid;
         grid-auto-flow: column;
         gap: 0.5rem;
@@ -117,18 +138,16 @@
         transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
 
         &:hover {
-             border: 1px solid var(--essential-base);
+            border: 1px solid var(--essential-base);
         }
     }
 
     &:hover {
+        transform: scale(var(--button-hover-scale));
+
         .icon {
             color: var(--icon--white);
         }
-    }
-
-    &:active {
-        transform: scale(0.95);
     }
 
     &:disabled {

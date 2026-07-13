@@ -4,15 +4,19 @@ import { useSelector } from "react-redux"
 import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../../store/actions/player.actions"
 import { shuffle } from "../../services/util.service.js"
 
+import { TOGGLE_SHUFFLE_STATE } from "../../store/reducers/system.reducer.js"
+
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
+import { store } from "../../store/store.js"
 
 export function StationOptions({ station, stationSongs, isOwner, onEditStation, onRemoveStation }) {
 
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [isShuffle, setIsShuffle] = useState(false)
     const [originalQueue, setOriginalQueue] = useState([])
+
+    const isShuffle = useSelector((storeState) => storeState.systemModule.isShuffle)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const queue = useSelector((storeState) => storeState.playerModule.queue)
@@ -34,17 +38,19 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
         }
     }, [])
 
+
     function handleShuffle(queue) {
         if (!isShuffle) {
             setOriginalQueue(queue)
             const shuffledQueue = shuffle(queue)
             setQueue(shuffledQueue)
-            setIsShuffle(true)
+            store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
         } else {
             setQueue(originalQueue)
-            setIsShuffle(false)
+            store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
         }
     }
+
 
     return (
         <section className="station-options">
@@ -73,17 +79,17 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
                 >
                     <IconComp
                         name="shuffle"
-                        className={isShuffle ? "icon--active icon--lg" : "icon--muted icon--lg"}
+                        className={(isShuffle && currPlayingStation) ? "icon--active icon--lg " : "icon--muted icon--lg"}
                     />
                 </button>
 
-                {!isLikedStation && <div className="btn">
+                {!isLikedStation &&
                     <LikeBtn
                         itemId={station._id}
                         userField="likedStationIds"
                         iconSize="icon--lg"
                     />
-                </div>}
+                }
 
                 {(isOwner) && (
                     <div className="station-options__user-btns">

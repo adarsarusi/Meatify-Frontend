@@ -26,6 +26,7 @@ export function AppHeader() {
   const [isOpen, setIsOpen] = useState(false)
 
   const isHome = location.pathname === `/`
+  const isBrowse = location.pathname === `/browse`
 
   useEffect(() => {
     if (!searchTxt.trim()) {
@@ -51,7 +52,7 @@ export function AppHeader() {
 
   function handleChange({ target }) {
     const value = target.value
-
+    setIsOpen(true)
     setSearchTxt(value)      // immediate UI update
     debouncedSearch(value)   // backend search
   }
@@ -83,47 +84,54 @@ export function AppHeader() {
     <header className="app-header full">
       <nav>
         <NavLink to="/" className="logo">
-          <img src="/logo/meatify-logo.svg" alt="Meatify logo" />
+          <img className="app-header__logo" src="/logo/meatify-logo.svg" alt="Meatify logo" />
         </NavLink>
 
         <div className="search-bar-container">
-          <div className="app-header__btn">
-            <button
-              className="btn"
-              onClick={() => navigate("/")}>
-              {isHome
-                ? <IconComp name="home" className="icon--white" /> :
-                <IconComp name="home-hollow" className="icon--white" />}
 
-            </button>
-          </div>
+          <button
+            className="btn circle-btn"
+            onClick={() => navigate("/")}>
+            <IconComp name={`${isHome ? 'home' : 'home-hollow'}`}
+              className="icon--white icon--md" />
+          </button>
+
           <div className="search-bar" ref={searchRef}>
             <button className="btn">
-              <IconComp name="search" className="icon--muted" />
+              <IconComp name="search" className="icon--muted icon--md" />
             </button>
+            <div className="search-bar-container__input-wrapper">
 
-            <input
-              className="search-input"
-              type="search"
-              name="txt"
-              id=""
-              placeholder="What do you want to play?"
-              value={searchTxt}
-              onChange={handleChange}
-              onFocus={() => setIsOpen(true)}
-            />
+              <input
+                className="search-input"
+                type="search"
+                name="txt"
+                id=""
+                placeholder="What do you want to play?"
+                value={searchTxt}
+                onChange={handleChange}
+              />
+
+              {searchTxt.length > 0 && <button className="btn input-close-btn"
+                onClick={() => setSearchTxt('')}>
+                <IconComp name="close" className="icon--muted icon--md" />
+              </button>}
+            </div>
+
 
             <div className="search-browse-container">
               <button
                 className="btn"
                 onClick={() => navigate("/browse")}
               >
-                <IconComp name="browse" className="icon--muted" />
+                <IconComp name={`${isBrowse ? 'browse' : 'browse-hollow'}`}
+                  className="icon--muted icon--md" />
               </button>
             </div>
             {isOpen && <SearchResultsDropdown stations={searchResults} />}
           </div>
         </div>
+
         <div className="app-header__user-actions">
           {!user && (
             <NavLink to="auth/login" className="login-link">
@@ -132,20 +140,23 @@ export function AppHeader() {
           )}
           {user && <>
             <button className="btn">
-              <IconComp name="friends" className="icon--sm icon--muted" />
-            </button>
-            <button className="btn">
               <IconComp name="notification" className="icon--sm icon--muted" />
             </button>
+            <button className="btn">
+              <IconComp name="friends" className="icon--sm icon--muted" />
+            </button>
 
-            <div className="user-info app-header__btn">
-              <Link to={`user/${user._id}`}>
-                {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
-              </Link>
+            <div className="user-info">
+              <button className="btn circle-btn">
+                <Link to={`user/${user._id}`}>
+                  {user.imgUrl && <img className="user-info__pic" src={user.imgUrl} />}
+                </Link>
+              </button>
             </div>
           </>
           }
         </div>
+
       </nav>
     </header >
   )

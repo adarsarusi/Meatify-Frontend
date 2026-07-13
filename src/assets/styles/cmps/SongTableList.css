@@ -1,7 +1,3 @@
-.playlist-table {
-    padding-inline: 1rem;
-}
-
 .playlist-table__row {
     display: flex;
     justify-content: space-between;

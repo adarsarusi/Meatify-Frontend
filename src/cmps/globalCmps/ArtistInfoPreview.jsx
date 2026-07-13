@@ -13,15 +13,17 @@ import { ScrollArea } from "./ScrollArea"
 
 
 export function ArtistInfoPreview({ currentSong }) {
-  const [artistInfo, setArtistInfo] = useState(null)
   const navigate = useNavigate()
+  
+  const [artistInfo, setArtistInfo] = useState(null)
+  const [imageError, setImageError] = useState(false)
 
   const songs = useSelector(storeState => storeState.songModule.songs)
   const currPlayingStation = useSelector(storeState => storeState.playerModule.currPlayingStation)
 
   useEffect(() => {
     if (currentSong?.artists?.[0]?.name) {
-      songService.getArtistInfo(currentSong._id,currentSong.artists[0].name).then(setArtistInfo)
+      songService.getArtistInfo(currentSong._id, currentSong.artists[0].name).then(setArtistInfo)
     }
   }, [currentSong])
 
@@ -29,7 +31,7 @@ export function ArtistInfoPreview({ currentSong }) {
   if (!artistInfo) return null
 
   const { name, bio, monthlyListeners, imgUrl, fans } = artistInfo
-  
+
   const shortBio = `${bio.slice(0, 95)} ...`
 
   const filteredSongs = songs.filter(song =>
@@ -57,7 +59,14 @@ export function ArtistInfoPreview({ currentSong }) {
           <div className="entity-artist-preview__description">
             <div className="entity-artist-description__image-container">
               <p className="entity-artist-description__text">About the artist</p>
-              <img className="entity-artist-description__pic" src={imgUrl} />
+              {imgUrl && !imageError && (
+                <img
+                  className="entity-artist-description__pic"
+                  src={imgUrl}
+                  alt="Artist"
+                  onError={() => setImageError(true)}
+                />
+              )}
             </div>
             <div className="entity-artist-preview__description-meta">
               <div className="entity-artist-description__name">
