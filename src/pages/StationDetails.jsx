@@ -23,6 +23,9 @@ import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 import { StationSearchMore } from "../cmps/StationSearchMore"
 import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 
+import { socketService,SOCKET_EVENT_STATION_UPDATED,SOCKET_EVENT_STATION_REMOVED } from "../services/socket.service"
+
+
 export function StationDetails() {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -59,6 +62,33 @@ export function StationDetails() {
     if (!id || selectedStationId === id) return
     loadStation(id)
   }, [id, selectedStationId])
+
+  useEffect(() => {
+  if (!id) return
+
+  socketService.watchStation(id)
+
+  const onStationUpdated = (updatedStation) => {
+    if (!updatedStation?._id) return
+    if (updatedStation._id !== id) return
+    loadStation(id)
+  }
+
+  const onStationRemoved = (removedStationId) => {
+    if (removedStationId !== id) return
+    showErrorMsg("This playlist was removed")
+    navigate("/")
+  }
+
+  socketService.on(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
+  socketService.on(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
+
+  return () => {
+    socketService.off(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
+    socketService.off(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
+    socketService.unwatchStation(id)
+  }
+}, [id,navigate])
 
 
   async function onSaveStation(updatedStation) {
