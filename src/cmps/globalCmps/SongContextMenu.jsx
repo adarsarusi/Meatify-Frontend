@@ -41,7 +41,7 @@ export function SongContextMenu({ song }) {
     return (
         <button
             ref={btnRef}
-            className="song-preview__btn song-preview__btn--more"
+            className="btn song-preview__btn song-preview__btn--more"
             onPointerDown={(ev) => ev.stopPropagation()}
             onClick={(ev) => {
                 ev.stopPropagation()

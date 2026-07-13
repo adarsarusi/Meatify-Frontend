@@ -102,3 +102,15 @@ export function getMostCommonTags(songs, limit = 3) {
 export function formatArtists(song) {
     return (song?.artists || []).map(artist => artist?.name).join(", ")
 }
+
+export function formatAddedAt(timestamp) {
+    if (!timestamp) return '';
+
+    const date = new Date(timestamp);
+
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'short',   // "Jun"
+        day: 'numeric',   // "22"
+        year: 'numeric'   // "2025"
+    }).format(date);
+}

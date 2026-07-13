@@ -79,7 +79,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
                 >
                     <IconComp
                         name="shuffle"
-                        className={(isShuffle && currPlayingStation) ? "icon--active icon--lg " : "icon--muted icon--lg"}
+                        className={(isShuffle && isCurrStationPlaying) ? "icon--active icon--lg " : "icon--muted icon--lg"}
                     />
                 </button>
 

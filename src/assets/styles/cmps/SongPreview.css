@@ -71,7 +71,6 @@
     .song-preview__actions {
         position: relative;
         display: flex;
-        justify-content: space-between;
         align-items: center;
         flex: 1 1 var(--last-min-width);
         gap: 1rem;
