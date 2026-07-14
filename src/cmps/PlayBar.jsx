@@ -1,3 +1,4 @@
+import { useMediaQuery } from "react-responsive"
 import { useSelector } from "react-redux"
 import { useState, useRef, useEffect } from "react"
 import {
@@ -22,6 +23,8 @@ import { shuffle } from "../services/util.service.js"
 import { TOGGLE_OPEN_QUEUE, TOGGLE_SHUFFLE_STATE } from "../store/reducers/system.reducer.js"
 
 export function PlayBar() {
+  const isMobile = useMediaQuery({ maxWidth: 768 })
+
   const currentSong = useSelector(
     (storeState) => storeState.playerModule.currentSong,
   )
@@ -99,13 +102,16 @@ export function PlayBar() {
             {formatArtists(currentSong)}
           </div>
         </div>
-        <LikeBtn itemId={currentSong?._id} userField="likedSongIds" iconSize="icon--sm" />
+        <div className="">
+          <LikeBtn itemId={currentSong?._id} userField="likedSongIds" 
+          iconSize={`${isMobile ? 'icon--md' : 'icon--sm'}`} />
+        </div>
       </div>
 
       <div className="center-control">
         <div className="main-buttons">
           <button
-            className={`btn ${isShuffle ? "no-hover" : ""} `}
+            className={`btn desktop-only ${isShuffle ? "no-hover" : ""} `}
             onClick={() => handleShuffle(queue)}
             title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
           >
@@ -117,25 +123,27 @@ export function PlayBar() {
           </button>
 
           <button
-            className="btn"
+            className="btn desktop-only"
             onClick={() => playPrevSong("prev")}
           >
             <IconComp name="previous-song" className="icon--muted icon--sm" />
           </button>
 
-          <button className="btn play-btn play-bar__play-btn" onClick={onTogglePlay}>
-            <IconComp name={`${isPlaying ? 'pause' : 'play'}`} className="icon--black" />
+          <button className={`btn ${isMobile ? '' : 'play-btn play-bar__play-btn'}`}
+            onClick={onTogglePlay}>
+            <IconComp name={`${isPlaying ? 'pause' : 'play'}`}
+              className={`${isMobile ? 'icon--white' : 'icon--black'} icon--md`} />
           </button>
 
           <button
-            className="btn"
+            className="btn desktop-only"
             onClick={() => playNextSong("next")}
           >
             <IconComp name="next-song" className="icon--muted icon--sm" />
           </button>
 
           <button
-            className={`btn ${isRepeat ? "no-hover" : ""} `}
+            className={`btn desktop-only ${isRepeat ? "no-hover" : ""} `}
             onClick={onRepeat}
             title={isRepeat ? "Disable repeat" : "Enable repeat"}
           >
@@ -148,21 +156,39 @@ export function PlayBar() {
         </div>
 
         <div className="progress-bar">
-          <span className="elapsed-time">{formatTime(currentTime)}</span>
-          <input
-            type="range"
-            min={0}
-            max={duration}
-            step={0.1}
-            value={currentTime}
-            onChange={handleProgressChange}
-          />
-          <span className="remaining-time">{formatTime(duration)}</span>
+          <span className="elapsed-time desktop-only">
+            {formatTime(currentTime)}
+
+          </span>
+
+          <div className="progress-track">
+
+            <div
+              className="progress-fill"
+              style={{
+                width: duration ? `${(currentTime / duration) * 100}%` : "0%",
+              }}
+            />
+
+            <input
+              type="range"
+              min={0}
+              max={duration}
+              step={0.1}
+              value={currentTime}
+              onChange={handleProgressChange}
+              className="progress-slider"
+            />
+          </div>
+
+          <span className="remaining-time desktop-only">
+            {formatTime(duration)}
+          </span>
         </div>
       </div>
 
-      <div className="playbar-actions__container">
-        <button className={`btn ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
+      <div className="playbar-actions__container desktop-only">
+        <button className={`btn desktop-only ${isQueueOpened ? 'no-hover' : ''} `} onClick={onToggleQueue}>
           <IconComp name="queue" className={`${isQueueOpened ? 'icon--active' : 'icon--muted'} icon--sm`} isDot={isQueueOpened} />
         </button>
 

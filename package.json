@@ -24,6 +24,7 @@
     "react-dom": "^19.2.6",
     "react-player": "^3.4.0",
     "react-redux": "^9.3.0",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^7.17.0",
     "redux": "^5.0.1",
     "socket.io-client": "^4.8.3"

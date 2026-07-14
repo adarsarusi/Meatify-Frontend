@@ -2,7 +2,7 @@ import React from "react"
 import { SongPreview } from "./SongPreview"
 import { SongListTable } from "./SongListTable"
 
-import { DndContext } from '@dnd-kit/core'
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 
 export function SongList({
@@ -15,6 +15,14 @@ export function SongList({
     return <div className="song-list song-list--empty">No songs</div>
 
   const ids = songs.map(song => song._id.toString())
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  )
 
   function handleDragEnd(event) {
     const { active, over } = event
@@ -30,7 +38,7 @@ export function SongList({
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <SortableContext items={ids} strategy={verticalListSortingStrategy}>
         <section className="song-list">
           {!isSearchResult && <SongListTable />}

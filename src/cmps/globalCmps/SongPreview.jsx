@@ -1,4 +1,5 @@
 import React from "react"
+import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useSortable } from '@dnd-kit/sortable'
@@ -35,6 +36,8 @@ export function SongPreview({ song, index, isSearchResult = false }) {
     (storeState) => storeState.playerModule.isPlaying,
   )
 
+  const isMobile = useMediaQuery({ maxWidth: 768 })
+
   const {
     setNodeRef,
     transform,
@@ -68,6 +71,16 @@ export function SongPreview({ song, index, isSearchResult = false }) {
       style={style}
       {...attributes}
       {...listeners}
+      onClick={(ev) => {
+        if (isMobile) {
+          ev.stopPropagation()
+          if (isCurrentSong) {
+            toggleIsPlaying()
+          } else {
+            setCurrentSong(song)
+          }
+        }
+      }}
     >
       <div className="song-preview__index-wrap">
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :

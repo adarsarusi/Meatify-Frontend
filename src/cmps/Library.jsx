@@ -16,7 +16,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
 import { SquareList } from "./globalCmps/SquareList.jsx"
 
-export function Library() {
+export function Library({ mobile = false }) {
   const navigate = useNavigate()
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations,
@@ -102,7 +102,7 @@ export function Library() {
 
 
   return (
-    <section className="app-library">
+    <section className={mobile ? "library-page" : "app-library"}>
       <div className={`library-header ${isMinimizedLibrary ? 'library-header--minimized' : ''} `}>
         <button
           className={`btn minimize-button ${isMinimizedLibrary ? 'minimized' : ''}`}

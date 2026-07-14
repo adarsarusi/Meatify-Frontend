@@ -1,4 +1,5 @@
 import React from "react"
+import { useMediaQuery } from "react-responsive"
 import { useSelector } from 'react-redux'
 
 import { BrowserRouter as Router } from "react-router-dom"
@@ -6,6 +7,7 @@ import { Routes, Route } from "react-router-dom"
 
 import { AppHeader } from "./cmps/AppHeader.jsx"
 import { AppContainer } from "./pages/AppContainer.jsx"
+import { LibraryPage } from "./pages/LibraryPage.jsx"
 import { Explore } from "./pages/Explore.jsx"
 import { Browse } from "./pages/Browse.jsx"
 import { Library } from "./cmps/Library.jsx"
@@ -15,34 +17,41 @@ import { Profile } from "./pages/Profile.jsx"
 import { SongDetails } from "./pages/SongDetails.jsx"
 import { TagDetails } from "./pages/TagDetails.jsx"
 import { PlayBar } from "./cmps/PlayBar.jsx"
+import { MobileDock } from "./cmps/MobileDock.jsx"
 
 function App() {
 
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
   const isMinimizedLibrary = useSelector(storeState => storeState.systemModule.isMinimizedLibrary)
 
+  const isMobile = useMediaQuery({ maxWidth: 768 })
+
   return (
     <Router>
       <div className="main-container">
-        <AppHeader />
+        {!isMobile && <AppHeader />}
         {/* <UserMsg /> */}
 
         <main className={`
         ${isExpanded ? 'expanded' : ''}
         ${isMinimizedLibrary ? 'minimized' : ''} app-layout`}>
-          <Library />
+          {!isMobile && <Library />}
+
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
             <Route path="/" element={<Explore />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="/browse/:tag" element={<TagDetails />} />
+            <Route path="/library" element={<LibraryPage />} />
             <Route path="station/:id" element={<StationDetails />} />
             <Route path="user/:id" element={<Profile />} />
             <Route path="song/:id" element={<SongDetails />} />
           </Routes>
-          <ArtistInfo />
+
+          {!isMobile && <ArtistInfo />}
         </main>
         <PlayBar />
+        <MobileDock />
       </div>
     </Router>
   )

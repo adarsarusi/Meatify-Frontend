@@ -65,3 +65,11 @@
         display: none;
     }
 }
+
+@media (max-width: 768px) {
+
+    .playlist-table__row {
+        padding-inline: 0;
+    }
+    
+}

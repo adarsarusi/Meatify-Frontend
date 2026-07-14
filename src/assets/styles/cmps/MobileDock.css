@@ -1,0 +1,52 @@
+.mobile-dock {
+    display: none;
+
+    position: fixed;
+    inset: auto 0 0;
+
+    height: 64px;
+
+    justify-content: space-around;
+    align-items: center;
+
+    background: #000;
+    border-top: 1px solid #2a2a2a;
+
+    z-index: 1000;
+
+    > a {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 4px;
+
+        height: 100%;
+
+        font-size: 11px;
+        color: var(--text-subdued);
+
+        transition:
+            color 0.25s ease,
+            background-color 0.25s ease;
+
+        &.active {
+            color: white;
+            background-color: var(--background-elevated-base);
+            border-radius: 6px;
+        }
+    }
+}
+
+
+.main-layout {
+    padding-bottom: 64px;
+}
+
+@media (max-width: 768px) {
+    .mobile-dock {
+        display: flex;
+    }
+}

@@ -1,6 +1,7 @@
 .station-options {
-  width: 100%;
+    width: 100%;
 }
+
 .station-details__options {
     /* position: sticky; */
     /* top: 0; */
@@ -60,5 +61,13 @@
 
     &:hover {
         background-color: #3e3e3e;
+    }
+}
+
+@media (max-width: 768px) {
+    .station-options__btn-container {
+        flex-direction: row-reverse;
+
+        justify-content: space-between;
     }
 }
