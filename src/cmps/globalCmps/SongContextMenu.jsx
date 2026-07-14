@@ -26,8 +26,9 @@ export function SongContextMenu({ song }) {
             !station.tags?.includes('Liked')
     )
 
-    const isSongInStation = station?.songs?.some((s) => s._id === song._id)
-
+   const isSongInStation = station?.songs?.includes(song._id)
+    console.log(isSongInStation);
+    
 
     function handleBlur(ev) {
         const currentTarget = ev.currentTarget
@@ -66,9 +67,7 @@ export function SongContextMenu({ song }) {
 
                         <div className="song-context-menu__station-list">
                             {userStations.map((userStation) => {
-                                const alreadyExists = userStation.songs.some(
-                                    (s) => s._id === song._id
-                                )
+                                const alreadyExists = userStation.songs?.includes(song._id)
 
                                 return (
                                     <span
