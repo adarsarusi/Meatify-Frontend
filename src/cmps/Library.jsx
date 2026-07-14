@@ -22,25 +22,30 @@ export function Library() {
     (storeState) => storeState.stationModule.stations,
   )
 
-  const [filterBy, setFilterBy] = useState({txt: ''})
+  const [filterBy, setFilterBy] = useState({ txt: "" })
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
-  const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
-
+  const isSquare = useSelector((storeState) => storeState.systemModule.isSquare)
 
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
   const isExpanded = useSelector(
     (storeState) => storeState.systemModule.isExpanded,
   )
 
-  const likedSongs = useMemo(() =>
-    songs.filter((song) => loggedinUser?.likedSongIds?.includes(song._id)),
+  const likedSongs = useMemo(
+    () =>
+      songs.filter((song) => loggedinUser?.likedSongIds?.includes(song._id)),
     [songs, loggedinUser?.likedSongIds],
   )
 
-  const likedStations = useMemo(() =>
-    stations.filter((station) => loggedinUser?.likedStationIds?.includes(station._id)),
-    [stations, loggedinUser?.likedStationIds],
+  const libraryStations = useMemo(
+    () =>
+      stations.filter(
+        (station) =>
+          station.createdBy?._id === loggedinUser?._id ||
+          loggedinUser?.likedStationIds?.includes(station._id),
+      ),
+    [stations, loggedinUser?._id, loggedinUser?.likedStationIds],
   )
 
   function onExpand() {
@@ -98,17 +103,25 @@ export function Library() {
       </div>
 
       <div className="filter">
-        <StationFilter 
-        filterBy={filterBy}
-        setFilterBy={setFilterBy}/>
+        <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} />
       </div>
 
       <ScrollArea>
-        <div className={isExpanded || isSquare ? 'library-content library-content--expanded' : 'library-content'}>
+        <div
+          className={
+            isExpanded || isSquare
+              ? "library-content library-content--expanded"
+              : "library-content"
+          }
+        >
           {isSquare ? (
-            <SquareList stations={likedStations} isOwner={true} isLibrary={true} />
+            <SquareList
+              stations={libraryStations}
+              isOwner={true}
+              isLibrary={true}
+            />
           ) : (
-            <StationList stations={likedStations} />
+            <StationList stations={libraryStations} />
           )}
         </div>
       </ScrollArea>

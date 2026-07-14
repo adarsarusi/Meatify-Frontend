@@ -24,7 +24,7 @@ import { StationSearchMore } from "../cmps/StationSearchMore"
 import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 import { updateUser } from "../store/actions/user.actions"
 
-import { socketService,SOCKET_EVENT_STATION_UPDATED,SOCKET_EVENT_STATION_REMOVED } from "../services/socket.service"
+import { socketService } from "../services/socket.service"
 
 
 export function StationDetails() {
@@ -84,6 +84,13 @@ useEffect(() => {
   if (!id || selectedStationId === id) return
   loadStation(id)
 }, [id, selectedStationId])
+
+useEffect(() => {
+  if (!id) return
+  if (selectedStationId === null) {
+    navigate("/")
+  }
+}, [id, selectedStationId, navigate])
 
 
 async function onSaveStation(updatedStation) {

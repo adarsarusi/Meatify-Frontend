@@ -8,18 +8,13 @@ export const SOCKET_EMIT_LOGOUT = "unset-user-socket"
 export const SOCKET_EMIT_STATION_WATCH = "station-watch"
 export const SOCKET_EMIT_STATION_UNWATCH = "station-unwatch"
 
-export const SOCKET_EMIT_STATION_CREATED = "station-created"
+export const SOCKET_EVENT_STATION_CREATED = "station-created"
 export const SOCKET_EVENT_STATION_UPDATED = "station-updated"
 export const SOCKET_EVENT_STATION_REMOVED = "station-removed"
 
 export const SOCKET_EVENT_STATION_LIKED_COUNT_UPDATED =
   "station-liked-count-updated"
 
-export const SOCKET_EVENT_STATION_SONG_ADDED = "station-song-added"
-export const SOCKET_EVENT_STATION_SONG_REMOVED = "station-song-removed"
-export const SOCKET_EVENT_STATION_SONGS_REORDERED = "station-songs-reordered"
-
-export const SOCKET_EVENT_SONG_LIKED_COUNT_UPDATED = "song-liked-count-updated"
 
 const baseUrl = process.env.NODE_ENV === "production" ? "" : "//localhost:3030"
 

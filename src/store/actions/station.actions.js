@@ -39,14 +39,11 @@ export async function removeStation(stationId) {
     console.log("Cannot remove station", err)
     throw err
   }
-
 }
-
 
 export async function addStation(station) {
   try {
     const savedStation = await stationService.save(station)
-    store.dispatch(getCmdAddStation(savedStation))
     return savedStation
   } catch (err) {
     console.log("Cannot add station", err)
@@ -63,25 +60,28 @@ export async function updateStation(station) {
     console.log("Cannot save station", err)
     throw err
   }
-
 }
-
 
 export async function addSongToStation(stationId, songId) {
   try {
-    const updatedStation = await stationService.addSongToStation(stationId, songId)
+    const updatedStation = await stationService.addSongToStation(
+      stationId,
+      songId,
+    )
     store.dispatch(getCmdUpdateStation(updatedStation))
     return updatedStation
   } catch (err) {
     console.log("Cannot add song to station", err)
     throw err
   }
-
 }
 
 export async function removeSongFromStation(stationId, songId) {
   try {
-    const updatedStation = await stationService.removeSongFromStation(stationId, songId)
+    const updatedStation = await stationService.removeSongFromStation(
+      stationId,
+      songId,
+    )
     store.dispatch(getCmdUpdateStation(updatedStation))
     return updatedStation
   } catch (err) {
@@ -90,17 +90,18 @@ export async function removeSongFromStation(stationId, songId) {
   }
 }
 
-
-
 export function removeStationFromStore(stationId) {
   store.dispatch(getCmdRemoveStation(stationId))
 }
-
 
 export function updateStationInStore(station) {
   store.dispatch(getCmdUpdateStation(station))
 }
 
+export function addStationToStore(station) {
+  store.dispatch(getCmdAddStation(station))
+
+}
 
 
 function getCmdSetStations(stations) {
@@ -137,4 +138,3 @@ function getCmdUpdateStation(station) {
     station,
   }
 }
-
