@@ -10,6 +10,7 @@ export const SET_STATION_LOADING = "SET_STATION_LOADING"
 
 export const ADD_SONG_TO_STATION = "ADD_SONG_TO_STATION"
 export const REMOVE_SONG_FROM_STATION = "REMOVE_SONG_FROM_STATION"
+export const UPDATE_LIKED_STATION_COUNT = "UPDATE_LIKED_STATION_COUNT"
 
 const initialStationState = {
   stations: [],
@@ -40,14 +41,21 @@ export function stationReducer(state = initialStationState, action = {}) {
       }
 
     case REMOVE_STATION:
-      return {
-        ...state,
-        stations: state.stations.filter(
-          (station) => station._id !== action.stationId,
-        ),
-      }
+  return {
+    ...state,
+    stations: state.stations.filter(
+      (station) => station._id !== action.stationId
+    ),
+    selectedStation:
+      state.selectedStation?._id === action.stationId
+        ? null
+        : state.selectedStation,
+  }
 
     case ADD_STATION:
+       if (state.stations.some(station => station._id === action.station._id)) {
+    return state
+  }
       return {
         ...state,
         stations: [action.station, ...state.stations]

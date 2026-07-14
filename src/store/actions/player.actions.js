@@ -7,12 +7,14 @@ import {
   TOGGLE_IS_PLAYING,
   SET_IS_PLAYING,
   SET_QUEUE,
-  SET_PLAYING_STATION
+  SET_ORIGINAL_QUEUE,
+  TOGGLE_IS_SHUFFLE,
+  SET_PLAYING_STATION,
 } from "../reducers/player.reducer.js"
 
 import { stationService } from "../../services/station"
 
-
+import { shuffle } from "../../services/util.service.js"
 
 export function setCurrentSong(song) {
   try {
@@ -71,10 +73,7 @@ export async function setPlayingStation(currPlayingStation) {
     console.log("Cannot load station", err)
     throw err
   }
-
 }
-
-
 
 export function playNextSong() {
   try {
@@ -83,7 +82,7 @@ export function playNextSong() {
 
     if (!currentSong?._id) return
 
-    const currIdx = queue.findIndex(song => song._id === currentSong._id)
+    const currIdx = queue.findIndex((song) => song._id === currentSong._id)
 
     if (currIdx === -1) {
       if (queue.length) {
@@ -108,7 +107,6 @@ export function playNextSong() {
   }
 }
 
-
 export function playPrevSong() {
   try {
     const state = store.getState()
@@ -116,7 +114,7 @@ export function playPrevSong() {
 
     if (!currentSong?._id) return
 
-    const currIdx = queue.findIndex(song => song._id === currentSong._id)
+    const currIdx = queue.findIndex((song) => song._id === currentSong._id)
 
     if (currIdx <= 0) return
 
@@ -126,6 +124,40 @@ export function playPrevSong() {
     store.dispatch({ type: SET_IS_PLAYING, isPlaying: true })
   } catch (err) {
     console.error("Cannot play previous song.", err)
+    throw err
+  }
+}
+
+export function toggleShuffleQueue() {
+  try {
+    const state = store.getState()
+    const { queue, originalQueue, currentSong, isShuffle } = state.playerModule
+
+    if (!queue.length) return
+
+    if (!isShuffle) {
+      const cleanOriginalQueue = [...queue]
+
+      const rest = cleanOriginalQueue.filter(
+        (song) => song._id !== currentSong?._id,
+      )
+      const shuffledRest = shuffle(rest)
+      const shuffledQueue = currentSong
+        ? [currentSong, ...shuffledRest]
+        : shuffledRest
+
+      store.dispatch({ type: SET_ORIGINAL_QUEUE, songs: cleanOriginalQueue })
+      store.dispatch({ type: SET_QUEUE, songs: shuffledQueue })
+      store.dispatch({ type: TOGGLE_IS_SHUFFLE, isShuffle: true })
+    } else {
+      const restoredQueue = originalQueue.length
+        ? [...originalQueue]
+        : [...queue]
+      store.dispatch({ type: SET_QUEUE, songs: restoredQueue })
+      store.dispatch({ type: TOGGLE_IS_SHUFFLE, isShuffle: false })
+    }
+  } catch (err) {
+    console.log("Cannot toggle shuffle", err)
     throw err
   }
 }

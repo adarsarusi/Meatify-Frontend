@@ -1,6 +1,6 @@
 import React from "react"
 import { useMediaQuery } from "react-responsive"
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux"
 
 import { BrowserRouter as Router } from "react-router-dom"
 import { Routes, Route } from "react-router-dom"
@@ -17,12 +17,40 @@ import { Profile } from "./pages/Profile.jsx"
 import { SongDetails } from "./pages/SongDetails.jsx"
 import { TagDetails } from "./pages/TagDetails.jsx"
 import { PlayBar } from "./cmps/PlayBar.jsx"
+
+import { useEffect } from "react"
+import {
+  initSocketListeners,
+  destroySocketListeners,
+} from "./services/socket.listeners.js"
+
+import { socketService } from "./services/socket.service.js"
 import { MobileDock } from "./cmps/MobileDock.jsx"
 
 function App() {
+  const isExpanded = useSelector(
+    (storeState) => storeState.systemModule.isExpanded,
+  )
+  const isMinimizedLibrary = useSelector(
+    (storeState) => storeState.systemModule.isMinimizedLibrary,
+  )
 
-  const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
-  const isMinimizedLibrary = useSelector(storeState => storeState.systemModule.isMinimizedLibrary)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+
+  useEffect(() => {
+    initSocketListeners()
+    return () => destroySocketListeners()
+  }, [])
+
+  useEffect(() => {
+    if (!loggedInUser?._id) return
+
+    socketService.watchUser(loggedInUser._id)
+
+    return () => {
+      socketService.unwatchUser(loggedInUser._id)
+    }
+  }, [loggedInUser?._id])
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
@@ -32,9 +60,11 @@ function App() {
         {!isMobile && <AppHeader />}
         {/* <UserMsg /> */}
 
-        <main className={`
-        ${isExpanded ? 'expanded' : ''}
-        ${isMinimizedLibrary ? 'minimized' : ''} app-layout`}>
+        <main
+          className={`
+        ${isExpanded ? "expanded" : ""}
+        ${isMinimizedLibrary ? "minimized" : ""} app-layout`}
+        >
           {!isMobile && <Library />}
 
           <Routes>

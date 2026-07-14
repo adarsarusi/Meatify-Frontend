@@ -2,19 +2,27 @@ import io from "socket.io-client"
 import { userService } from "./user"
 const { VITE_LOCAL, DEV } = import.meta.env
 
-export const SOCKET_EMIT_SEND_MSG = "chat-send-msg"
-export const SOCKET_EMIT_SET_TOPIC = "chat-set-topic"
-export const SOCKET_EMIT_USER_WATCH = "user-watch"
-export const SOCKET_EVENT_ADD_MSG = "chat-add-msg"
-export const SOCKET_EVENT_USER_UPDATED = "user-updated"
+export const SOCKET_EMIT_LOGIN = "set-user-socket"
+export const SOCKET_EMIT_LOGOUT = "unset-user-socket"
 
-const SOCKET_EMIT_LOGIN = "set-user-socket"
-const SOCKET_EMIT_LOGOUT = "unset-user-socket"
+export const SOCKET_EMIT_STATION_WATCH = "station-watch"
+export const SOCKET_EMIT_STATION_UNWATCH = "station-unwatch"
+
+export const SOCKET_EVENT_STATION_CREATED = "station-created"
+export const SOCKET_EVENT_STATION_UPDATED = "station-updated"
+export const SOCKET_EVENT_STATION_REMOVED = "station-removed"
+
+export const SOCKET_EVENT_STATION_LIKED_COUNT_UPDATED =
+  "station-liked-count-updated"
+
+export const SOCKET_EMIT_USER_WATCH = "watch-user"
+export const SOCKET_EMIT_USER_UNWATCH = "unwatch-user"
+export const SOCKET_EVENT_USER_UPDATED = "user-updated"
 
 const baseUrl = process.env.NODE_ENV === "production" ? "" : "//localhost:3030"
 
-// export const socketService =
-//   VITE_LOCAL === "true" ? createDummySocketService() : createSocketService()
+export const socketService =
+  VITE_LOCAL === "true" ? createDummySocketService() : createSocketService()
 
 // for debugging from console
 
@@ -31,6 +39,7 @@ function createSocketService() {
       if (user) this.login(user._id)
     },
     on(eventName, cb) {
+      if (!socket) return
       socket.on(eventName, cb)
     },
     off(eventName, cb = null) {
@@ -39,15 +48,38 @@ function createSocketService() {
       else socket.off(eventName, cb)
     },
     emit(eventName, data) {
+      if (!socket) return
       socket.emit(eventName, data)
     },
     login(userId) {
+      if (!socket || !userId) return
       socket.emit(SOCKET_EMIT_LOGIN, userId)
     },
     logout() {
+      if (!socket) return
       socket.emit(SOCKET_EMIT_LOGOUT)
     },
+    watchStation(stationId) {
+      if (!socket || !stationId) return
+      socket.emit(SOCKET_EMIT_STATION_WATCH, stationId)
+    },
+    unwatchStation(stationId) {
+      if (!socket || !stationId) return
+      socket.emit(SOCKET_EMIT_STATION_UNWATCH, stationId)
+    },
+    watchUser(userId) {
+      if (!socket || !userId) return
+      socket.emit(SOCKET_EMIT_USER_WATCH, userId)
+    },
+
+    unwatchUser(userId) {
+      if (!socket || !userId) return
+      socket.emit(SOCKET_EMIT_USER_UNWATCH, userId)
+    },
+
     terminate() {
+      if (!socket) return
+      socket.disconnect()
       socket = null
     },
   }
@@ -83,10 +115,6 @@ function createDummySocketService() {
     },
     emit(eventName, data) {
       var listeners = listenersMap[eventName]
-      if (eventName === SOCKET_EMIT_SEND_MSG) {
-        listeners = listenersMap[SOCKET_EVENT_ADD_MSG]
-      }
-
       if (!listeners) return
 
       listeners.forEach((listener) => {
@@ -94,17 +122,8 @@ function createDummySocketService() {
       })
     },
     // Functions for easy testing of pushed data
-    testChatMsg() {
-      this.emit(SOCKET_EVENT_ADD_MSG, {
-        from: "Someone",
-        txt: "Aha it worked!",
-      })
-    },
-    testUserUpdate() {
-      this.emit(SOCKET_EVENT_USER_UPDATED, {
-        ...userService.getLoggedinUser(),
-        score: 555,
-      })
+    testStationUpdated(station) {
+      this.emit(SOCKET_EVENT_STATION_UPDATED, station)
     },
   }
   window.listenersMap = listenersMap

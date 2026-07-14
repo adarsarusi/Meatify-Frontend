@@ -7,6 +7,7 @@ import {
   toggleIsPlaying,
   playNextSong,
   playPrevSong,
+  toggleShuffleQueue,
 } from "../store/actions/player.actions.js"
 
 import { StationCover } from "./globalCmps/StationCover.jsx"
@@ -19,42 +20,25 @@ import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
 
-import { shuffle } from "../services/util.service.js"
-import { TOGGLE_OPEN_QUEUE, TOGGLE_SHUFFLE_STATE } from "../store/reducers/system.reducer.js"
+import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
 
 export function PlayBar() {
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
-  const currentSong = useSelector(
-    (storeState) => storeState.playerModule.currentSong,
-  )
-  const isPlaying = useSelector(
-    (storeState) => storeState.playerModule.isPlaying,
-  )
-  const queue = useSelector((storeState) => storeState.playerModule.queue)
+  const currentSong = useSelector((storeState) => storeState.playerModule.currentSong,)
+  const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying,)
   const audioRef = useRef(null)
 
   const isQueueOpened = useSelector((storeState) => storeState.systemModule.isQueueOpened)
-  const isShuffle = useSelector((storeState) => storeState.systemModule.isShuffle)
+  const isShuffle = useSelector((storeState) => storeState.playerModule.isShuffle)
 
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [volume, setVolume] = useState(0.2)
   const [isMuted, setIsMuted] = useState(false)
   const [isRepeat, setIsRepeat] = useState(false)
-  const [originalQueue, setOriginalQueue] = useState([])
 
-  function handleShuffle(queue) {
-    if (!isShuffle) {
-      setOriginalQueue(queue)
-      const shuffledQueue = shuffle(queue)
-      setQueue(shuffledQueue)
-      store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
-    } else {
-      setQueue(originalQueue)
-      store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
-    }
-  }
+
 
   function handleProgressChange(ev) {
     const newTime = +ev.target.value
@@ -112,7 +96,7 @@ export function PlayBar() {
         <div className="main-buttons">
           <button
             className={`btn desktop-only ${isShuffle ? "no-hover" : ""} `}
-            onClick={() => handleShuffle(queue)}
+            onClick={toggleShuffleQueue}
             title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
           >
             <IconComp

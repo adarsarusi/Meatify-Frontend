@@ -24,6 +24,9 @@ import { StationSearchMore } from "../cmps/StationSearchMore"
 import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 import { updateUser } from "../store/actions/user.actions"
 
+import { socketService } from "../services/socket.service"
+
+
 export function StationDetails() {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -66,11 +69,28 @@ const stationSongs = useMemo(() => {
     .filter(Boolean)
 }, [songs, stationSongsIds])
 
+  useEffect(() => {
+  if (!id) return
+
+  socketService.watchStation(id)
+
+  return () => {
+    socketService.unwatchStation(id)
+  }
+}, [id])
+
 
 useEffect(() => {
   if (!id || selectedStationId === id) return
   loadStation(id)
 }, [id, selectedStationId])
+
+useEffect(() => {
+  if (!id) return
+  if (selectedStationId === null) {
+    navigate("/")
+  }
+}, [id, selectedStationId, navigate])
 
 
 async function onSaveStation(updatedStation) {

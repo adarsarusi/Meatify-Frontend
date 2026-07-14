@@ -1,10 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../../store/actions/player.actions"
-import { shuffle } from "../../services/util.service.js"
-
-import { TOGGLE_SHUFFLE_STATE } from "../../store/reducers/system.reducer.js"
+import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying, toggleShuffleQueue } from "../../store/actions/player.actions"
 
 import { IconComp } from "./IconComp"
 import { LikeBtn } from "../LikeBtn"
@@ -14,9 +11,8 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
 
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [originalQueue, setOriginalQueue] = useState([])
+    const isShuffle = useSelector((storeState) => storeState.playerModule.isShuffle)
 
-    const isShuffle = useSelector((storeState) => storeState.systemModule.isShuffle)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const queue = useSelector((storeState) => storeState.playerModule.queue)
@@ -38,18 +34,6 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
         }
     }, [])
 
-
-    function handleShuffle(queue) {
-        if (!isShuffle) {
-            setOriginalQueue(queue)
-            const shuffledQueue = shuffle(queue)
-            setQueue(shuffledQueue)
-            store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
-        } else {
-            setQueue(originalQueue)
-            store.dispatch({ type: TOGGLE_SHUFFLE_STATE, isShuffle: !isShuffle })
-        }
-    }
 
 
     return (
@@ -74,7 +58,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
 
                 <button
                     className={`btn ${isShuffle ? 'no-hover' : ''} `}
-                    onClick={() => handleShuffle(queue)}
+                    onClick={toggleShuffleQueue}
                     title={isShuffle ? "Disable shuffle" : "Enable shuffle"}
                 >
                     <IconComp
