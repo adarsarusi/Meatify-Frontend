@@ -17,8 +17,10 @@ import { TagDetails } from "./pages/TagDetails.jsx"
 import { PlayBar } from "./cmps/PlayBar.jsx"
 
 import { useEffect } from "react"
-import {socketService, SOCKET_EVENT_STATION_REMOVED,} from "./services/socket.service"
-import { removeStationFromStore } from "./store/actions/station.actions.js"
+import {
+  initSocketListeners,
+  destroySocketListeners,
+} from "./services/socket.listeners.js"
 
 function App() {
   const isExpanded = useSelector(
@@ -26,16 +28,8 @@ function App() {
   )
 
   useEffect(() => {
-    const onStationRemoved = (stationId) => {
-      console.log("Received station-removed:", stationId)
-      removeStationFromStore(stationId)
-    }
-
-    socketService.on(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
-
-    return () => {
-      socketService.off(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
-    }
+    initSocketListeners()
+    return () => destroySocketListeners()
   }, [])
 
   return (

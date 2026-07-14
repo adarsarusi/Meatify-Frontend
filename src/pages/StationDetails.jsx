@@ -74,27 +74,10 @@ const stationSongs = useMemo(() => {
 
   socketService.watchStation(id)
 
-  const onStationUpdated = (updatedStation) => {
-    if (!updatedStation?._id) return
-    if (updatedStation._id !== id) return
-    loadStation(id)
-  }
-
-  const onStationRemoved = (removedStationId) => {
-    if (removedStationId !== id) return
-    showErrorMsg("This playlist was removed")
-    navigate("/")
-  }
-
-  socketService.on(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
-  socketService.on(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
-
   return () => {
-    socketService.off(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
-    socketService.off(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
     socketService.unwatchStation(id)
   }
-}, [id,navigate])
+}, [id])
 
 
 useEffect(() => {

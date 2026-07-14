@@ -42,9 +42,6 @@ export async function removeStation(stationId) {
 
 }
 
-export function removeStationFromStore(stationId) {
-  store.dispatch(getCmdRemoveStation(stationId))
-}
 
 export async function addStation(station) {
   try {
@@ -92,6 +89,19 @@ export async function removeSongFromStation(stationId, songId) {
     throw err
   }
 }
+
+
+
+export function removeStationFromStore(stationId) {
+  store.dispatch(getCmdRemoveStation(stationId))
+}
+
+
+export function updateStationInStore(station) {
+  store.dispatch(getCmdUpdateStation(station))
+}
+
+
 
 function getCmdSetStations(stations) {
   return {
