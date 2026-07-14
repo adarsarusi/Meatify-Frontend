@@ -15,6 +15,9 @@ export const SOCKET_EVENT_STATION_REMOVED = "station-removed"
 export const SOCKET_EVENT_STATION_LIKED_COUNT_UPDATED =
   "station-liked-count-updated"
 
+export const SOCKET_EMIT_USER_WATCH = "watch-user"
+export const SOCKET_EMIT_USER_UNWATCH = "unwatch-user"
+export const SOCKET_EVENT_USER_UPDATED = "user-updated"
 
 const baseUrl = process.env.NODE_ENV === "production" ? "" : "//localhost:3030"
 
@@ -63,6 +66,15 @@ function createSocketService() {
     unwatchStation(stationId) {
       if (!socket || !stationId) return
       socket.emit(SOCKET_EMIT_STATION_UNWATCH, stationId)
+    },
+    watchUser(userId) {
+      if (!socket || !userId) return
+      socket.emit(SOCKET_EMIT_USER_WATCH, userId)
+    },
+
+    unwatchUser(userId) {
+      if (!socket || !userId) return
+      socket.emit(SOCKET_EMIT_USER_UNWATCH, userId)
     },
 
     terminate() {

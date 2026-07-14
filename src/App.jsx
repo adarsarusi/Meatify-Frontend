@@ -22,15 +22,30 @@ import {
   destroySocketListeners,
 } from "./services/socket.listeners.js"
 
+import { socketService } from "./services/socket.service.js"
+
 function App() {
   const isExpanded = useSelector(
     (storeState) => storeState.systemModule.isExpanded,
+  )
+    const loggedInUser = useSelector(
+    (storeState) => storeState.userModule.user
   )
 
   useEffect(() => {
     initSocketListeners()
     return () => destroySocketListeners()
   }, [])
+
+  useEffect(() => {
+  if (!loggedInUser?._id) return
+
+  socketService.watchUser(loggedInUser._id)
+
+  return () => {
+    socketService.unwatchUser(loggedInUser._id)
+  }
+}, [loggedInUser?._id])
 
   return (
     <Router>

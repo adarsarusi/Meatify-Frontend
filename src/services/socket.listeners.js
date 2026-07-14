@@ -1,8 +1,11 @@
+import { store } from "../store/store.js"
+import { SET_USER, SET_WATCHED_USER } from "../store/reducers/user.reducer.js"
 import {
   socketService,
   SOCKET_EVENT_STATION_CREATED,
   SOCKET_EVENT_STATION_REMOVED,
   SOCKET_EVENT_STATION_UPDATED,
+  SOCKET_EVENT_USER_UPDATED
 } from "./socket.service.js"
 
 import {
@@ -20,12 +23,14 @@ export function initSocketListeners() {
   socketService.on(SOCKET_EVENT_STATION_CREATED, onStationCreated)
   socketService.on(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
   socketService.on(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
+  socketService.on(SOCKET_EVENT_USER_UPDATED, onUserUpdated)
 }
 
 export function destroySocketListeners() {
   socketService.off(SOCKET_EVENT_STATION_CREATED, onStationCreated)
   socketService.off(SOCKET_EVENT_STATION_REMOVED, onStationRemoved)
   socketService.off(SOCKET_EVENT_STATION_UPDATED, onStationUpdated)
+  socketService.off(SOCKET_EVENT_USER_UPDATED, onUserUpdated)
 
   isInitialized = false
 }
@@ -40,4 +45,16 @@ function onStationUpdated(station) {
 
 function onStationCreated(station) {
   addStationToStore(station)
+}
+
+function onUserUpdated(updatedUser) {
+  store.dispatch({
+    type: SET_USER,
+    user: updatedUser,
+  })
+
+  store.dispatch({
+    type: SET_WATCHED_USER,
+    user: updatedUser,
+  })
 }
