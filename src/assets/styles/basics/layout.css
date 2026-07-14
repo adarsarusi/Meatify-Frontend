@@ -1,7 +1,7 @@
 .main-container {
     display: grid;
     grid-template-columns: 0.5rem 1fr 0.5rem;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
 
     height: 100vh;
     overflow: hidden;
@@ -17,11 +17,12 @@
 
 .app-layout {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 320px minmax(0, 1fr) 320px;
     grid-template-areas: "l a i";
     gap: 0.5rem;
 
     overflow: hidden;
+    min-height: 0;
     height: 100%;
     width: 100%;
 
@@ -81,4 +82,31 @@
     padding-block-end: 1.5rem;
     margin: 0 auto;
     width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    .main-container>* {
+        grid-column: 1;
+    }
+
+    .app-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "a";
+        gap: 0;
+    }
+
+    .app-library,
+    .artist-info {
+        display: none;
+    }
+
+    .dynamic-area {
+        border-radius: 0;
+    }
 }
