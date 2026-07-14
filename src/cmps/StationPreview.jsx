@@ -10,6 +10,8 @@ export function StationPreview({ station, isSearch }) {
     const location = useLocation()
     const navigate = useNavigate()
 
+    const isMinimizedLibrary = useSelector((storeState) => storeState.systemModule.isMinimizedLibrary)
+
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
     const songs = useSelector((storeState) => storeState.songModule.songs) || []
@@ -42,20 +44,23 @@ export function StationPreview({ station, isSearch }) {
     }
 
     return (
-        <article className={`station-preview ${isSelectedStation ? 'station-preview--active' : ''}`}>
+        <article className={`station-preview 
+            ${isSelectedStation ? 'station-preview--active' : ''} 
+        ${isMinimizedLibrary ? 'station-preview--minimized' : ''} `}
+            onClick={() => { isMinimizedLibrary && navigate(`/station/${station._id}`) }}>
 
             <div className='station-preview__cover-container'>
                 <StationCover entity={station} />
-                <button
+                {!isMinimizedLibrary && <button
                     className="station-preview__btn"
                     onPointerDown={(ev) => ev.stopPropagation()}
                     onClick={onPlayStation}
                 >
                     <IconComp name={isPlaying && isCurrStationPlaying ? 'pause' : 'play'} className="icon--white icon-no-padding" />
-                </button>
+                </button>}
             </div>
 
-            <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
+            {!isMinimizedLibrary && <div className="station-preview__info" onClick={() => navigate(`/station/${station._id}`)}>
                 <p className={`song-preview__title ${isCurrStationPlaying && isPlaying ? "playing-song" : ""} ellipsis-text`}>
                     {station.name}
                 </p>
@@ -65,7 +70,7 @@ export function StationPreview({ station, isSearch }) {
                 ) : (
                     <p className='station-preview__creator-name ellipsis-text'>{station?.createdBy?.fullname}</p>
                 )}
-            </div>
+            </div>}
 
             {isSearch ? (
                 <div className="btn station-preview__station-icon">
@@ -75,7 +80,7 @@ export function StationPreview({ station, isSearch }) {
                         iconSize="icon--sm"
                     />
                 </div>
-            ) : (isCurrStationPlaying && isPlaying) && (
+            ) : (isCurrStationPlaying && isPlaying && !isMinimizedLibrary) && (
                 <div className="station-preview__station-icon">
                     <IconComp name='volume-playing' className='icon--sm icon--active' />
                 </div>

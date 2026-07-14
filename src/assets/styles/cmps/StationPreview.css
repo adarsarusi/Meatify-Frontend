@@ -18,9 +18,15 @@
         cursor: pointer;
 
         .station-cover__hover,
-        .station-preview__btn {
+        .station-preview__btn { 
             visibility: visible;
         }
+    }
+
+    &.station-preview--minimized {
+        gap: 0;
+        padding-inline-end: 0.5rem;
+        margin-inline: 0;
     }
 }
 

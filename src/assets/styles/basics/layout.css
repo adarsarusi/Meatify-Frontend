@@ -64,6 +64,10 @@
         }
     }
 
+    &.minimized {
+        grid-template-columns: auto 3fr 1fr;
+    }
+
     &.fullscreen {
         grid-template-areas: " l l l";
 

@@ -19,6 +19,7 @@ import { PlayBar } from "./cmps/PlayBar.jsx"
 function App() {
 
   const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
+  const isMinimizedLibrary = useSelector(storeState => storeState.systemModule.isMinimizedLibrary)
 
   return (
     <Router>
@@ -26,7 +27,9 @@ function App() {
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main className={isExpanded ? 'app-layout expanded' : 'app-layout'}>
+        <main className={`
+        ${isExpanded ? 'expanded' : ''}
+        ${isMinimizedLibrary ? 'minimized' : ''} app-layout`}>
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
