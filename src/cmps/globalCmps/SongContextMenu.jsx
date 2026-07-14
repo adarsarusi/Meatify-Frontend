@@ -27,7 +27,6 @@ export function SongContextMenu({ song }) {
     )
 
    const isSongInStation = station?.songs?.includes(song._id)
-    console.log(isSongInStation);
     
 
     function handleBlur(ev) {
