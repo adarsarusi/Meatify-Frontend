@@ -1,3 +1,8 @@
+.playlist-table {
+    padding-block-end: 1rem;
+}
+
+
 .playlist-table__row {
     display: flex;
     justify-content: space-between;
@@ -12,7 +17,7 @@
     letter-spacing: 0.5px;
 
     border-bottom: 1px solid var(--border-subdued, #ffffff1a);
-    padding-inline: 1rem ;
+    padding-inline: 1rem;
 }
 
 .playlist-table__index {
