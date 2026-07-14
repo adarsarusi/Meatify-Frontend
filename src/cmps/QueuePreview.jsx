@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { IconComp } from './globalCmps/IconComp'
 
 import { StationCover } from './globalCmps/StationCover'
-import { setCurrentSong } from "../store/actions/player.actions.js"
+import { setCurrentSong, toggleIsPlaying } from "../store/actions/player.actions.js"
 import { useSelector } from 'react-redux'
 import { SongContextMenu } from './globalCmps/SongContextMenu.jsx'
 
@@ -16,6 +16,11 @@ export function QueuePreview({ song }) {
     const currentSong = useSelector(
         (storeState) => storeState.playerModule.currentSong,
     )
+
+    const isPlaying = useSelector(
+        (storeState) => storeState.playerModule.isPlaying,
+    )
+
     const isCurrentSong = currentSong?._id === song?._id
 
 
@@ -34,8 +39,15 @@ export function QueuePreview({ song }) {
         <div className='queue-preview__cover-container'>
             <StationCover entity={song} />
             <button className="queue-preview__btn queue-preview__btn--play"
-                onClick={() => setCurrentSong(song)}>
-                <IconComp name="play" className="icon--white" />
+                onClick={() => {
+                    if (isCurrentSong) {
+                        toggleIsPlaying()
+                    } else {
+                        setCurrentSong(song)
+                    }
+                }}>
+                <IconComp name={isPlaying && isCurrentSong ? 'pause' : 'play'} className="icon--white icon-no-padding" />
+
             </button>
         </div>
 

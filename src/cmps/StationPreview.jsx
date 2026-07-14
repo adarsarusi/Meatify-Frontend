@@ -46,16 +46,12 @@ export function StationPreview({ station, isSearch }) {
 
             <div className='station-preview__cover-container'>
                 <StationCover entity={station} />
-                <button 
+                <button
                     className="station-preview__btn"
                     onPointerDown={(ev) => ev.stopPropagation()}
                     onClick={onPlayStation}
                 >
-                    {isCurrStationPlaying && isPlaying ? (
-                        <IconComp name="pause" className="icon--white icon-no-padding" />
-                    ) : (
-                        <IconComp name="play" className="icon--white icon-no-padding" />
-                    )}
+                    <IconComp name={isPlaying && isCurrStationPlaying ? 'pause' : 'play'} className="icon--white icon-no-padding" />
                 </button>
             </div>
 
@@ -84,7 +80,7 @@ export function StationPreview({ station, isSearch }) {
                     <IconComp name='volume-playing' className='icon--sm icon--active' />
                 </div>
             )}
-            
+
         </article>
     )
 }
