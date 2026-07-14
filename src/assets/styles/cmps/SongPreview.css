@@ -50,6 +50,11 @@
         flex: 0 0 var(--index-column-width);
         width: var(--index-column-width);
         height: 100%;
+
+        &.not-mobile{
+            display: grid;
+        }
+
         place-items: center;
     }
 

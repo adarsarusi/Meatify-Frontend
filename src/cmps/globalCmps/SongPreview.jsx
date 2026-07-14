@@ -82,7 +82,7 @@ export function SongPreview({ song, index, isSearchResult = false }) {
         }
       }}
     >
-      <div className="song-preview__index-wrap">
+      <div className={`song-preview__index-wrap ${isMobile ? "" : "not-mobile"}  `}>
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
           <span className="song-preview__index">{index}</span>}
         <div className="song-preview__play">

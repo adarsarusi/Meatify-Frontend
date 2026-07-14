@@ -80,8 +80,10 @@ function App() {
 
           {!isMobile && <ArtistInfo />}
         </main>
-        <PlayBar />
-        <MobileDock />
+        <div className="mobile-menu">
+          <PlayBar />
+          <MobileDock />
+        </div>
       </div>
     </Router>
   )

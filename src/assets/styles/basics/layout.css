@@ -103,6 +103,7 @@
         grid-template-areas:
             "a";
         gap: 0;
+
     }
 
     .app-library,
@@ -113,4 +114,10 @@
     .dynamic-area {
         border-radius: 0;
     }
+
+    .mobile-menu{
+        container-type: normal;
+        margin-block-start: 17cqh;
+    }
+
 }
