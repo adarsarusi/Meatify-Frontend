@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
+import { useMediaQuery } from "react-responsive"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -18,6 +19,7 @@ import { SquareList } from "./globalCmps/SquareList.jsx"
 
 export function Library({ mobile = false }) {
   const navigate = useNavigate()
+  const isMobile = useMediaQuery({ maxWidth: 768 })
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations,
   )
@@ -28,7 +30,6 @@ export function Library({ mobile = false }) {
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,6 +43,7 @@ export function Library({ mobile = false }) {
   }, [])
 
   function toggleMinimize() {
+    if (isMobile) return
     store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: !isMinimizedLibrary })
   }
 
@@ -69,10 +71,6 @@ export function Library({ mobile = false }) {
 
   function toggleExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
-  }
-
-  function toggleMinimize() {
-    store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: !isMinimizedLibrary })
   }
 
 

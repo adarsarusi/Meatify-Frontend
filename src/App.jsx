@@ -63,7 +63,7 @@ function App() {
         <main
           className={`
         ${isExpanded ? "expanded" : ""}
-        ${isMinimizedLibrary ? "minimized" : ""} app-layout`}
+        ${isMinimizedLibrary && !isMobile ? "minimized" : ""} app-layout`.trim()}
         >
           {!isMobile && <Library />}
 

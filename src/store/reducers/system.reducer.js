@@ -5,6 +5,7 @@ export const TOGGLE_SQUARE_LIBRARY = 'TOGGLE_SQUARE_LIBRARY'
 export const TOGGLE_OPEN_QUEUE = 'TOGGLE_OPEN_QUEUE'
 export const TOGGLE_MINIMIZE_ARTIST = 'TOGGLE_MINIMIZE_ARTIST'
 export const TOGGLE_MINIMIZE_LIBRARY = 'TOGGLE_MINIMIZE_LIBRARY'
+export const TURN_OFF_MINIMIZE_LIBRARY = 'TURN_OFF_MINIMIZE_LIBRARY'
 
 const initialState = {
   isLoading: false,
@@ -27,6 +28,8 @@ export function systemReducer(state = initialState, action = {}) {
       return { ...state, isExpanded: action.isExpanded }
     case TOGGLE_MINIMIZE_LIBRARY:
       return { ...state, isMinimizedLibrary: action.isMinimizedLibrary }
+    case TURN_OFF_MINIMIZE_LIBRARY:
+      return { ...state, isMinimizedLibrary: false}
     case TOGGLE_MINIMIZE_ARTIST:
       return { ...state, isMinimizedArtist: action.isMinimizedArtist }
     case TOGGLE_SQUARE_LIBRARY:
