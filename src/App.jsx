@@ -25,15 +25,14 @@ import {
 import { socketService } from "./services/socket.service.js"
 
 function App() {
-
-  const isExpanded = useSelector(storeState => storeState.systemModule.isExpanded)
-  const isMinimizedLibrary = useSelector(storeState => storeState.systemModule.isMinimizedLibrary)
   const isExpanded = useSelector(
     (storeState) => storeState.systemModule.isExpanded,
   )
-    const loggedInUser = useSelector(
-    (storeState) => storeState.userModule.user
+  const isMinimizedLibrary = useSelector(
+    (storeState) => storeState.systemModule.isMinimizedLibrary,
   )
+
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   useEffect(() => {
     initSocketListeners()
@@ -41,14 +40,14 @@ function App() {
   }, [])
 
   useEffect(() => {
-  if (!loggedInUser?._id) return
+    if (!loggedInUser?._id) return
 
-  socketService.watchUser(loggedInUser._id)
+    socketService.watchUser(loggedInUser._id)
 
-  return () => {
-    socketService.unwatchUser(loggedInUser._id)
-  }
-}, [loggedInUser?._id])
+    return () => {
+      socketService.unwatchUser(loggedInUser._id)
+    }
+  }, [loggedInUser?._id])
 
   return (
     <Router>
@@ -56,9 +55,11 @@ function App() {
         <AppHeader />
         {/* <UserMsg /> */}
 
-        <main className={`
-        ${isExpanded ? 'expanded' : ''}
-        ${isMinimizedLibrary ? 'minimized' : ''} app-layout`}>
+        <main
+          className={`
+        ${isExpanded ? "expanded" : ""}
+        ${isMinimizedLibrary ? "minimized" : ""} app-layout`}
+        >
           <Library />
           <Routes>
             {/* explore, browse, stationdetails, songdetails - dynamic area */}
