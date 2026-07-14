@@ -26,7 +26,7 @@
     pointer-events: auto;
 
     &:hover {
-        background: var(--background-elevated-base);
+        background: var(--background-elevated-highlight);
         color: var(--text-base);
 
         .song-preview__controls {
@@ -76,6 +76,7 @@
     .song-preview__actions {
         position: relative;
         display: flex;
+        justify-content: space-between;
         align-items: center;
         flex: 1 1 var(--last-min-width);
         gap: 1rem;
@@ -124,6 +125,10 @@
 
 .song-preview__btn {
     visibility: hidden;
+}
+.song-preview__duration{
+    min-width: 2rem;
+    text-align:end ;
 }
 
 .song-preview__duration,

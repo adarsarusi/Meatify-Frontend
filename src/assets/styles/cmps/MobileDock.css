@@ -1,9 +1,5 @@
 .mobile-dock {
     display: none;
-
-    position: fixed;
-    inset: auto 0 0;
-
     height: 64px;
 
     justify-content: space-around;

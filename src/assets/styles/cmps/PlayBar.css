@@ -152,10 +152,10 @@
   transition: opacity .15s ease;
 }
 
-/* .volume-container:hover .volume-bar::-webkit-slider-thumb,
+.volume-container:hover .volume-bar::-webkit-slider-thumb,
 .volume-bar:active::-webkit-slider-thumb {
   opacity: 1;
-} */
+}
 
 .playbar-actions__container {
   display: grid;
@@ -166,11 +166,6 @@
 
 @media (max-width: 768px) {
   .player-container {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 64px;
-
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
@@ -180,9 +175,7 @@
 
     background: var(--background-base);
     border-top: 1px solid #2a2a2a;
-
-    z-index: 999;
-  }
+ }
 
   .song-info-placeholder {
     width: 100%;
