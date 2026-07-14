@@ -1,8 +1,10 @@
 export const SET_SONGS = 'SET_SONGS'
 export const UPDATE_SONGS = 'UPDATE_SONGS'
+export const SET_SEARCH_SONGS = 'SET_SEARCH_SONGS'
 
 const initialState = {
     songs: [],
+    searchSongs: [],
 }
 
 export function songReducer(state = initialState, action = {}) {
@@ -13,6 +15,11 @@ export function songReducer(state = initialState, action = {}) {
                 songs: action.songs,
             }
 
+        case SET_SEARCH_SONGS:
+            return {
+                ...state,
+                searchSongs: action.songs,
+            }
 
         case UPDATE_SONGS:
             return {

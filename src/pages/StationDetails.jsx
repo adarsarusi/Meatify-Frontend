@@ -51,11 +51,15 @@ export function StationDetails() {
     return songs.filter(song => user.likedSongIds.includes(song._id.toString()))
   }, [songs, user?.likedSongIds])
 
+  const stationSongsIds = station?.songs || []
+
   const stationSongs = useMemo(() => {
-    if (!station?.songs?.length || !Array.isArray(songs)) return []
-    const stationSongIds = new Set(station.songs.map(id => id.toString()))
-    return songs.filter(song => stationSongIds.has(song._id.toString()))
-  }, [songs, station?.songs])
+    if (!stationSongsIds.length || !Array.isArray(songs)) return []
+    const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
+    return stationSongsIds
+      .map(id => idToSong.get(id.toString()))
+      .filter(Boolean)
+  }, [songs, stationSongsIds])
 
 
   useEffect(() => {
@@ -123,7 +127,6 @@ export function StationDetails() {
       ...station,
       songs: updatedSongs,
     }
-
     updateStation(updatedStation)
   }
 

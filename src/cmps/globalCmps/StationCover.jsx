@@ -32,7 +32,7 @@ export function StationCover({ entity }) {
                     <div className="playlist-placeholder">
                         <IconComp
                             name="music"
-                            className="icon--xl icon--muted"
+                            className="icon--resizable icon--muted"
                         />
                     </div>
                 )}
