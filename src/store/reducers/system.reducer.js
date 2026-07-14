@@ -4,6 +4,8 @@ export const TOGGLE_EXPAND_LIBRARY = 'TOGGLE_EXPAND_LIBRARY'
 export const TOGGLE_SQUARE_LIBRARY = 'TOGGLE_SQUARE_LIBRARY'
 export const TOGGLE_OPEN_QUEUE = 'TOGGLE_OPEN_QUEUE'
 export const TOGGLE_SHUFFLE_STATE = 'TOGGLE_SHUFFLE_STATE'
+export const TOGGLE_MINIMIZE_ARTIST = 'TOGGLE_MINIMIZE_ARTIST'
+export const TOGGLE_MINIMIZE_LIBRARY = 'TOGGLE_MINIMIZE_LIBRARY'
 
 const initialState = {
   isLoading: false,
@@ -11,6 +13,8 @@ const initialState = {
   isSquare: false,
   isShuffle: false,
   isQueueOpened: false,
+  isMinimizedLibrary: false,
+  isMinimizedArtist: false,
 }
 
 export function systemReducer(state = initialState, action = {}) {
@@ -25,6 +29,10 @@ export function systemReducer(state = initialState, action = {}) {
       return { ...state, isShuffle: action.isShuffle }
     case TOGGLE_EXPAND_LIBRARY:
       return { ...state, isExpanded: action.isExpanded }
+    case TOGGLE_MINIMIZE_LIBRARY:
+      return { ...state, isMinimizedLibrary: action.isMinimizedLibrary }
+    case TOGGLE_MINIMIZE_ARTIST:
+      return { ...state, isMinimizedArtist: action.isMinimizedArtist }
     case TOGGLE_SQUARE_LIBRARY:
       return { ...state, isSquare: action.isSquare }
     default: return state

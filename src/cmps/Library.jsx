@@ -10,7 +10,7 @@ import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
 import { stationService } from "../services/station/"
 import { StationList } from "./StationList"
 import { StationFilter } from "./StationFilter.jsx"
-import { TOGGLE_EXPAND_LIBRARY } from "../store/reducers/system.reducer.js"
+import { TOGGLE_EXPAND_LIBRARY, TOGGLE_MINIMIZE_LIBRARY } from "../store/reducers/system.reducer.js"
 import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
@@ -22,10 +22,29 @@ export function Library() {
     (storeState) => storeState.stationModule.stations,
   )
 
-  const [filterBy, setFilterBy] = useState({ txt: "" })
+  const isMinimizedLibrary = useSelector((storeState) => storeState.systemModule.isMinimizedLibrary)
+
+  const [filterBy, setFilterBy] = useState({ txt: '' })
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
-  const isSquare = useSelector((storeState) => storeState.systemModule.isSquare)
+  const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      const shouldBeMinimized = window.innerWidth < 1300
+      store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: shouldBeMinimized })
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  function toggleMinimize() {
+    store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: !isMinimizedLibrary })
+  }
+
 
   const loggedinUser = useSelector((storeState) => storeState.userModule.user)
   const isExpanded = useSelector(
@@ -48,9 +67,14 @@ export function Library() {
     [stations, loggedinUser?._id, loggedinUser?.likedStationIds],
   )
 
-  function onExpand() {
+  function toggleExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
   }
+
+  function toggleMinimize() {
+    store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: !isMinimizedLibrary })
+  }
+
 
   useEffect(() => {
     loadSongs()
@@ -82,29 +106,35 @@ export function Library() {
     }
   }
 
+
   return (
     <section className="app-library">
-      <div className="library-header">
-        <h3 className="library-header__title">Your Library</h3>
+      <div className={`library-header ${isMinimizedLibrary ? 'library-header--minimized' : ''} `}>
+        <button
+          className={`btn minimize-button ${isMinimizedLibrary ? 'minimized' : ''}`}
+          onClick={toggleMinimize}
+        >
+          <IconComp name={isMinimizedLibrary ? 'collapse-right' : 'collapse-left'}
+            className={`${isMinimizedLibrary ? 'icon--md' : 'icon--sm'} icon--muted`} />
+          {!isMinimizedLibrary && 'Your Library'}
+        </button>
 
         <section className="library-controls">
           <button onClick={onCreateStation} className="btn bg-button">
             <IconComp name="create" className="icon--sm icon--muted" />
-            <span className="btn-text">Create</span>
+            {!isMinimizedLibrary && <span className="btn-text">Create</span>}
           </button>
-          <button onClick={onExpand} className="btn hover-bg">
-            {isExpanded ? (
-              <IconComp name="unexpend" className="icon--sm icon--muted" />
-            ) : (
-              <IconComp name="expend" className="icon--sm icon--white" />
-            )}
-          </button>
+          {!isMinimizedLibrary && <button onClick={toggleExpand} className="btn hover-bg">
+            <IconComp name={isExpanded ? 'un-expend' : 'expend'} className="icon--sm icon--muted" />
+          </button>}
         </section>
       </div>
 
-      <div className="filter">
-        <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} />
-      </div>
+      {!isMinimizedLibrary && <div className="filter">
+        <StationFilter
+          filterBy={filterBy}
+          setFilterBy={setFilterBy} />
+      </div>}
 
       <ScrollArea>
         <div

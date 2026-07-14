@@ -97,6 +97,46 @@
         }
     }
 
+    &.minimize-button {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: start;
+        align-items: center;
+
+        gap: 0;
+
+        font-size: var(--font-lg);
+        font-weight: 700;
+        color: var(--essential-base);
+
+        transform: none;
+
+        transition: all ease-out .2s;
+        text-wrap: nowrap;
+
+        .icon {
+            display: none;
+        }
+
+        &:hover {
+            transform: none;
+
+            .icon {
+                color: var(--icon--white);
+            }
+
+        }
+
+        &.minimized {
+            .icon {
+                display: inline-block;
+            }
+            
+        }
+
+
+    }
+
     &.bg-button {
         display: grid;
         grid-auto-flow: column;
@@ -134,7 +174,7 @@
 
         padding: 0.5rem 1rem;
         border-radius: 9999px;
-
+        color: var(--text-base);
         transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
 
         &:hover {

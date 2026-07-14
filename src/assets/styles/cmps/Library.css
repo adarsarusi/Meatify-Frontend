@@ -1,10 +1,22 @@
 .app-library {
     display: flex;
     flex-direction: column;
-
+    min-height: fit-content;
     min-height: 0;
 
-    min-width: fit-content;
+    &:hover {
+        .minimize-button {
+            gap: 0.5rem;
+
+            .icon {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.app-library--minimize {
+    width: 5rem;
 }
 
 .library-header {
@@ -13,19 +25,30 @@
     justify-content: space-between;
     align-items: center;
 
-    height: 4rem;
-   
-    padding: 1rem 1.5rem 0.5rem;
-    
-    >.library-controls {
-        display: flex;
+    height: fit-content;
+
+    padding: 1rem 1.5rem 0.5rem 1rem;
+
+    .btn.bg-button {
+        justify-self: end;
     }
-    
-    .library-header__title {
-        font-weight: 700;
-        text-wrap: nowrap;
+
+    &.library-header--minimized {
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        grid-template-rows: auto auto;
+        row-gap: 1rem;
+        padding: 1rem;
+
+        .btn.bg-button {
+            padding-inline: 0;
+            margin: 0.2rem;
+            /* padding: 1rem; */
+        }
     }
 }
+
 
 .library-content {
     display: flex;
@@ -51,7 +74,9 @@
     gap: 0.5rem;
 }
 
-@media (max-width: 1600px) {
+
+
+@media (max-width:1600px) {
     .btn.bg-button {
         padding: 0;
     }
@@ -59,4 +84,5 @@
     .btn-text {
         display: none;
     }
+
 }

@@ -89,6 +89,7 @@
   --encore-border-radius-rounded: 9999px;
   --encore-overlay-box-shadow: 0 4px 12px 0 #0000004d;
   --encore-overlay-drop-shadow: 0 4px 6px #0000004d;
+  --encore-under-drop-shadow: 0 6px 10px #0009;
   --encore-focus-box-shadow: 0 3px 0 0;
   --encore-sidebar-base-width: 200px;
   --encore-z-index-popover: 1060;
