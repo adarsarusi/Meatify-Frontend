@@ -22,6 +22,7 @@ import { StationOptions } from "../cmps/globalCmps/StationOptions"
 import { ScrollArea } from "../cmps/globalCmps/ScrollArea"
 import { StationSearchMore } from "../cmps/StationSearchMore"
 import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
+import { updateUser } from "../store/actions/user.actions"
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -43,105 +44,130 @@ export function StationDetails() {
 
   const isLikedStation = station?.tags?.includes("Liked")
 
+
+  const likedSongIds = user?.likedSongIds || []
+
   const likedSongs = useMemo(() => {
-    if (!Array.isArray(songs) || !Array.isArray(user?.likedSongIds)) return []
-    return songs.filter(song => user.likedSongIds.includes(song._id.toString()))
-  }, [songs, user?.likedSongIds])
-
-  const stationSongsIds = station?.songs || []
-
-  const stationSongs = useMemo(() => {
-    if (!stationSongsIds.length || !Array.isArray(songs)) return []
+    if (!Array.isArray(songs) || !likedSongIds.length) return []
     const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
-    return stationSongsIds
+    return likedSongIds
       .map(id => idToSong.get(id.toString()))
       .filter(Boolean)
-  }, [songs, stationSongsIds])
+  }, [songs, likedSongIds])
 
 
-  useEffect(() => {
-    if (!id || selectedStationId === id) return
-    loadStation(id)
-  }, [id, selectedStationId])
+const stationSongsIds = station?.songs || []
+
+const stationSongs = useMemo(() => {
+  if (!stationSongsIds.length || !Array.isArray(songs)) return []
+  const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
+  return stationSongsIds
+    .map(id => idToSong.get(id.toString()))
+    .filter(Boolean)
+}, [songs, stationSongsIds])
 
 
-  async function onSaveStation(updatedStation) {
-    try {
-      await updateStation(updatedStation)
+useEffect(() => {
+  if (!id || selectedStationId === id) return
+  loadStation(id)
+}, [id, selectedStationId])
 
-      showSuccessMsg("Playlist updated")
-    } catch (err) {
-      console.log(err)
-      showErrorMsg("Couldn't update playlist")
-    }
+
+async function onSaveStation(updatedStation) {
+  try {
+    await updateStation(updatedStation)
+
+    showSuccessMsg("Playlist updated")
+  } catch (err) {
+    console.log(err)
+    showErrorMsg("Couldn't update playlist")
   }
+}
 
-  async function onRemoveStation() {
-    const isConfirmed = confirm(`Delete "${station.name}"?`)
+async function onRemoveStation() {
+  const isConfirmed = confirm(`Delete "${station.name}"?`)
 
-    if (!isConfirmed) return
+  if (!isConfirmed) return
 
-    try {
-      await removeStation(station._id)
+  try {
+    await removeStation(station._id)
 
-      showSuccessMsg("Station removed")
-      navigate("/")
-    } catch (err) {
-      console.log("Cannot remove station", err)
-      showErrorMsg("Couldn't remove station")
-    }
+    showSuccessMsg("Station removed")
+    navigate("/")
+  } catch (err) {
+    console.log("Cannot remove station", err)
+    showErrorMsg("Couldn't remove station")
   }
+}
 
-  function handleReorderSongs(updatedSongs) {
-    const updatedStation = {
-      ...station,
-      songs: updatedSongs,
-    }
-    updateStation(updatedStation)
+function handleReorderSongs(updatedSongs) {
+  const updatedStation = {
+    ...station,
+    songs: updatedSongs,
   }
+  updateStation(updatedStation)
+}
 
-  if (!station && selectedStationId !== id)
-    return (
-      <section className="station-details">
+async function handleReorderLikedSongs(updatedIds) {
+  const updatedUser = {
+    ...user,
+    likedSongIds: updatedIds,
+  }
+  updateUser(updatedUser)
+}
+
+if (!station && selectedStationId !== id)
+  return (
+    <section className="station-details">
+      <div className="station-container">
+        <div className="station-header">
+          <LoadingAnimation />
+          <p>Loading station...</p>
+        </div>
+      </div>
+    </section>
+  )
+if (!station) {
+  return (
+    <section className="station-details">
+      <ScrollArea>
         <div className="station-container">
           <div className="station-header">
             <LoadingAnimation />
-            <p>Loading station...</p>
+            <p>Station not found</p>
           </div>
         </div>
-      </section>
-    )
-  if (!station) {
-    return (
-      <section className="station-details">
-        <ScrollArea>
-          <div className="station-container">
-            <div className="station-header">
-              <LoadingAnimation />
-              <p>Station not found</p>
-            </div>
-          </div>
-        </ScrollArea>
-      </section>
-    )
-  }
-
-  const isOwner = loggedInUser?._id === station.createdBy?._id
-
-  const tagData = TAGS_DATA.find(
-    currTag => currTag.title === station.tags[0]
+      </ScrollArea>
+    </section>
   )
+}
 
-  return (
-    <section className="station-details dynamic-area"
-      style={{
-        '--tag-color': tagData?.color || '#509BF5',
-      }}>
-      <ScrollArea>
-        <section className="station-details__container">
-          <section className="station-details__header">
-            <StationHeader
-              user={user}
+const isOwner = loggedInUser?._id === station.createdBy?._id
+
+const tagData = TAGS_DATA.find(
+  currTag => currTag.title === station.tags[0]
+)
+
+return (
+  <section className="station-details dynamic-area"
+    style={{
+      '--tag-color': tagData?.color || '#509BF5',
+    }}>
+    <ScrollArea>
+      <section className="station-details__container">
+        <section className="station-details__header">
+          <StationHeader
+            user={user}
+            stationSongs={stationSongs}
+            station={station}
+            isOwner={isOwner}
+            onRemoveStation={onRemoveStation}
+            onEditStation={() => setIsEditOpen(true)}
+          />
+        </section>
+        <div className="station-details__content">
+          <section className="station-details__options dynamic-max-width">
+            <StationOptions
               stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}
@@ -149,48 +175,38 @@ export function StationDetails() {
               onEditStation={() => setIsEditOpen(true)}
             />
           </section>
-          <div className="station-details__content">
-            <section className="station-details__options dynamic-max-width">
-              <StationOptions
-                stationSongs={stationSongs}
-                station={station}
-                isOwner={isOwner}
-                onRemoveStation={onRemoveStation}
-                onEditStation={() => setIsEditOpen(true)}
+
+          {isEditOpen && (
+            <EditModal
+              title="Edit station"
+              entity={station}
+              onClose={() => setIsEditOpen(false)}
+              onSave={onSaveStation}
+            />
+          )}
+
+          <section className="station-details__song-list dynamic-max-width">
+
+            {isLikedStation ?
+              <SongList
+                songs={likedSongs || []}
+                isSortable
+                onReorder={handleReorderLikedSongs}
               />
-            </section>
-
-            {isEditOpen && (
-              <EditModal
-                title="Edit station"
-                entity={station}
-                onClose={() => setIsEditOpen(false)}
-                onSave={onSaveStation}
+              :
+              <SongList
+                songs={stationSongs || []}
+                isSortable
+                onReorder={handleReorderSongs}
               />
-            )}
+            }
 
-            <section className="station-details__song-list dynamic-max-width">
-
-              {isLikedStation ?
-                <SongList
-                  songs={likedSongs || []}
-                  isSortable
-                  onReorder={handleReorderSongs}
-                />
-                :
-                <SongList
-                  songs={stationSongs || []}
-                  isSortable
-                  onReorder={handleReorderSongs}
-                />
-              }
-
-              <StationSearchMore station={station} songs={songs} />
-            </section>
-          </div>
-        </section>
-      </ScrollArea>
-    </section>
-  )
-}
+            <StationSearchMore station={station} songs={songs} />
+          </section>
+        </div>
+      </section>
+    </ScrollArea>
+  </section>
+)
+  }
 
