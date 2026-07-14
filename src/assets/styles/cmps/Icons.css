@@ -21,8 +21,6 @@
 
 /* --- Base --- */
 .icon {
-  position: relative;
-
   display: inline-block;
   width: var(--icon-size);
   aspect-ratio: 1 / 1;

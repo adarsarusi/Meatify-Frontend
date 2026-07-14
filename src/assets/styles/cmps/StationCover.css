@@ -47,14 +47,22 @@
     height: 100%;
     background-color: var(--background-elevated-highlight);
 
-    .icon {
-        width: 50%;
-        height: 50%;
+    >div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
 
-        min-width: var(--icon-size-sm);
-        max-width: var(--icon-size-3xl);
+        .icon {
+            width: 50%;
+            height: 50%;
 
-        min-height: var(--icon-size-sm);
-        max-height: var(--icon-size-3xl);
+            min-width: var(--icon-size-sm);
+            max-width: var(--icon-size-3xl);
+
+            min-height: var(--icon-size-sm);
+            max-height: var(--icon-size-3xl);
+        }
     }
 }
