@@ -48,6 +48,7 @@
         position: relative;
         grid-area: i;
         min-height: 0;
+        min-width: 20rem;
     }
 
     .artist-info,

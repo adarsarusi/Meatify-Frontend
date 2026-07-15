@@ -106,7 +106,7 @@ export function Library({ mobile = false }) {
 
 
   return (
-    <section className={mobile ? "library-page" : "app-library"}>
+    <section className={mobile ? "library-page" : `app-library ${isMinimizedLibrary ? 'app-library--minimize' : ''} `}>
       <div className={`library-header ${isMinimizedLibrary ? 'library-header--minimized' : ''} `}>
         <button
           className={`btn minimize-button ${isMinimizedLibrary ? 'minimized' : ''}`}

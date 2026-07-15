@@ -9,7 +9,9 @@ export function SongListTable() {
                 <div className="playlist-table__album">Album</div>
                 <div className="playlist-table__date">Date added</div>
                 <div className="playlist-table__duration">
-                    <IconComp name="clock" className='icon--sm'/>
+                    <div className='playlist-transparent-item'></div>
+                    <IconComp name="clock" className='icon--sm' />
+                    <div className='playlist-transparent-item'></div>
                 </div>
             </div>
         </div>

@@ -1,53 +1,47 @@
 :root {
-  --icon-size-xs: 0.875rem;
-  /* 16px */
-  --icon-size-sm: 1rem;
-  /* 16px */
-  --icon-size: 1.25rem;
-  /* 20px — default */
-  --icon-size-md: 1.5rem;
-  /* 24px */
-  --icon-size-lg: 2rem;
-  /* 32px */
-  --icon-size-xl: 3rem;
-  /* 48px */
-  --icon-size-2xl: 4rem;
-  /* 64px */
-  --icon-size-3xl: 5rem;
-  /* 80px */
+  /* Icon sizes */
+  --icon-size-xs: 0.875rem; /* 14px */
+  --icon-size-sm: 1rem; /* 16px */
+  --icon-size: 1.25rem; /* 20px default */
+  --icon-size-md: 1.5rem; /* 24px */
+  --icon-size-lg: 2rem; /* 32px */
+  --icon-size-xl: 3rem; /* 48px */
+  --icon-size-2xl: 4rem; /* 64px */
+  --icon-size-3xl: 5rem; /* 80px */
+
   --icon-resizable: clamp(0.9rem, 18cqi, 2rem);
-  /* 100% of the parent container */
 }
 
-/* --- Base --- */
+/* Wrapper: used only for positioning the dot */
+.icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+/* Base SVG */
 .icon {
   display: inline-block;
   width: var(--icon-size);
-  aspect-ratio: 1 / 1;
+  height: var(--icon-size);
   flex-shrink: 0;
+  overflow: visible;
+
   vertical-align: middle;
   color: inherit;
   fill: currentColor;
-  transition: color 160ms ease, transform 160ms ease, opacity 160ms ease;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
 }
 
-
-.icon--under-dot {
-  position: relative;
-
-  &::after {
-    content: '\2022';
-    color: var(--icon--active);
-    position: absolute;
-    bottom: -12px;
-    left: 54%;
-    transform: translateX(-50%);
-    font-size: var(--font-base);
-    line-height: 1;
-  }
-}
-
-/* --- Sizes --- */
+/* Sizes */
 .icon--xs {
   width: var(--icon-size-xs);
   height: var(--icon-size-xs);
@@ -88,7 +82,7 @@
   height: var(--icon-resizable);
 }
 
-/* --- Colors --- */
+/* Colors: uses your existing app variables */
 .icon--muted {
   color: var(--icon--muted);
 }
@@ -97,14 +91,51 @@
   color: var(--icon--white);
 }
 
-.icon--active {
-  color: var(--icon--active);
-}
-
 .icon--black {
   color: var(--icon--black);
 }
 
+.icon--active {
+  color: var(--icon--active);
+}
+
 .icon--lightgreen {
   color: var(--icon--lightgreen);
+}
+
+/*
+  The class is on the wrapper div:
+  <div className="icon-wrapper icon--under-dot">
+*/
+.icon--under-dot::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+
+  left: 50%;
+  bottom: -0.5rem;
+
+  width: 0.25rem;
+  height: 0.25rem;
+
+  border-radius: 50%;
+  background-color: var(--icon--active);
+
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.icon-wrapper:active .icon {
+  transform: scale(0.96);
+}
+
+.icon--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    transition: none;
+  }
 }

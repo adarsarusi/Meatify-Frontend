@@ -1,11 +1,14 @@
 import iconsUrl from '../../assets/icons/Icons.svg'
 
-export function IconComp({ name, size = 24, className = '', label, isDot = false }) {
+export function IconComp({
+    name,
+    className = '',
+    label,
+    isDot = false,
+}) {
     return (
-        <div className={`${isDot ? 'icon--under-dot' : ''}`}>
+        <div className={`icon-wrapper ${isDot ? 'icon--under-dot' : ''}`}>
             <svg
-                width={size}
-                height={size}
                 className={`icon icon-${name} ${className}`.trim()}
                 aria-hidden={!label}
                 aria-label={label}

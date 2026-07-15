@@ -42,15 +42,26 @@
     min-width: 0;
 }
 
-.playlist-table__duration {
-    flex: 1 1 var(--last-min-width);
-    display: grid;
-    place-items: center;
-
-    /* .icon {
-        margin-inline-start: 1.5rem;
-    } */
+.playlist-transparent-item {
+    width: 36px;
+    height: 32px;
 }
+
+.playlist-table__duration {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 var(--last-min-width);
+    gap: 1rem;
+
+
+    .icon-wrapper {
+        display: flex;
+        min-width: 26px;
+        justify-content: end;
+    }
+}
+
 
 @media (max-width: 1280px) {
 

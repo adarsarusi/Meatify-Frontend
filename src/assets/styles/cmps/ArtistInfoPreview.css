@@ -24,6 +24,15 @@
         font-weight: 700;
     }
 
+}
+
+.entity-artist-preview__meta-text {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
     .entity-artist-preview__song-title {
         font-size: var(--font-2xl);
         font-weight: 700;
@@ -36,23 +45,24 @@
     }
 }
 
+.entity-artist-song-list__header {
+    font-size: var(--font--md);
+    font-weight: 600;
+    padding: 0.5rem;
+}
 
 .entity-artist-preview__song-list {
     display: grid;
     gap: 0.75rem;
 
+    padding-inline: 0.5rem;
+    padding-block: 1rem;
     width: 100%;
     background-color: var(--background-elevated-base);
-    padding: 1rem;
     border-radius: var(--global-border-radius);
 
     .queue-preview:hover {
         background-color: var(--background-tinted-press);
-    }
-
-    >p {
-        font-size: var(--font--md);
-        font-weight: 600;
     }
 
 }
@@ -74,16 +84,29 @@
         font-size: var(--font-sm);
     }
 
+    .entity-artist-description__follow-contain {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+
     .entity-artist-description__name {
         display: grid;
         grid-auto-flow: column;
         align-items: center;
+
         justify-content: start;
         gap: 0.5rem;
 
         >p {
             font-weight: 600;
             font-size: var(--font-base);
+            line-height: 1;
+        }
+
+        svg {
+            transform: translateY(-1px);
         }
     }
 }
@@ -102,7 +125,7 @@
         display: block;
     }
 
-  
+
     .entity-artist-description__text {
         z-index: 10;
         position: absolute;

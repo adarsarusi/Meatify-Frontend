@@ -131,7 +131,7 @@
             .icon {
                 display: inline-block;
             }
-            
+
         }
 
 
@@ -145,6 +145,7 @@
         font-size: var(--font-sm);
         font-weight: 600;
         color: var(--essential-base);
+        line-height: 1.1;
 
         padding: 1rem;
         border-radius: 9999px;
@@ -225,6 +226,15 @@
     overflow: hidden;
 }
 
+.ellipsis-text--box {
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    overflow: hidden;
+}
 
 .remove-first-letter-space {
     /* Pulls the very first letter perfectly to the left container edge */

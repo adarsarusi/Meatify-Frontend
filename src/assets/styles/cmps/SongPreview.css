@@ -131,6 +131,12 @@
     text-align:end ;
 }
 
+.song-preview__duration {
+    display: flex;
+    min-width: 26px;
+    justify-content: end;
+}
+
 .song-preview__duration,
 .song-preview__date {
     color: var(--text-subdued);
@@ -207,7 +213,7 @@
     position: absolute;
     right: 100%;
     top: 0;
-    z-index: 1000;
+    z-index: 2000;
 
     display: none;
     flex-direction: column;
