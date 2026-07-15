@@ -27,11 +27,19 @@
 }
 
 .entity-artist-preview__meta-text {
-
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    width: 100%;
+
+    .entity-artist-preview__track-info {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
 
     .entity-artist-preview__song-title {
         font-size: var(--font-2xl);
@@ -43,6 +51,10 @@
         font-weight: 400;
         color: var(--text-subdued);
     }
+}
+
+.entity-artist-preview__like-btn {
+    flex-shrink: 0;
 }
 
 .entity-artist-song-list__header {

@@ -21,6 +21,7 @@ import { IconComp } from "./globalCmps/IconComp.jsx"
 import { LikeBtn } from "./LikeBtn.jsx"
 
 import { TOGGLE_OPEN_QUEUE } from "../store/reducers/system.reducer.js"
+import { PlayingMarquee } from "./globalCmps/PlayingMarquee.jsx"
 
 export function PlayBar() {
   const isMobile = useMediaQuery({ maxWidth: 768 })
@@ -77,18 +78,25 @@ export function PlayBar() {
   return (
     <div className="player-container">
       <div className="song-info-placeholder">
-        <StationCover entity={currentSong} />
-        <div>
-          <a className="player-song-title ellipsis-text">
-            {currentSong?.title}
-          </a>
-          <div className="player-song-artists ellipsis-text">
-            {formatArtists(currentSong)}
-          </div>
+        <div className="player-cover">
+          <StationCover entity={currentSong} />
         </div>
-        <div className="">
-          <LikeBtn itemId={currentSong?._id} userField="likedSongIds" 
-          iconSize={`${isMobile ? 'icon--md' : 'icon--sm'}`} />
+
+        <div className="player-song-info">
+          <PlayingMarquee className="player-song-title">
+            {currentSong?.title}
+          </PlayingMarquee>
+          <PlayingMarquee className="player-song-artists">
+            {formatArtists(currentSong)}
+          </PlayingMarquee>
+        </div>
+
+        <div className="player-like-btn">
+          <LikeBtn
+            itemId={currentSong?._id}
+            userField="likedSongIds"
+            iconSize={`${isMobile ? 'icon--md' : 'icon--sm'}`}
+          />
         </div>
       </div>
 

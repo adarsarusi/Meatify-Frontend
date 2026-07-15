@@ -5,7 +5,7 @@ import { IconComp } from './globalCmps/IconComp'
 
 import { addSongToStation, removeSongFromStation } from '../store/actions/station.actions'
 
-export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
+export function LikeBtn({ itemId, userField, iconSize = 'icon--size', className = '' }) {
 
     const stations = useSelector(storeState => storeState.stationModule.stations)
 
@@ -56,9 +56,8 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size' }) {
 
     return (
         <button
-
             onClick={toggleLike}
-            className={`btn ${isLiked ? 'no-hover' : ''} `}
+            className={`btn ${isLiked ? 'no-hover' : ''} ${className}`.trim()}
             onPointerDown={(ev) => ev.stopPropagation()}
         >
             <IconComp
