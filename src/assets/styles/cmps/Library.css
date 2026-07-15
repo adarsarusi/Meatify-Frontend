@@ -1,7 +1,7 @@
 .app-library {
     display: flex;
     flex-direction: column;
-    min-height: fit-content;
+    height: fit-content;
     min-width: 20rem;
 
     &:hover {
@@ -79,7 +79,7 @@
     gap: 0.5rem;
 }
 
-@media (max-width:1600px) {
+@media (max-width: 1700px) {
 
     .btn.bg-button {
         padding: 0;

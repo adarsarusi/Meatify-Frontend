@@ -161,9 +161,10 @@
 
 .entity-artist-preview__description-meta {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.75rem;
     align-content: start;
     padding: 1rem;
+    padding-block-start: 1.5rem;
     height: fit-content;
 
     .entity-artist-preview__artist-name {
