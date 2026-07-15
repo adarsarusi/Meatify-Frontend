@@ -61,10 +61,10 @@ function App() {
         {/* <UserMsg /> */}
 
         <main
-          className={`
+          className={`app-layout
         ${isExpanded ? "expanded" : ""}
-        ${isMinimizedLibrary && !isMobile ? "minimized" : ""} app-layout`.trim()}
-        >
+        ${isMinimizedLibrary && !isMobile ? "minimized" : ""}`.trim()}>
+          
           {!isMobile && <Library />}
 
           <Routes>

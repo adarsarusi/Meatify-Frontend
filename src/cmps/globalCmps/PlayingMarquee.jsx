@@ -27,10 +27,10 @@ export function PlayingMarquee({ children, className = "" }) {
   const duration = Math.max(10, distance / PIXELS_PER_SECOND)
 
   return (
-    <div ref={containerRef} className={`playing-marquee ${className}`} title={children}>
+    <div ref={containerRef} className={`${overflows ? 'playing-marquee--overflow' : ''} playing-marquee ${className}`} title={children}>
       <span
         ref={textRef}
-        className={`playing-marquee__text ${overflows ? "playing-marquee__text--loop playing-marquee--overflow" : ""}`}
+        className={`playing-marquee__text ${overflows ? "playing-marquee__text--loop" : ""}`}
         style={{
           "--scroll-distance": `-${distance}px`,
           "--scroll-duration": `${duration}s`,
