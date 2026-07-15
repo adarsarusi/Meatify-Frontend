@@ -133,7 +133,7 @@
 
 .song-preview__duration {
     display: flex;
-    min-width: 26px;
+    min-width: 2rem;
     justify-content: end;
 }
 
