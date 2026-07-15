@@ -11,7 +11,7 @@ import { showSuccessMsg, showErrorMsg } from "../services/event-bus.service"
 import { stationService } from "../services/station/"
 import { StationList } from "./StationList"
 import { StationFilter } from "./StationFilter.jsx"
-import { TOGGLE_EXPAND_LIBRARY, TOGGLE_MINIMIZE_LIBRARY } from "../store/reducers/system.reducer.js"
+import { TOGGLE_EXPAND_LIBRARY, TOGGLE_MINIMIZE_LIBRARY, TURN_ON_SQUARE_LIBRARY, TOGGLE_SQUARE_LIBRARY } from "../store/reducers/system.reducer.js"
 import { store } from "../store/store.js"
 import { IconComp } from "./globalCmps/IconComp.jsx"
 import { ScrollArea } from "./globalCmps/ScrollArea.jsx"
@@ -35,6 +35,7 @@ export function Library({ mobile = false }) {
     const handleResize = () => {
       const shouldBeMinimized = window.innerWidth < 1300
       store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: shouldBeMinimized })
+      store.dispatch({ type: TOGGLE_SQUARE_LIBRARY, isSquare: shouldBeMinimized })
     }
 
     handleResize()
@@ -45,6 +46,7 @@ export function Library({ mobile = false }) {
   function toggleMinimize() {
     if (isMobile) return
     store.dispatch({ type: TOGGLE_MINIMIZE_LIBRARY, isMinimizedLibrary: !isMinimizedLibrary })
+    store.dispatch({ type: TOGGLE_SQUARE_LIBRARY, isSquare: isMinimizedLibrary })
   }
 
 
@@ -71,6 +73,7 @@ export function Library({ mobile = false }) {
 
   function toggleExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
+    store.dispatch({ type: TURN_ON_SQUARE_LIBRARY })
   }
 
 

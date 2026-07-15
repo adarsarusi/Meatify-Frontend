@@ -6,7 +6,7 @@
     padding-inline-start: 1.5rem;
 
     &.is-library {
-        grid-template-columns: repeat(2, minmax(10rem, 1fr));
+        grid-template-columns: repeat(2, minmax(8rem, 1fr));
     }
 }
 
