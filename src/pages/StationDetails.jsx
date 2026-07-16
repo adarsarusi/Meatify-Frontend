@@ -138,26 +138,28 @@ async function handleReorderLikedSongs(updatedIds) {
 
 if (!station && selectedStationId !== id)
   return (
-    <section className="station-details">
-      <div className="station-container">
-        <div className="station-header">
+    <section className="station-details dynamic-area">
+      <div className="station-details__container">
+        <div className="station-details__loading">
+          <p>Injecting Music</p>
           <LoadingAnimation />
-          <p>Loading station...</p>
+
         </div>
+
       </div>
     </section>
   )
 if (!station) {
   return (
-    <section className="station-details">
-      <ScrollArea>
-        <div className="station-container">
-          <div className="station-header">
-            <LoadingAnimation />
-            <p>Station not found</p>
-          </div>
+     <section className="station-details dynamic-area">
+      <div className="station-details__container">
+        <div className="station-details__loading">
+          <p>Injecting Music</p>
+          <LoadingAnimation />
+
         </div>
-      </ScrollArea>
+
+      </div>
     </section>
   )
 }
