@@ -10,5 +10,6 @@ export default defineConfig({
   preview: {
     host: true,
     port: process.env.PORT || 4173,
+    allowedHosts: ['meatify-frontend-production.up.railway.app'],
   },
 })
