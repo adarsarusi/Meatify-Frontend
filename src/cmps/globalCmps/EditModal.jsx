@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { uploadService } from '../../services/upload.service'
+import { IconComp } from '../globalCmps/IconComp'
 
 export function EditModal({ title, entity, onSave, onClose }) {
     const isUser = entity.type !== 'station'
 
     const [name, setName] = useState(entity.fullname || entity.name || '')
+    const [description, setDescription] = useState(entity.description || '')
 
     const [imgUrl, setImgUrl] = useState(entity.imgUrl || entity.uploadImgUrl || '')
+    const defaultCoverUrl = 'https://i.ibb.co/sdR4q2RZ/image.png'
 
     function handleSubmit(ev) {
         ev.preventDefault()
@@ -39,11 +42,21 @@ export function EditModal({ title, entity, onSave, onClose }) {
                 className="details-modal"
                 onClick={ev => ev.stopPropagation()}
             >
-                <h2>{title}</h2>
+                <div className='details-modal__header'>
+                    <h2>{title}</h2>
+                    <button className='btn hover-bg' onClick={onClose}>
+                        <IconComp name='close' className='icon--muted icon--sm' />
+                    </button>
+                </div>
 
-                <form onSubmit={handleSubmit}>
-                    <label className="details-modal__img-upload">
-                        <img className="details-modal__img" src={imgUrl} alt="" />
+                <form className='details-modal__form' onSubmit={handleSubmit}>
+                    <label className="details-form__img-upload">
+                        <img className="details-form__img" src={imgUrl} alt="" />
+
+                        <div className="details-form__img-overlay">
+                            <IconComp name='edit' className='icon--lg' />
+                            <span>Change photo</span>
+                        </div>
 
                         <input
                             type="file"
@@ -53,22 +66,29 @@ export function EditModal({ title, entity, onSave, onClose }) {
                         />
                     </label>
 
-                    <div className="details-modal__content">
-                        <input autoFocus
-                            value={name}
-                            onChange={ev => setName(ev.target.value)}
+
+                    <input className='details-modal-form__name' autoFocus
+                        value={name}
+                        onChange={ev => setName(ev.target.value)}
+                    />
+
+                    {!isUser && (
+                        <textarea className='details-modal-form__description'
+                            value={description}
+                            onChange={ev => setDescription(ev.target.value)}
+                            placeholder='Add an optional description'
                         />
+                    )}
 
-                        <div className="modal-actions">
-                            <button type="button" onClick={onClose}>
-                                Cancel
-                            </button>
+                    <button
+                        className='btn form-button details-modal-form__save-btn'
+                        type="submit">
+                        Save
+                    </button>
 
-                            <button type="submit">
-                                Save
-                            </button>
-                        </div>
-                    </div>
+                    <p className='details-modal-form__disclaimer'>
+                        By proceeding, you agree to give Meatify access to the image you choose to upload. Please make sure you have the right to upload the image.
+                    </p>
                 </form>
             </div>
         </div>

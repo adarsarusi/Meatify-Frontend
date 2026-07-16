@@ -183,6 +183,20 @@
         }
     }
 
+    &.form-button {
+        display: grid;
+        grid-auto-flow: column;
+
+        font-size: var(--font-md);
+        font-weight: 600;
+
+        padding: 1.5rem 2rem;
+        border-radius: 9999px;
+        color: var(--text-black);
+        transition: background-color .2s ease-out, color .2s ease-out, transform .2s ease-out;
+        background-color: var(--decorative-base);
+    }
+
     &:hover {
         transform: scale(var(--button-hover-scale));
 
