@@ -8,6 +8,7 @@
     "dev:local": "set VITE_LOCAL=true&&vite",
     "dev:local:mac": "export VITE_LOCAL=true && vite",
     "build": "vite build",
+    "start": "vite preview --port $PORT --host 0.0.0.0",
     "lint": "eslint .",
     "preview": "vite preview"
   },
