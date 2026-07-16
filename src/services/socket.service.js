@@ -19,7 +19,10 @@ export const SOCKET_EMIT_USER_WATCH = "watch-user"
 export const SOCKET_EMIT_USER_UNWATCH = "unwatch-user"
 export const SOCKET_EVENT_USER_UPDATED = "user-updated"
 
-const baseUrl = process.env.NODE_ENV === "production" ? "" : "//localhost:3030"
+const baseUrl =
+  import.meta.env.MODE === "production"
+    ? import.meta.env.VITE_API_URL
+    : "//localhost:3030"
 
 export const socketService =
   VITE_LOCAL === "true" ? createDummySocketService() : createSocketService()

@@ -7,7 +7,6 @@
 
   font-size: 0.875rem;
   background-color: var(--tag-color);
-
 }
 
 .station-details__header {
@@ -21,15 +20,22 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to top, color-mix(in srgb, var(--tag-color) 45%, rgb(0, 0, 0)) 0%, rgba(0, 0, 0, 0) 80%);
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--tag-color) 45%, rgb(0, 0, 0)) 0%,
+      rgba(0, 0, 0, 0) 80%
+    );
   }
 }
 
 .station-details__content {
   position: relative;
-  background: linear-gradient(to bottom, color-mix(in srgb, var(--tag-color) 30%, rgb(0, 0, 0)) 0%, rgba(0, 0, 0, 0) 20%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--tag-color) 30%, rgb(0, 0, 0)) 0%,
+    rgba(0, 0, 0, 0) 20%
+  );
 }
-
 
 .station-details__find-more-btn {
   display: block;
@@ -44,7 +50,6 @@
     font-size: var(--font-sm);
     font-weight: 700;
   }
-
 }
 
 .station-details__search-container {
@@ -71,7 +76,6 @@
     text-wrap: balance;
   }
 
-
   input {
     width: 100%;
     height: 40px;
@@ -92,7 +96,14 @@
       position: absolute;
       inset: 8px;
       max-width: min-content;
-
     }
   }
+}
+
+.station-details__loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50%;
 }
