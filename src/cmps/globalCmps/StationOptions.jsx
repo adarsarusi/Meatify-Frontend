@@ -35,7 +35,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
         }
     }, [])
 
-    
+
 
     const onPlayStation = (ev) => {
         ev.stopPropagation()
@@ -43,7 +43,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
             toggleIsPlaying()
         } else {
             setQueue(stationSongs)
-store.dispatch({type:'TOGGLE_IS_SHUFFLE', isShuffle: false})
+            store.dispatch({ type: 'TOGGLE_IS_SHUFFLE', isShuffle: false })
             setPlayingStation(station)
             if (stationSongs.length > 0) {
                 setCurrentSong(stationSongs[0])

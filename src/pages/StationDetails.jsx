@@ -47,149 +47,134 @@ export function StationDetails() {
 
   const isLikedStation = station?.tags?.includes("Liked")
 
-
   const likedSongIds = user?.likedSongIds || []
+  const stationSongsIds = station?.songs || []
 
-  const likedSongs = useMemo(() => {
-    if (!Array.isArray(songs) || !likedSongIds.length) return []
+  const stationSongs = useMemo(() => {
+    const songIds = isLikedStation ? likedSongIds : stationSongsIds
+    if (!songIds.length || !Array.isArray(songs)) return []
     const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
-    return likedSongIds
+    return songIds
       .map(id => idToSong.get(id.toString()))
       .filter(Boolean)
-  }, [songs, likedSongIds])
-
-
-const stationSongsIds = station?.songs || []
-
-const stationSongs = useMemo(() => {
-  if (!stationSongsIds.length || !Array.isArray(songs)) return []
-  const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
-  return stationSongsIds
-    .map(id => idToSong.get(id.toString()))
-    .filter(Boolean)
-}, [songs, stationSongsIds])
+  }, [songs, stationSongsIds])
 
   useEffect(() => {
-  if (!id) return
+    if (!id) return
 
-  socketService.watchStation(id)
+    socketService.watchStation(id)
 
-  return () => {
-    socketService.unwatchStation(id)
+    return () => {
+      socketService.unwatchStation(id)
+    }
+  }, [id])
+
+
+  useEffect(() => {
+    if (!id || selectedStationId === id) return
+    loadStation(id)
+  }, [id, selectedStationId])
+
+  useEffect(() => {
+    if (!id) return
+    if (selectedStationId === null) {
+      navigate("/")
+    }
+  }, [id, selectedStationId, navigate])
+
+
+  async function onSaveStation(updatedStation) {
+    try {
+      await updateStation(updatedStation)
+
+      showSuccessMsg("Playlist updated")
+    } catch (err) {
+      console.log(err)
+      showErrorMsg("Couldn't update playlist")
+    }
   }
-}, [id])
 
+  async function onRemoveStation() {
+    const isConfirmed = confirm(`Delete "${station.name}"?`)
 
-useEffect(() => {
-  if (!id || selectedStationId === id) return
-  loadStation(id)
-}, [id, selectedStationId])
+    if (!isConfirmed) return
 
-useEffect(() => {
-  if (!id) return
-  if (selectedStationId === null) {
-    navigate("/")
+    try {
+      await removeStation(station._id)
+
+      showSuccessMsg("Station removed")
+      navigate("/")
+    } catch (err) {
+      console.log("Cannot remove station", err)
+      showErrorMsg("Couldn't remove station")
+    }
   }
-}, [id, selectedStationId, navigate])
 
-
-async function onSaveStation(updatedStation) {
-  try {
-    await updateStation(updatedStation)
-
-    showSuccessMsg("Playlist updated")
-  } catch (err) {
-    console.log(err)
-    showErrorMsg("Couldn't update playlist")
+  function handleReorderSongs(updatedSongs) {
+    if (isLikedStation) {
+      const updatedUser = {
+        ...user,
+        likedSongIds: updatedSongs,
+      }
+      updateUser(updatedUser)
+      return
+    }
+    else {
+      const updatedStation = {
+        ...station,
+        songs: updatedSongs,
+      }
+      updateStation(updatedStation)
+    }
   }
-}
 
-async function onRemoveStation() {
-  const isConfirmed = confirm(`Delete "${station.name}"?`)
 
-  if (!isConfirmed) return
+  if (!station && selectedStationId !== id)
+    return (
+      <section className="station-details dynamic-area">
+        <div className="station-details__container">
+          <div className="station-details__loading">
+            <p>Injecting Music</p>
+            <LoadingAnimation />
 
-  try {
-    await removeStation(station._id)
-
-    showSuccessMsg("Station removed")
-    navigate("/")
-  } catch (err) {
-    console.log("Cannot remove station", err)
-    showErrorMsg("Couldn't remove station")
-  }
-}
-
-function handleReorderSongs(updatedSongs) {
-  const updatedStation = {
-    ...station,
-    songs: updatedSongs,
-  }
-  updateStation(updatedStation)
-}
-
-async function handleReorderLikedSongs(updatedIds) {
-  const updatedUser = {
-    ...user,
-    likedSongIds: updatedIds,
-  }
-  updateUser(updatedUser)
-}
-
-if (!station && selectedStationId !== id)
-  return (
-    <section className="station-details dynamic-area">
-      <div className="station-details__container">
-        <div className="station-details__loading">
-          <p>Injecting Music</p>
-          <LoadingAnimation />
+          </div>
 
         </div>
+      </section>
+    )
+  if (!station) {
+    return (
+      <section className="station-details dynamic-area">
+        <div className="station-details__container">
+          <div className="station-details__loading">
+            <p>Injecting Music</p>
+            <LoadingAnimation />
 
-      </div>
-    </section>
-  )
-if (!station) {
-  return (
-     <section className="station-details dynamic-area">
-      <div className="station-details__container">
-        <div className="station-details__loading">
-          <p>Injecting Music</p>
-          <LoadingAnimation />
+          </div>
 
         </div>
+      </section>
+    )
+  }
 
-      </div>
-    </section>
+
+
+  const isOwner = loggedInUser?._id === station.createdBy?._id
+
+  const tagData = TAGS_DATA.find(
+    currTag => currTag.title === station.tags[0]
   )
-}
 
-const isOwner = loggedInUser?._id === station.createdBy?._id
-
-const tagData = TAGS_DATA.find(
-  currTag => currTag.title === station.tags[0]
-)
-
-return (
-  <section className="station-details dynamic-area"
-    style={{
-      '--tag-color': tagData?.color || '#509BF5',
-    }}>
-    <ScrollArea>
-      <section className="station-details__container">
-        <section className="station-details__header">
-          <StationHeader
-            user={user}
-            stationSongs={stationSongs}
-            station={station}
-            isOwner={isOwner}
-            onRemoveStation={onRemoveStation}
-            onEditStation={() => setIsEditOpen(true)}
-          />
-        </section>
-        <div className="station-details__content">
-          <section className="station-details__options dynamic-max-width">
-            <StationOptions
+  return (
+    <section className="station-details dynamic-area"
+      style={{
+        '--tag-color': tagData?.color || '#509BF5',
+      }}>
+      <ScrollArea>
+        <section className="station-details__container">
+          <section className="station-details__header">
+            <StationHeader
+              user={user}
               stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}
@@ -197,38 +182,42 @@ return (
               onEditStation={() => setIsEditOpen(true)}
             />
           </section>
-
-          {isEditOpen && (
-            <EditModal
-              title="Edit station"
-              entity={station}
-              onClose={() => setIsEditOpen(false)}
-              onSave={onSaveStation}
-            />
-          )}
-
-          <section className="station-details__song-list dynamic-max-width">
-
-            {isLikedStation ?
-              <SongList
-                songs={likedSongs || []}
-                isSortable
-                onReorder={handleReorderLikedSongs}
+          <div className="station-details__content">
+            <section className="station-details__options dynamic-max-width">
+              <StationOptions
+                stationSongs={stationSongs}
+                station={station}
+                isOwner={isOwner}
+                onRemoveStation={onRemoveStation}
+                onEditStation={() => setIsEditOpen(true)}
               />
-              :
-              <SongList
-                songs={stationSongs || []}
-                isSortable
-                onReorder={handleReorderSongs}
-              />
-            }
+            </section>
 
-            <StationSearchMore station={station} songs={songs} />
-          </section>
-        </div>
-      </section>
-    </ScrollArea>
-  </section>
-)
-  }
+            {isEditOpen && (
+              <EditModal
+                title="Edit station"
+                entity={station}
+                onClose={() => setIsEditOpen(false)}
+                onSave={onSaveStation}
+              />
+            )}
+
+            <section className="station-details__song-list dynamic-max-width">
+
+              {stationSongs?.length > 0 &&
+                <SongList
+                  songs={stationSongs || []}
+                  isSortable
+                  onReorder={handleReorderSongs}
+                />
+              }
+
+              <StationSearchMore station={station} songs={songs} />
+            </section>
+          </div>
+        </section>
+      </ScrollArea>
+    </section>
+  )
+}
 
