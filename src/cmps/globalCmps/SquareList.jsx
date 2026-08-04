@@ -14,16 +14,11 @@ export function SquareList({ stations = [], isOwner, isLibrary = false }) {
 
   return (
     <section className={`square-list ${isLibrary && !isExpanded ? 'is-library' : ''}`}>
-      {stations.map((station) => {
-        const stationSongs = songs.filter(song =>
-          station?.songs?.includes(song._id.toString())
-        )
-
+      {stations.map(station => {
         return (
           <SquarePreview
             key={station._id}
             station={station}
-            stationSongs={stationSongs}
             isLibrary={isLibrary}
           />
         )

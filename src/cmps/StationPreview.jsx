@@ -6,8 +6,9 @@ import { LikeBtn } from './LikeBtn'
 import { StationCover } from './globalCmps/StationCover'
 
 import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "../store/actions/player.actions.js"
-import { TOGGLE_IS_SHUFFLE} from "../store/reducers/player.reducer.js"
+import { TOGGLE_IS_SHUFFLE } from "../store/reducers/player.reducer.js"
 import { store } from '../store/store.js'
+
 
 
 export function StationPreview({ station, isSearch }) {
@@ -26,15 +27,19 @@ export function StationPreview({ station, isSearch }) {
     const isLikedSongsStation = station?.tags?.includes("Liked")
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
     const isSelectedStation = location.pathname === `/station/${station?._id}`
+    const likedSongsCount = loggedinUser?.likedSongIds?.length || 0
+
+    const likedSongIds = loggedinUser?.likedSongIds || []
+    const stationSongsIds = station?.songs || []
 
     const stationSongs = useMemo(() => {
-        if (!station?.songs?.length) return []
-        return station.songs
+        const songIds = isLikedSongsStation ? likedSongIds : stationSongsIds
+        if (!songIds.length) return []
+        return songIds
             .map(songId => songs.find(song => song._id.toString() === songId))
             .filter(Boolean)
-    }, [songs, station?.songs])
+    }, [songs, station?.songs, likedSongIds, isLikedSongsStation])
 
-    const likedSongsCount = loggedinUser?.likedSongIds?.length || 0
 
     if (!station) return null
 

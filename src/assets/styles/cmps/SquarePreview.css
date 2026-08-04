@@ -30,10 +30,12 @@
 .entity-square-preview__item--active {
     background-color: var(--background-tinted-highlight);
 
-    .entity-square-preview__btn {
-        opacity: 1;
-        pointer-events: auto;
-        translate: 0 0;
+    &:focus {
+        .entity-square-preview__btn {
+            opacity: 1;
+            pointer-events: auto;
+            translate: 0 0;
+        }
     }
 }
 

@@ -10,7 +10,7 @@ export function StationHeader({
     const songs = useSelector((storeState) => storeState.songModule.songs)
 
 
-    const isLikedStation = station.tags?.includes("Liked")
+    const isLikedSongsStation = station.tags?.includes("Liked")
 
     function formatDuration(songs) {
         if (!songs || songs.length === 0) return '0 min'
@@ -37,7 +37,7 @@ export function StationHeader({
             </div>
             <div className="station-header__info ">
 
-                <p className="station-header__private-txt">{!isLikedStation ? (station?.isPrivate ? 'Private Playlist' : 'Public Playlist') : 'Playlist'}</p>
+                <p className="station-header__private-txt">{!isLikedSongsStation ? (station?.isPrivate ? 'Private Playlist' : 'Public Playlist') : 'Playlist'}</p>
                 <h1 className="station-name">{station?.name}</h1>
                 <div className="station-meta">
                     <div className="participants">
@@ -49,7 +49,7 @@ export function StationHeader({
                                 />
                             </div>
 
-                            {!isLikedStation && station.participants?.map((participant, i) => (
+                            {!isLikedSongsStation && station.participants?.map((participant, i) => (
                                 <div
                                     className="avatar-wrapper"
                                     key={i}
@@ -70,7 +70,7 @@ export function StationHeader({
                         )}
                     </div>
 
-                    {!isLikedStation && <p> • {station.savedCount ?? 0} saves • </p>}
+                    {!isLikedSongsStation && <p> • {station.savedCount ?? 0} saves • </p>}
                     <p> {stationSongs?.length ?? 0} songs,</p>
                     <p>about {formatDuration(stationSongs)}</p>
                 </div>

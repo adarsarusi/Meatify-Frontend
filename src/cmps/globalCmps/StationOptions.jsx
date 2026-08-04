@@ -21,7 +21,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
 
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
-    const isLikedStation = station?.tags?.includes("Liked")
+    const isLikedSongsStation = station?.tags?.includes("Liked")
 
     useEffect(() => {
         function closeMenu() {
@@ -56,7 +56,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
         <section className="station-options">
             <div className="station-options__btn-container">
                 {station?.songs?.length > 0 && <button
-                    className="station-options__play-btn btn play-btn green-btn "
+                    className="station-options__play-btn btn play-btn red-btn "
                     onClick={onPlayStation}
                 >   {(isPlaying && isCurrStationPlaying) ?
                     <IconComp name="pause" className="icon--md" />
@@ -75,7 +75,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
                     />
                 </button>
 
-                {!isLikedStation &&
+                {!isLikedSongsStation &&
                     <LikeBtn
                         itemId={station._id}
                         userField="likedStationIds"
@@ -106,7 +106,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
                                     Edit details
                                 </button>
 
-                                {!isLikedStation && <button className="station-options__menu__item"
+                                {!isLikedSongsStation && <button className="station-options__menu__item"
                                     onClick={() => {
                                         setIsMenuOpen(false)
                                         onRemoveStation()

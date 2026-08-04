@@ -30,7 +30,7 @@ import { socketService } from "../services/socket.service"
 export function StationDetails() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const user = useSelector((storeState) => storeState.userModule.user)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const station = useSelector(
     (storeState) => storeState.stationModule.selectedStation,
@@ -41,23 +41,22 @@ export function StationDetails() {
   )
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
-  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [isEditOpen, setIsEditOpen] = useState(false)
 
-  const isLikedStation = station?.tags?.includes("Liked")
+  const isLikedSongsStation = station?.tags?.includes("Liked")
 
-  const likedSongIds = user?.likedSongIds || []
+  const likedSongIds = loggedInUser?.likedSongIds || []
   const stationSongsIds = station?.songs || []
 
   const stationSongs = useMemo(() => {
-    const songIds = isLikedStation ? likedSongIds : stationSongsIds
+    const songIds = isLikedSongsStation ? likedSongIds : stationSongsIds
     if (!songIds.length || !Array.isArray(songs)) return []
     const idToSong = new Map(songs.map(song => [song._id.toString(), song]))
     return songIds
       .map(id => idToSong.get(id.toString()))
       .filter(Boolean)
-  }, [songs, stationSongsIds])
+  }, [songs, stationSongsIds, likedSongIds, isLikedSongsStation])
 
   useEffect(() => {
     if (!id) return
@@ -111,13 +110,13 @@ export function StationDetails() {
   }
 
   function handleReorderSongs(updatedSongs) {
-    if (isLikedStation) {
+    if (isLikedSongsStation) {
+      console.log('isLikedSongsStation: ', isLikedSongsStation)
       const updatedUser = {
-        ...user,
+        ...loggedInUser,
         likedSongIds: updatedSongs,
       }
       updateUser(updatedUser)
-      return
     }
     else {
       const updatedStation = {
@@ -174,7 +173,7 @@ export function StationDetails() {
         <section className="station-details__container">
           <section className="station-details__header">
             <StationHeader
-              user={user}
+              user={loggedInUser}
               stationSongs={stationSongs}
               station={station}
               isOwner={isOwner}

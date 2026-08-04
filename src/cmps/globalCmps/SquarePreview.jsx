@@ -5,13 +5,15 @@ import { setQueue, setCurrentSong, setPlayingStation, toggleIsPlaying } from "..
 import { useLocation, useNavigate } from "react-router-dom"
 import { formatArtists } from "../../services/util.service"
 import { useSelector } from "react-redux"
+import { useMemo } from "react"
 
-export function SquarePreview({ station, stationSongs = [], hover = true, isLibrary = false }) {
+export function SquarePreview({ station, hover = true, isLibrary = false }) {
   const location = useLocation()
   const navigate = useNavigate()
 
   const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
   const isPlaying = useSelector((storeState) => storeState.playerModule.isPlaying)
+  const songs = useSelector((storeState) => storeState.songModule.songs) || []
   const loggedinUser = useSelector(storeState => storeState.userModule.user)
 
   const isLikedSongsStation = station?.tags?.includes("Liked")
@@ -19,6 +21,18 @@ export function SquarePreview({ station, stationSongs = [], hover = true, isLibr
   const isSelectedStation = location.pathname === `/station/${station?._id}`
 
   const songCount = loggedinUser?.likedSongIds?.length || 0
+
+  const likedSongIds = loggedinUser?.likedSongIds || []
+  const stationSongsIds = station?.songs || []
+
+  const stationSongs = useMemo(() => {
+    const songIds = isLikedSongsStation ? likedSongIds : stationSongsIds
+    if (!songIds.length) return []
+    return songIds
+      .map(songId => songs.find(song => song._id.toString() === songId))
+      .filter(Boolean)
+  }, [songs, station?.songs, likedSongIds, isLikedSongsStation])
+
 
   const rawArtists = [...new Set(stationSongs.flatMap((song) => formatArtists(song)))]
 
@@ -42,16 +56,18 @@ export function SquarePreview({ station, stationSongs = [], hover = true, isLibr
   if (!station) return null
 
   return (
-    <article 
-      className={`entity-square-preview__item ${isSelectedStation && isLibrary ? 'entity-square-preview__item--active' : ''} ${isCurrStationPlaying && isPlaying ? 'entity-square-preview__item--playing' : ''}`.trim()}
+    <article
+      className={`entity-square-preview__item 
+      ${isSelectedStation && isLibrary ? 'entity-square-preview__item--active' : ''} 
+      ${isCurrStationPlaying && isPlaying ? 'entity-square-preview__item--playing' : ''}`.trim()}
       onClick={() => navigate(`/station/${station._id}`)}
     >
       <div className="entity-square-preview__meta">
         <div className="entity-square-preview__img">
           <StationCover entity={station} />
-          
+
           <button
-            className="btn play-btn green-btn entity-square-preview__btn"
+            className="btn play-btn red-btn entity-square-preview__btn"
             onClick={onPlayStation}
           >
             {isCurrStationPlaying && isPlaying ? (
