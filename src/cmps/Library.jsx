@@ -75,12 +75,24 @@ export function Library({ mobile = false }) {
 
     const likedIds = loggedinUser.likedStationIds || []
 
-    const orderedLikedStations = likedIds
+    const isPinned = (stationId) => {
+      const station = idToStation.get(stationId.toString())
+      return station?.likedBy?.some(user => user.userId === loggedinUser._id && user.isPinned)
+    }
+
+    const pinnedStations = likedIds
+      .filter(id => isPinned(id))
       .map(id => idToStation.get(id.toString()))
       .filter(Boolean)
 
-    return orderedLikedStations
+    const unpinnedStations = likedIds
+      .filter(id => !isPinned(id))
+      .map(id => idToStation.get(id.toString()))
+      .filter(Boolean)
 
+    const orderedStations = [...pinnedStations, ...unpinnedStations]
+
+    return orderedStations
   }, [stations, loggedinUser])
 
   function toggleExpand() {
@@ -105,8 +117,7 @@ export function Library({ mobile = false }) {
       await updateUser({
         ...loggedinUser,
         likedStationIds: [
-          savedStation._id,
-          ...(loggedinUser.likedStationIds || [])
+          savedStation._id, ...(loggedinUser.likedStationIds || []),
         ],
       })
 

@@ -1,13 +1,24 @@
 :root {
   /* Icon sizes */
-  --icon-size-xs: 0.875rem; /* 14px */
-  --icon-size-sm: 1rem; /* 16px */
-  --icon-size: 1.25rem; /* 20px default */
-  --icon-size-md: 1.5rem; /* 24px */
-  --icon-size-lg: 2rem; /* 32px */
-  --icon-size-xl: 3rem; /* 48px */
-  --icon-size-2xl: 4rem; /* 64px */
-  --icon-size-3xl: 5rem; /* 80px */
+  
+  --icon-size-xxs: 0.625rem;
+  /* 10px */
+  --icon-size-xs: 0.875rem;
+  /* 14px */
+  --icon-size-sm: 1rem;
+  /* 16px */
+  --icon-size: 1.25rem;
+  /* 20px default */
+  --icon-size-md: 1.5rem;
+  /* 24px */
+  --icon-size-lg: 2rem;
+  /* 32px */
+  --icon-size-xl: 3rem;
+  /* 48px */
+  --icon-size-2xl: 4rem;
+  /* 64px */
+  --icon-size-3xl: 5rem;
+  /* 80px */
 
   --icon-resizable: clamp(0.9rem, 18cqi, 2rem);
 }
@@ -39,6 +50,12 @@
     color 160ms ease,
     transform 160ms ease,
     opacity 160ms ease;
+}
+
+/* Sizes */
+.icon--xxs {
+  width: var(--icon-size-xxs);
+  height: var(--icon-size-xxs);
 }
 
 /* Sizes */

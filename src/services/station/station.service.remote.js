@@ -35,7 +35,6 @@ async function removeSongFromStation(stationId, songId) {
     return httpService.delete(`station/${stationId}/song/${songId}`)
 }
 
-
 async function getTagsData() {
     return httpService.get('station/tags')
 }

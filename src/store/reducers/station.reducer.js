@@ -7,6 +7,8 @@ export const ADD_STATION = "ADD_STATION"
 export const UPDATE_STATION = "UPDATE_STATION"
 export const SET_FILTER_BY = "SET_FILTER_BY"
 export const SET_STATION_LOADING = "SET_STATION_LOADING"
+export const ADD_STATION_LIKES = "ADD_STATION_LIKES"
+export const REMOVE_STATION_LIKES = "REMOVE_STATION_LIKES"
 
 export const ADD_SONG_TO_STATION = "ADD_SONG_TO_STATION"
 export const REMOVE_SONG_FROM_STATION = "REMOVE_SONG_FROM_STATION"
@@ -72,6 +74,25 @@ export function stationReducer(state = initialStationState, action = {}) {
         selectedStation: state.selectedStation?._id === action.station._id
           ? action.station
           : state.selectedStation
+      }
+    case ADD_STATION_LIKES:
+      return {
+        ...state,
+        stations: state.stations.map(station =>
+          station._id === action.stationId
+            ? { ...station, likedBy: [...station.likedBy, action.likedBy] }
+            : station
+        )
+      }
+
+    case REMOVE_STATION_LIKES:
+      return {
+        ...state,
+        stations: state.stations.map(station =>
+          station._id === action.stationId
+            ? { ...station, likedBy: station.likedBy.filter(user => user.id !== action.likedBy.id) }
+            : station
+        )
       }
 
     case SET_FILTER_BY:

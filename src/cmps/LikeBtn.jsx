@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 import { updateUser } from '../store/actions/user.actions'
 import { IconComp } from './globalCmps/IconComp'
 
-import { addSongToStation, removeSongFromStation } from '../store/actions/station.actions'
+import { addSongToStation, removeSongFromStation, addStationLikes, removeStationLikes } from '../store/actions/station.actions'
+import { store } from '../store/store'
 
 export function LikeBtn({ itemId, userField, iconSize = 'icon--size', className = '' }) {
 
@@ -16,6 +17,11 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size', className 
     const likedSongsStation = stations.find(
         station => station?.tags?.includes("Liked")
     )
+
+    const likedBy = {
+        userId: loggedinUser._id,
+        isPinned: false
+    }
 
     if (!loggedinUser) return null
 
@@ -34,6 +40,16 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size', className 
             const updatedUser = {
                 ...loggedinUser,
                 [userField]: newLikedIds
+            }
+
+            if (userField === 'likedStationIds') {
+                console.log('isLiked: ', isLiked)
+                if (isLiked) {
+                    await removeStationLikes(itemId, likedBy)
+                } else {
+                    await addStationLikes(itemId, likedBy)
+                }
+
             }
 
             const promises = [updateUser(updatedUser)]

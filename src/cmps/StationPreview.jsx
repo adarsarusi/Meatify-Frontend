@@ -32,6 +32,8 @@ export function StationPreview({ station, isSearch }) {
     const likedSongIds = loggedinUser?.likedSongIds || []
     const stationSongsIds = station?.songs || []
 
+    const isPinnedStation = station?.likedBy?.some(user => user.userId === loggedinUser?._id && user.isPinned)
+
     const stationSongs = useMemo(() => {
         const songIds = isLikedSongsStation ? likedSongIds : stationSongsIds
         if (!songIds.length) return []
@@ -82,7 +84,14 @@ export function StationPreview({ station, isSearch }) {
                 {isLikedSongsStation ? (
                     <p className='station-preview__song-length ellipsis-text'>{likedSongsCount} songs</p>
                 ) : (
-                    <p className='station-preview__creator-name ellipsis-text'>{station?.createdBy?.fullname}</p>
+                    <div className='station-preview__creator-container'>
+                        {isPinnedStation && (
+                            <IconComp name='pin' className='icon--xxs icon--active icon-no-padding' />
+                        )}
+                        <p className={`station-preview__creator-name ellipsis-text }`}>
+                            {station?.createdBy?.fullname}
+                        </p>
+                    </div>
                 )}
             </div>}
 

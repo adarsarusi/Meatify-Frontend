@@ -8,6 +8,8 @@ import {
   SET_STATION,
   UPDATE_STATION,
   SET_STATION_LOADING,
+  ADD_STATION_LIKES,
+  REMOVE_STATION_LIKES,
 } from "../reducers/station.reducer"
 
 export async function loadStations(filterBy) {
@@ -86,6 +88,42 @@ export async function removeSongFromStation(stationId, songId) {
     return updatedStation
   } catch (err) {
     console.log("Cannot remove song from station", err)
+    throw err
+  }
+}
+
+export async function addStationLikes(stationId, likedBy) {
+  try {
+    const updatedStation = await stationService.getById(stationId)
+
+    updatedStation.likedBy = updatedStation.likedBy || []
+    updatedStation.likedBy.push(likedBy)
+
+    await stationService.save(updatedStation)
+
+    store.dispatch({ type: ADD_STATION_LIKES, stationId, likedBy })
+    return updatedStation
+  }
+  catch (err) {
+    console.log("Cannot add station likes", err)
+    throw err
+  }
+}
+
+export async function removeStationLikes(stationId, likedBy) {
+  try {
+    const updatedStation = await stationService.getById(stationId)
+
+    updatedStation.likedBy = updatedStation.likedBy || []
+    updatedStation.likedBy = updatedStation.likedBy.filter(user => user.id !== likedBy.id)
+    
+    await stationService.save(updatedStation)
+
+    store.dispatch({ type: REMOVE_STATION_LIKES, stationId, likedBy })
+    return updatedStation
+  }
+  catch (err) {
+    console.log("Cannot remove station likes", err)
     throw err
   }
 }
