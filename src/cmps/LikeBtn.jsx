@@ -23,31 +23,30 @@ export function LikeBtn({ itemId, userField, iconSize = 'icon--size', className 
 
     const isLiked = likedIds.includes(itemId)
 
-    async function toggleLike() {
+    async function toggleLike(ev) {
+        ev.preventDefault()
+        ev.stopPropagation()
         try {
+            const newLikedIds = isLiked
+                ? likedIds.filter(id => id !== itemId)
+                : [itemId, ...likedIds]
+
             const updatedUser = {
                 ...loggedinUser,
-                [userField]: isLiked
-                    ? likedIds.filter(id => id !== itemId)
-                    : [...likedIds, itemId]
+                [userField]: newLikedIds
             }
 
-            await updateUser(updatedUser)
+            const promises = [updateUser(updatedUser)]
 
-            // Only for songs
             if (userField === 'likedSongIds' && likedSongsStation) {
                 if (isLiked) {
-                    await removeSongFromStation(
-                        likedSongsStation._id,
-                        itemId
-                    )
+                    promises.push(removeSongFromStation(likedSongsStation._id, itemId))
                 } else {
-                    await addSongToStation(
-                        likedSongsStation._id,
-                        itemId
-                    )
+                    promises.push(addSongToStation(likedSongsStation._id, itemId))
                 }
             }
+
+            await Promise.all(promises)
 
         } catch (err) {
             console.error('Cannot update likes', err)

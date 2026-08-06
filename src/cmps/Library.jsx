@@ -68,21 +68,25 @@ export function Library({ mobile = false }) {
     [songs, loggedinUser?.likedSongIds],
   )
 
-  const libraryStations = useMemo(
-    () =>
-      stations.filter(
-        (station) =>
-          station.createdBy?._id === loggedinUser?._id ||
-          loggedinUser?.likedStationIds?.includes(station._id),
-      ),
-    [stations, loggedinUser?._id, loggedinUser?.likedStationIds],
-  )
+  const libraryStations = useMemo(() => {
+    if (!Array.isArray(stations) || !loggedinUser) return []
+
+    const idToStation = new Map(stations.map(station => [station._id.toString(), station]))
+
+    const likedIds = loggedinUser.likedStationIds || []
+
+    const orderedLikedStations = likedIds
+      .map(id => idToStation.get(id.toString()))
+      .filter(Boolean)
+
+    return orderedLikedStations
+
+  }, [stations, loggedinUser])
 
   function toggleExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
     store.dispatch({ type: TURN_ON_SQUARE_LIBRARY })
   }
-
 
   useEffect(() => {
     loadSongs()
@@ -101,8 +105,8 @@ export function Library({ mobile = false }) {
       await updateUser({
         ...loggedinUser,
         likedStationIds: [
-          ...(loggedinUser.likedStationIds || []),
           savedStation._id,
+          ...(loggedinUser.likedStationIds || [])
         ],
       })
 

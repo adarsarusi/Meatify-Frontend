@@ -41,21 +41,21 @@ export function stationReducer(state = initialStationState, action = {}) {
       }
 
     case REMOVE_STATION:
-  return {
-    ...state,
-    stations: state.stations.filter(
-      (station) => station._id !== action.stationId
-    ),
-    selectedStation:
-      state.selectedStation?._id === action.stationId
-        ? null
-        : state.selectedStation,
-  }
+      return {
+        ...state,
+        stations: state.stations.filter(
+          (station) => station._id !== action.stationId
+        ),
+        selectedStation:
+          state.selectedStation?._id === action.stationId
+            ? null
+            : state.selectedStation,
+      }
 
     case ADD_STATION:
-       if (state.stations.some(station => station._id === action.station._id)) {
-    return state
-  }
+      if (state.stations.some(station => station._id === action.station._id)) {
+        return state
+      }
       return {
         ...state,
         stations: [action.station, ...state.stations]
@@ -69,7 +69,9 @@ export function stationReducer(state = initialStationState, action = {}) {
             ? action.station
             : station
         ),
-        selectedStation: action.station
+        selectedStation: state.selectedStation?._id === action.station._id
+          ? action.station
+          : state.selectedStation
       }
 
     case SET_FILTER_BY:

@@ -18,7 +18,6 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
     const currPlayingStation = useSelector((storeState) => storeState.playerModule.currPlayingStation)
     const queue = useSelector((storeState) => storeState.playerModule.queue)
 
-
     const isCurrStationPlaying = currPlayingStation?._id === station?._id
 
     const isLikedSongsStation = station?.tags?.includes("Liked")
@@ -75,7 +74,7 @@ export function StationOptions({ station, stationSongs, isOwner, onEditStation, 
                     />
                 </button>
 
-                {!isLikedSongsStation &&
+                {(!isLikedSongsStation && !isOwner) &&
                     <LikeBtn
                         itemId={station._id}
                         userField="likedStationIds"

@@ -69,17 +69,19 @@ export function StationDetails() {
   }, [id])
 
 
-  useEffect(() => {
-    if (!id || selectedStationId === id) return
-    loadStation(id)
-  }, [id, selectedStationId])
-
-  useEffect(() => {
+useEffect(() => {
     if (!id) return
-    if (selectedStationId === null) {
-      navigate("/")
+    async function fetchStation() {
+        try {
+            await loadStation(id)
+        } catch (err) {
+            console.log('Station not found, redirecting...')
+            navigate('/')
+        }
     }
-  }, [id, selectedStationId, navigate])
+
+    fetchStation()
+  }, [id, navigate])
 
 
   async function onSaveStation(updatedStation) {
