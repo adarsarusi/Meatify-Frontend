@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { SongPreview } from "./SongPreview"
 import { SongListTable } from "./SongListTable"
 
-import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
+import { DragDropProvider } from '@dnd-kit/react'
+import { move } from '@dnd-kit/helpers'
 
 export function SongList({
   songs = [],
@@ -11,47 +11,65 @@ export function SongList({
   onReorder = null,
   isSearchResult = false,
 }) {
-  if (!songs || songs.length === 0)
+  const [items, setItems] = useState(songs)
+  const isDragging = useRef(false)
+
+  useEffect(() => {
+    if (!isDragging.current) setItems(songs)
+  }, [songs])
+
+  if (!items || items.length === 0) {
     return <div className="song-list song-list--empty">No songs</div>
+  }
 
-  const ids = songs.map(song => song._id.toString())
+  if (!isSortable) {
+    return (
+      <section className="song-list">
+        {!isSearchResult && <SongListTable />}
+        {items.map((song, index) => (
+          <SongPreview
+            key={song._id}
+            song={song}
+            index={index}
+            isSearchResult={isSearchResult}
+          />
+        ))}
+      </section>
+    )
+  }
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  )
+  async function handleDragEnd(event) {
+    isDragging.current = false
+    if (event.canceled) return
 
-  function handleDragEnd(event) {
-    const { active, over } = event
-    if (!over || active.id === over.id) return
+    const previous = items
+    const reordered = move(items, event)
+    setItems(reordered)
 
-    const oldIndex = ids.findIndex(id => id === active.id)
-    const newIndex = ids.findIndex(id => id === over.id)
-    if (oldIndex === -1 || newIndex === -1) return
-
-    const updatedIds = arrayMove(ids, oldIndex, newIndex)
-
-    if (onReorder) onReorder(updatedIds)
+    try {
+      await onReorder?.(reordered.map(song => song._id.toString()))
+    } catch {
+      setItems(previous)
+    }
   }
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <SortableContext items={ids} strategy={verticalListSortingStrategy}>
-        <section className="song-list">
-          {!isSearchResult && <SongListTable />}
-          {songs.map((song, index) => (
-            <SongPreview
-              key={song._id}
-              song={song}
-              index={index + 1}
-              isSearchResult={isSearchResult}
-            />
-          ))}
-        </section>
-      </SortableContext>
-    </DndContext>
+    <DragDropProvider
+      onDragStart={() => { isDragging.current = true }}
+      onDragEnd={handleDragEnd}
+    >
+      <section className="song-list">
+        {!isSearchResult && <SongListTable />}
+        {items.map((song, index) => (
+          <SongPreview
+            key={song._id}
+            song={song}
+            index={index}
+            isSortable
+            isSearchResult={isSearchResult}
+          />
+        ))}
+      </section>
+    </DragDropProvider>
   )
 }

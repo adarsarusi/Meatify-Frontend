@@ -2,8 +2,7 @@ import React from "react"
 import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { useSortable } from '@dnd-kit/react/sortable'
 
 import { IconComp } from "./IconComp"
 import { EqPlayIconAnimation } from "./EqPlayIconAnimation"
@@ -19,7 +18,9 @@ import { SongContextMenu } from "./SongContextMenu"
 import { addSongToStation } from "../../store/actions/station.actions"
 import { formatAddedAt } from "/src/services/util.service.js"
 
-export function SongPreview({ song, index, isSearchResult = false }) {
+// `index` = 0-based array position, required by dnd-kit for sort ordering
+// the visible row number is always `index + 1`, computed locally
+export function SongPreview({ song, index, isSearchResult = false, isSortable = false }) {
   const navigate = useNavigate()
 
   const currentStation = useSelector(
@@ -38,23 +39,21 @@ export function SongPreview({ song, index, isSearchResult = false }) {
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
-  const {
-    setNodeRef,
-    transform,
-    transition,
-    attributes,
-    listeners,
-    isDragging,
-  } = useSortable({ id: song._id })
+  const isDragDisabled = isSearchResult || !isSortable
+
+  const { ref, isDragging } = useSortable({
+    id: song._id,
+    index,
+    disabled: isDragDisabled,
+  })
 
   const style = {
-    transform: CSS.Translate.toString(transform),
-    transition,
     opacity: isDragging ? 0.6 : 1,
     touchAction: "none",
   }
 
   const isCurrentSong = currentSong?._id === song._id
+  const displayIndex = index + 1
 
   function formatTime(seconds = 0) {
     const m = Math.floor(seconds / 60)
@@ -62,15 +61,12 @@ export function SongPreview({ song, index, isSearchResult = false }) {
     return `${m}:${s.toString().padStart(2, "0")}`
   }
 
-
   return (
     <section
       aria-label={song.title}
       className="song-preview__item"
-      ref={setNodeRef}
+      ref={ref}
       style={style}
-      {...attributes}
-      {...listeners}
       onClick={(ev) => {
         if (isMobile) {
           ev.stopPropagation()
@@ -84,7 +80,7 @@ export function SongPreview({ song, index, isSearchResult = false }) {
     >
       <div className={`song-preview__index-wrap ${isMobile ? "" : "not-mobile"}  `}>
         {isCurrentSong && isPlaying ? <EqPlayIconAnimation /> :
-          <span className="song-preview__index">{index}</span>}
+          <span className="song-preview__index">{displayIndex}</span>}
         <div className="song-preview__play">
           <button
             className="song-preview__btn song-preview__btn--play"

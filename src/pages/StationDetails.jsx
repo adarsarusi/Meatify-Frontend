@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -25,7 +25,6 @@ import { LoadingAnimation } from "../cmps/globalCmps/LoadingAnimation"
 import { updateUser } from "../store/actions/user.actions"
 
 import { socketService } from "../services/socket.service"
-
 
 export function StationDetails() {
   const navigate = useNavigate()
@@ -68,21 +67,19 @@ export function StationDetails() {
     }
   }, [id])
 
-
-useEffect(() => {
+  useEffect(() => {
     if (!id) return
     async function fetchStation() {
-        try {
-            await loadStation(id)
-        } catch (err) {
-            console.log('Station not found, redirecting...')
-            navigate('/')
-        }
+      try {
+        await loadStation(id)
+      } catch (err) {
+        console.log('Station not found, redirecting...')
+        navigate('/')
+      }
     }
 
     fetchStation()
   }, [id, navigate])
-
 
   async function onSaveStation(updatedStation) {
     try {
@@ -111,24 +108,25 @@ useEffect(() => {
     }
   }
 
-  function handleReorderSongs(updatedSongs) {
-    if (isLikedSongsStation) {
-      console.log('isLikedSongsStation: ', isLikedSongsStation)
-      const updatedUser = {
-        ...loggedInUser,
-        likedSongIds: updatedSongs,
+  const persistReorder = useRef(
+    debounce(async (updatedSongIds, isLiked) => {
+      try {
+        if (isLiked) {
+          await updateUser({ ...loggedInUser, likedSongIds: updatedSongIds })
+        } else {
+          await updateStation({ ...station, songs: updatedSongIds })
+        }
+      } catch (err) {
+        console.log("Cannot save new song order", err)
+        showErrorMsg("Couldn't save the new order")
+        throw err
       }
-      updateUser(updatedUser)
-    }
-    else {
-      const updatedStation = {
-        ...station,
-        songs: updatedSongs,
-      }
-      updateStation(updatedStation)
-    }
-  }
+    }, 400)
+  ).current
 
+  function handleReorderSongs(updatedSongIds) {
+    return persistReorder(updatedSongIds, isLikedSongsStation)
+  }
 
   if (!station && selectedStationId !== id)
     return (
@@ -137,9 +135,7 @@ useEffect(() => {
           <div className="station-details__loading">
             <p>Injecting Music</p>
             <LoadingAnimation />
-
           </div>
-
         </div>
       </section>
     )
@@ -150,17 +146,14 @@ useEffect(() => {
           <div className="station-details__loading">
             <p>Injecting Music</p>
             <LoadingAnimation />
-
           </div>
-
         </div>
       </section>
     )
   }
 
-
-
   const isOwner = loggedInUser?._id === station.createdBy?._id
+  const canReorder = isOwner || isLikedSongsStation
 
   const tagData = TAGS_DATA.find(
     currTag => currTag.title === station.tags[0]
@@ -207,8 +200,8 @@ useEffect(() => {
 
               {stationSongs?.length > 0 &&
                 <SongList
-                  songs={stationSongs || []}
-                  isSortable
+                  songs={stationSongs}
+                  isSortable={canReorder}
                   onReorder={handleReorderSongs}
                 />
               }
@@ -221,4 +214,3 @@ useEffect(() => {
     </section>
   )
 }
-
