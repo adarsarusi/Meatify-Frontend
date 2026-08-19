@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { formatArtists } from "../../services/util.service"
 import { useSelector } from "react-redux"
 import { useMemo } from "react"
+import { TOGGLE_IS_SHUFFLE } from "../../store/reducers/player.reducer.js"
+import { store } from "../../store/store.js"
 
 export function SquarePreview({ station, hover = true, isLibrary = false }) {
   const location = useLocation()
@@ -33,7 +35,6 @@ export function SquarePreview({ station, hover = true, isLibrary = false }) {
       .filter(Boolean)
   }, [songs, station?.songs, likedSongIds, isLikedSongsStation])
 
-
   const rawArtists = [...new Set(stationSongs.flatMap((song) => formatArtists(song)))]
 
   const displayArtists = rawArtists.length > 3
@@ -46,6 +47,7 @@ export function SquarePreview({ station, hover = true, isLibrary = false }) {
       toggleIsPlaying()
     } else {
       setQueue(stationSongs)
+      store.dispatch({ type: 'TOGGLE_IS_SHUFFLE', isShuffle: false })
       setPlayingStation(station)
       if (stationSongs.length > 0) {
         setCurrentSong(stationSongs[0])
