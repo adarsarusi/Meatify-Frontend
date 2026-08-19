@@ -10,11 +10,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { TOGGLE_SQUARE_LIBRARY } from '../store/reducers/system.reducer'
 import { store } from '../store/store.js'
 
-export function StationFilter({ filterBy, setFilterBy }) {
+export function StationFilter({ searchTxt, setSearchTxt }) {
 
     const dispatch = useDispatch()
-    const [searchTxt, setSearchTxt] = useState(filterBy.txt || '')
-
+    
     const debouncedSearch = useRef(
         debounce((txt) => {
             setFilterBy({ txt })

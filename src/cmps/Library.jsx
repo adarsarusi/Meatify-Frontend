@@ -31,9 +31,9 @@ export function Library({ mobile = false }) {
     (storeState) => storeState.stationModule.stations,
   )
 
-  const isMinimizedLibrary = useSelector((storeState) => storeState.systemModule.isMinimizedLibrary)
+  const [searchTxt, setSearchTxt] = useState('')
 
-  const [filterBy, setFilterBy] = useState({ txt: '' })
+  const isMinimizedLibrary = useSelector((storeState) => storeState.systemModule.isMinimizedLibrary)
 
   const songs = useSelector((storeState) => storeState.songModule.songs)
   const isSquare = useSelector(storeState => storeState.systemModule.isSquare)
@@ -71,6 +71,7 @@ export function Library({ mobile = false }) {
   const libraryStations = useMemo(() => {
     if (!Array.isArray(stations) || !loggedinUser) return []
 
+  
     const idToStation = new Map(stations.map(station => [station._id.toString(), station]))
 
     const likedIds = loggedinUser.likedStationIds || []
@@ -79,9 +80,16 @@ export function Library({ mobile = false }) {
       .map(id => idToStation.get(id.toString()))
       .filter(Boolean)
 
+      if (searchTxt) {
+        const lowerSearchTxt = searchTxt.toLowerCase()
+        return orderedLikedStations.filter(station =>
+          station.name.toLowerCase().includes(lowerSearchTxt)
+        )
+      }
+
     return orderedLikedStations
 
-  }, [stations, loggedinUser])
+  }, [stations, loggedinUser , searchTxt])
 
   function toggleExpand() {
     store.dispatch({ type: TOGGLE_EXPAND_LIBRARY, isExpanded: !isExpanded })
@@ -89,12 +97,10 @@ export function Library({ mobile = false }) {
   }
 
   useEffect(() => {
+    loadStations()
     loadSongs()
   }, [])
 
-  useEffect(() => {
-    loadStations(filterBy)
-  }, [filterBy])
 
   async function onCreateStation() {
     const station = stationService.getEmptyStation()
@@ -143,9 +149,7 @@ export function Library({ mobile = false }) {
       </div>
 
       {!isMinimizedLibrary && <div className="filter">
-        <StationFilter
-          filterBy={filterBy}
-          setFilterBy={setFilterBy} />
+        <StationFilter searchTxt={searchTxt} setSearchTxt={setSearchTxt} />
       </div>}
 
       <ScrollArea>
